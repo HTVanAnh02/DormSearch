@@ -1,0 +1,246 @@
+<template>
+    <v-dialog max-width="500px">
+        <v-form @submit.prevent="submit">
+            <v-card style="border-radius: 12px !important;">
+                <v-card-title
+                    style="font-weight: bold;position:fixed;width: 100%;top: 0;background-color: white;z-index: 100;border-top-left-radius:12px ;border-top-right-radius: 12px;">
+                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa nhà trọ" : "Tạo mới nhà trọ" }}</h4>
+                </v-card-title>
+                <v-container class="mt-10" style="background-color: #F7F8FA">
+                    <div style="display: block; margin-top: 8px;">
+                        <span>Tên nhà trọ </span> <span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="housename" placeholder="Nhập tên nhà trọ"
+                            :error-messages="housenameError" style="background-color: white;" density="compact" single-line
+                            hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ housenameError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Giá</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="price" placeholder="Nhập giá nhà trọ"
+                            :error-messages="priceError" required style="background-color: white;" density="compact"
+                            single-line hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ priceError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Nội thất</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="interior" placeholder="Nhập nội thất nhà trọ"
+                            :error-messages="interiorError" required style="background-color: white;" density="compact"
+                            single-line hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ interiorError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ nhà trọ"
+                            :error-messages="addressError" required style="background-color: white;" density="compact"
+                            single-line hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ addressError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Ngày đăng</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="datesubmitted" type="date"
+                            style="background-color: white; border-radius: 6px;" density="compact" single-line
+                            hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ datesubmittedError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Mô tả</span><span class="text-blue ml-2">*</span>
+                        <v-textarea class="mt-1" v-model="interior" placeholder="Nhập mô tả"
+                            :error-messages="interiorError" required style="background-color: white;" density="compact"
+                            single-line hide-details variant="outlined"></v-textarea>
+                        <span style="color:red">{{ interiorError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Ảnh nhà trọ</span><span class="text-blue ml-2">*</span><br>
+                        <input @change="handleImageChange" type="file" class="custom-file-input mt-1" />
+                    </div>
+                </v-container>
+                <v-card-actions class="pr-4">
+                    <v-spacer></v-spacer>
+                    <v-btn width="70px" variant="outlined" height="32px"
+                        style="font-family: Public Sans, sans-serif; font-size: 14px; margin-right: 16px; border: 1px solid #A1A9B8;border-radius: 6px;"
+                        @click="close()" class="text-capitalize" text="Hủy"></v-btn>
+                    <v-btn width="105px" height="32px" style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;"
+                        type="submit" color="#0F60FF" class="text-capitalize" variant="elevated">{{ itemEdit ? "Update" :
+                            "Tạo" }}<span class="text-lowercase">{{ itemEdit ? "" : "mới" }}</span></v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-form>
+    </v-dialog>
+</template>
+
+<script setup>
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+import { ref, watch, onUpdated } from 'vue';
+import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
+import { useLoadingStore } from '@/store/loading';
+import { houseServiceApi } from '@/layouts/Home/Houses/Services/house.api';
+const loading = useLoadingStore();
+const props = defineProps(['itemEdit'])
+const emit = defineEmits(['close', 'loadData'])
+watch(() => props.itemEdit, (newValue, oldValue) => {
+    resetForm()
+    if (props.itemEdit !== null) {
+        getHouseById(newValue)
+    }
+});
+
+const getHouseById = (item) => {
+    console.log(item)
+    housename.value = item.housename;
+    title.value = item.title;
+    interior.value = item.interior;
+    price.value = item.price;
+    addresshouses.value = item.addresshouses;
+    datesubmitted.value = item.datesubmitted;
+}
+onUpdated(() => {
+    if (props.itemEdit === null)
+        resetForm()
+})
+
+
+const { handleSubmit, resetForm } = useForm();
+
+const { value: housename, errorMessage: housenameError } = useField(
+    'housename',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên nhà trọ chỉ được chứa ký tự chữ cái, số và khoảng trắng')
+);
+
+
+const { value: title, errorMessage: titleError } = useField(
+    'title',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .min(10, 'Mô tả phải có ít nhất 10 ký tự')
+        .max(500, 'Mô tả không được quá 500 ký tự')
+);
+const { value: interior, errorMessage: interiorError } = useField(
+    'interior',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .min(10, 'Mô tả phải có ít nhất 10 ký tự')
+        .max(500, 'Mô tả không được quá 500 ký tự')
+);
+const { value: price, errorMessage: priceError } = useField(
+    'price',
+    yup
+        .number()
+        .required('Không được bỏ trống')
+        .min(0, 'Giá không được nhỏ hơn 0')
+        .typeError('Giá phải là một số')
+        .max(1000000000, 'Giá phải nhỏ hơn 1 tỷ')
+);
+
+const { value: datesubmitted, errorMessage: datesubmittedError } = useField(
+    'datesubmitted',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .matches(
+            /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/,
+            'Ngày sinh không hợp lệ. Vui lòng nhập theo định dạng YYYY-MM-DD.'
+        )
+        .test('not-in-future', 'Ngày sinh không được trong tương lai', function (value) {
+            const datesubmittedDate = new Date(value);
+            const currentDate = new Date();
+            return datesubmittedDate <= currentDate;
+        })
+);
+
+const { value: addresshouses, errorMessage: addresshousesError } = useField(
+    'addresshouses',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .min(10, 'Mô tả phải có ít nhất 10 ký tự')
+        .max(500, 'Mô tả không được quá 500 ký tự')
+);
+const submit = handleSubmit(async () => {
+    try {
+        loading.setLoading(true)
+        const formData = new FormData();
+        formData.append('housename', housename.value);
+        formData.append('title', title.value);
+        formData.append('price', price.value);
+        formData.append('addresshouses', addresshouses.value);
+        formData.append('interior', interior.value);
+        formData.append('file', imageFile.value);
+        if (props.itemEdit == null) {
+            const data = await houseServiceApi.createData(formData);
+            // console.log(data)
+            if (!data.success) {
+                alert("Tạo lỗi")
+                showWarningsNotification(data.message)
+            }
+            else {
+                close()
+                emit('loadData')
+                showSuccessNotification("Thêm thành công")
+                empty()
+            }
+        }
+        else {
+            const data = await houseServiceApi.updateProduct(props.itemEdit.id, formData);
+            console.log(data)
+            if (!data.success) {
+                showWarningsNotification(data.message)
+            }
+            else {
+                close()
+                emit('loadData')
+                showSuccessNotification("cập nhật thành công")
+                empty()
+            }
+        }
+    } catch (error) {
+        showWarningsNotification(error.message)
+    } finally {
+        loading.setLoading(false)
+    }
+});
+
+const empty = () => {
+    imageFile.value = null;
+    props.itemEdit = null
+}
+const imageFile = ref(null);
+const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    imageFile.value = file;
+};
+const close = () => {
+    emit('close')
+    resetForm()
+}
+
+</script>
+<style scoped>
+.custom-file-input {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-input:hover {
+    background-color: #e0e0e0;
+}
+
+* {
+    font-family: Public Sans, sans-serif;
+    font-size: 14px;
+}
+</style>
