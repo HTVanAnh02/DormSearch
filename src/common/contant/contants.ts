@@ -59,6 +59,7 @@ export enum PageName {
   RATING_PAGE ='rating_page',
   USER_PAGE ='user_page',
   ROLE_PAGE = 'role_page',
+  FORGOT_PASSWORD='forgot_password',
   NEWS_PAGE = 'news_page',
   REGISTER_PAGE="register_page",
   HOUSE_PAGE = 'house_page',

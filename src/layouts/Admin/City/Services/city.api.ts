@@ -1,5 +1,4 @@
 import { IBodyResponse, ItemsList } from "@/common/interface/interfaces";
-import localStorageAuthService from "@/common/storages/authStorage";
 import axiosInstance from "@/plugins/axios";
 import { ApiService } from "@/plugins/axios/api";
 class CityApiService extends ApiService {

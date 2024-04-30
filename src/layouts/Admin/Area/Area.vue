@@ -8,7 +8,7 @@
             class="mr-2" @keydown.enter="searchEnter()"></v-text-field>
         </v-col>
         <v-col cols="7" class="text-right" lg="9" sm="8" md="8">
-          <v-btn @click="addCity()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
+          <v-btn @click="addArea()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
             <b>Tạo</b> <span class="text-lowercase" style="margin-left: 3px; font-weight: bold;">mới</span>
           </v-btn>
         </v-col>
@@ -28,14 +28,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in citys" :key="index">
+                <tr v-for="(item, index) in areas" :key="index">
                   <td style="width: 250px;height: 58px;"><b>
                       <p
                         style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
                         {{ item.areaname }}</p>
                     </b></td>
                   <td class="text-center">
-                    <v-btn density="compact" variant="text" @click="updateCityById(item)" style="max-witemdth: 24px;">
+                    <v-btn density="compact" variant="text" @click="updateAreaById(item)" style="max-witemdth: 24px;">
                       <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                         width="24px" height="24px"></v-img>
                     </v-btn>
@@ -79,7 +79,7 @@
       </v-row>
     </div>
     <AreaDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
-    <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
+    <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteAreaById" />
   </template>
   <script setup>
   import {  onMounted, ref, watch } from 'vue';
@@ -98,31 +98,31 @@
   import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
   import { areaApi } from '../Area/Services/area.api';
   import { checkSearchEnter } from '../../../common/helper/helpers'
-  const { fetchArea, citys, query, searchArea  } = useArea()
+  const { fetchAreas, areas, query, searchArea  } = useArea()
   onMounted(async () => {
     query.keyword = ''
     query.page = 1
     loadData()
   })
   const loadData = async () => {
-    const res = await fetchArea()
+    const res = await fetchAreas()
     if (res.data) {
-      citys.value = res.data;
+      areas.value = res.data;
       lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
       TotalArea.value = res.totalItems
       return
     }
-    citys.value = []
+    areas.value = []
   }
-  const addCity = () => {
+  const addArea = () => {
     isShowDialog.value = true
     itemEdit = null
   }
-  const updateCityById = item => {
+  const updateAreaById = item => {
     isShowDialog.value = true
     itemEdit = item
   }
-  const deleteCityById = async (id) => {
+  const deleteAreaById = async (id) => {
     const data = await areaApi._delete(id)
   
     if (data.success) {
@@ -139,12 +139,12 @@
     const res = await searchArea ()
     if(res.data)
     {
-      citys.value = res.data;
+      areas.value = res.data;
       lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
       TotalArea.value=res.totalItems
       return
     }
-    citys.value=[]
+    areas.value=[]
   }
   const close = () => {
     isShowDialog.value = false

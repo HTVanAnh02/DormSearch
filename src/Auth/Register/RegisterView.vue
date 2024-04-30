@@ -14,7 +14,7 @@
             </div>
             <v-form id="myForm" @submit.prevent="registerform.handleRegister" @keyup.enter="registerform.handleRegister"
                 :style="{ width: '425px', height: '260px' }">
-                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top: 32px; width: 425px; height: 60px;">
+                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top:20px; width: 425px; height: 60px;">
                     <div
                         style="height: 28px; font-family: 'Public Sans', sans-serif; font-size: 14px; font-weight: bold; color: #464F60;">
                         Email</div>
@@ -22,7 +22,7 @@
                         required density="compact" placeholder="Nhập email" variant="outlined"></v-text-field>
                 </div>
                 <div class="container"
-                    style="display: flex; justify-content: space-between; width: 425px; margin-top: 32px;">
+                    style="display: flex; justify-content: space-between; width: 425px; margin-top:20px;">
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height: 60px;">
                         <div
                             style="height: 28px; font-family: 'Public Sans', sans-serif; font-size: 14px; font-weight: bold; color: #464F60;">
@@ -46,16 +46,16 @@
                         </v-text-field>
                     </div>
                 </div>
-                <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8"
+                <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-5 rounded-button"
                     color="#0F60FF"
-                    style="margin-top: 40px; font-family: 'Public Sans', sans-serif; width: 425px; height: 48px; font-size: 16px; ">
+                    style="margin-top: 40px; font-family: 'Public Sans', sans-serif; width: 425px; height: 45px; font-size: 16px; margin-top: 32px;">
                     <span class="text-capitalize">Đăng</span>
                     <span class="text-lowercase">ký</span>
                 </v-btn>
                 <div class="container"
-                    style="display: flex; justify-content: space-between; width: 425px; margin-top: 32px;">
+                    style="display: flex; justify-content: space-between; width: 425px;">
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8"
+                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8 rounded-button"
                             style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
                             <v-img :src="google" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
@@ -64,7 +64,7 @@
                         </v-btn>
                     </div>
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8"
+                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8 rounded-button"
                             style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
                             <v-img :src="facebook" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
@@ -103,6 +103,9 @@ const visible1 = ref(false)
 .icon-field .v-icon {
     width: 4.98px;
     height: 4.98px;
+}
+.rounded-button {
+    border-radius: 24px; /* Độ cong của góc */
 }
 
 .custom-checkbox .v-label {

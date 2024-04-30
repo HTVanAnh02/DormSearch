@@ -13,14 +13,14 @@
             </div>
             <v-form id="myForm" @submit.prevent="loginform.handleLogin" @keyup.enter="loginform.handleLogin"
                 :style="{ width: '425px', height: '260px' }">
-                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top: 32px; width: 425px; height: 60px;">
+                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top:20px; width: 425px; height: 60px;">
                     <div
                         style="height: 28px; font-family: 'Public Sans', sans-serif; font-size: 14px; font-weight: bold; color: #464F60;">
                         Email</div>
                     <v-text-field v-model="loginform.email" type="email" :error-messages="loginform.emailError" required
                         density="compact" placeholder="Nhập email" variant="outlined"></v-text-field>
                 </div>
-                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top: 32px; width: 425px; height: 60px;">
+                <div class="text-subtitle-1 text-medium-emphasis" style="margin-top:20px; width: 425px; height: 60px;">
                     <div
                         style="height: 28px; font-family: 'Public Sans', sans-serif; font-size: 14px; font-weight: bold; color: #464F60;">
                         Mật Khẩu</div>
@@ -30,17 +30,23 @@
                         @click:append-inner="visible = !visible">
                     </v-text-field>
                 </div>
-                <div class="d-flex justify-space-between align-center mt-10" >
+                <div class="d-flex justify-space-between align-center mt-8" style="width: 425px; height: 20px;">
+                    <v-row></v-row>
+                    <router-link to="/forgot_password"
+                        class="text-caption text-decoration-none text-blue mb-6 custom-link mt-4" style="height: 28px;">
+                        Quên mật khẩu?
+                    </router-link>
                 </div>
-                <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block class="mb-8" color="#0F60FF"
+                <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block class="mb-5 rounded-button"
+                    color="#0F60FF"
                     style="font-family: 'Public Sans', sans-serif; width: 425px; height: 48px; font-size: 16px; ">
                     <span class="text-capitalize">Đăng</span>
                     <span class="text-lowercase">nhập</span>
                 </v-btn>
-                <div class="container"
-                    style="display: flex; justify-content: space-between; width: 425px; margin-top: 32px;">
+                <div class="container" style="display: flex; justify-content: space-between; width: 425px;">
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block class="mb-8"
+                        <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block
+                            class="mb-8 rounded-button"
                             style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
                             <v-img :src="google" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
@@ -49,7 +55,8 @@
                         </v-btn>
                     </div>
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block class="mb-8"
+                        <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block
+                            class="mb-8 rounded-button"
                             style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
                             <v-img :src="facebook" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
@@ -88,6 +95,11 @@ const terms = ref('')
 .icon-field .v-icon {
     width: 4.98px;
     height: 4.98px;
+}
+
+.rounded-button {
+    border-radius: 24px;
+    /* Độ cong của góc */
 }
 
 .custom-checkbox .v-label {

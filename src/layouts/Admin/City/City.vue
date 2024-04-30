@@ -20,7 +20,7 @@
             <thead style="height: 47px;">
               <tr>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Tên sản phẩm
+                  Tên thành phố
                 </th>
                 <th class="text-center text-uppercase text-medium-emphasis">
                   Hành động
@@ -95,7 +95,6 @@ let page = ref(1)
 const search = ref(null)
 const TotalCitys = ref(null)
 const id = ref('');
-const idRemove = ref('');
 import { useCity } from '../City/Services/city.service'
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
 import { cityApi } from '../City/Services/city.api';

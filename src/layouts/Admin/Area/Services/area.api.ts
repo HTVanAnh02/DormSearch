@@ -18,9 +18,6 @@ class AreaApiService extends ApiService {
   itemsList():Promise<ItemsList> {
     return this.client.get(`${this.baseUrl}/ItemsList`);
   }
-  getProfile<R>(): Promise<IBodyResponse<R>> {
-    return this.client.get(`${this.baseUrl}/profile`); 
-  }
 }
 export const areaApi = new AreaApiService(
   { baseUrl: "/area" },axiosInstance

@@ -1,5 +1,3 @@
-
-
 <template>
     <v-dialog max-width="250px">
         <v-form @submit.prevent="submit">
@@ -38,7 +36,7 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { areaApi } from '../Area/Services/area.api';
+import { areaApi } from './Services/area.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])

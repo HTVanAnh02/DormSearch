@@ -31,6 +31,14 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
+  {
+    path: '/forgot_password',
+    name: PageName.FORGOT_PASSWORD,
+    component: () => import('../Auth/Login/FormQuenMatKhau.vue'),
+    meta: {
+      public: true,
+    },
+  },
   // {
   //   path: '/homedetail',
   //   name: PageName.HOMEDETAIL,

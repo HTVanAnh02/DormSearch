@@ -210,7 +210,7 @@ export type ICitys = {
   id: string,
   cityname: string
 }
-export type IArea ={
+export type IAreas ={
   id: string,
   areaname: string
 }

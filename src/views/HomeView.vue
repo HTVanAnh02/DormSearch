@@ -18,13 +18,16 @@
               style="cursor: pointer;">
               <v-list-item-title>
                 <v-list-item-icon>
-                  <v-icon class="mr-2" @click="this.$router.push({ name: 'login_page' })">mdi-city</v-icon>
+                  <v-icon class="mr-2"  color="primary" @click="this.$router.push({ name: 'login_page' })">mdi-city</v-icon>
                 </v-list-item-icon>
                 Căn hộ,chung cư
               </v-list-item-title>
+            </v-list-item>
+            <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+              style="cursor: pointer;">
               <v-list-item-title>
                 <v-list-item-icon>
-                  <v-icon class="mr-2" @click="this.$router.push({ name: 'login_page' })">mdi-home</v-icon>
+                  <v-icon class="mr-2"  color="red"  @click="this.$router.push({ name: 'login_page' })">mdi-home</v-icon>
                 </v-list-item-icon>
                 Nhà trọ,phòng trọ
               </v-list-item-title>
@@ -72,6 +75,9 @@
                   </v-list-item-icon>
                   Đăng Nhập
                 </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+                style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
                     <v-icon class="mr-2" color="secondary"
@@ -79,22 +85,30 @@
                   </v-list-item-icon>
                   Thông tin tài khoản
                 </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+                style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
                     <v-icon style="width: 14px; height: 12.85px;" color="red">mdi-heart-outline</v-icon>
                   </v-list-item-icon>
                   Tin yêu thích
                 </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+                style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
                     <v-icon style="width: 14px; height: 12.85px;" color="blue">mdi-cloud-upload</v-icon>
                   </v-list-item-icon>
                   Quản lý bài đăng
                 </v-list-item-title>
+              </v-list-item>
+              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+                style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
-                    <v-icon class="mr-2" color="orange"
-                      @click="this.$router.push({ name: 'login_page' })">mdi-logout</v-icon>
+                    <v-icon class="mr-2" @click="this.$router.push({ name: 'login_page' })">mdi-logout</v-icon>
                   </v-list-item-icon>
                   Đăng xuất
                 </v-list-item-title>
@@ -111,7 +125,6 @@
           <v-col cols="12" sm="6" md="6" lg="3">
             <v-select v-model="cityId" density="compact" label="Khu vực" variant="outlined">
               <v-option v-for="item in itemsListCitys" :key="item.cityId" :value="item.cityId" :label="item.cityName" />
-
             </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
@@ -208,8 +221,8 @@ let lengthPage = ref<Number | undefined>(100);
 const liked = ref(true);
 const loadData = async () => {
   loading.setLoading(true);
-  const itemcitys = await cityServiceApi.itemsList();
-  itemsListCitys.value = itemcitys.data;
+  // const itemcitys = await cityServiceApi.itemsList();
+  // itemsListCitys.value = itemcitys.data;
   loading.setLoading(false);
 };
 const products = reactive([
@@ -321,10 +334,15 @@ const products = reactive([
     sale: 36,
     feedback: 4.7
   },
+  
 ]);
 </script>
 
 <style scop>
+.hoverable-list-item:hover {
+    background-color: #f5f5f5;
+}
+
 .custom-card {
   border-radius: 8px;
   /* Điều chỉnh giá trị theo mong muốn để có độ bo tròn nhẹ */

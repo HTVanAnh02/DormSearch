@@ -102,12 +102,12 @@
                                 </v-list-item>
                             </v-list>
                             <v-divider></v-divider>
-                            <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+                            <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'home' })"
                                 style="cursor: pointer;">
                                 <v-list-item-title>
                                     <v-list-item-icon>
                                         <v-icon class="mr-2"
-                                            @click="this.$router.push({ name: 'login_page' })">mdi-logout</v-icon>
+                                            @click="this.$router.push({ name: 'home' })">mdi-logout</v-icon>
                                     </v-list-item-icon>
                                     Đăng xuất
                                 </v-list-item-title>
