@@ -11,9 +11,6 @@ export const enum AUTH_SERVICE_KEY {
   ACCESS_TOKEN_EXPIRED_AT = "ACCESS_TOKEN_EXPIRED_AT",
   REFRESH_TOKEN_EXPIRED_AT = "REFRESH_TOKEN_EXPIRED_AT",
   AVATAR = "AVATAR",
-  EMAIL = "EMAIL",
-  NAME = "NAME",
-  PHONE = "PHONE",
 }
 class LocalStorageAuthService {
   setAccessToken(token: string): void {
@@ -67,7 +64,15 @@ class LocalStorageAuthService {
   removeUserRole(): void {
     storage.removeLocalStorage(AUTH_SERVICE_KEY.ROLE)
   }
-
+  setAvatarUrl(avatar: string): void {
+    storage.setLocalStorage(AUTH_SERVICE_KEY.AVATAR, avatar);
+  }
+  getAvatarUrl():string{
+    return storage.getLocalStorage(AUTH_SERVICE_KEY.AVATAR); 
+  }
+  removeAvatarUrl():void{
+    storage.removeLocalStorage(AUTH_SERVICE_KEY.AVATAR)
+  }
   resetAccessToken(): void {
     storage.setLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN, '');
   }
@@ -82,27 +87,27 @@ class LocalStorageAuthService {
     return (storage.getLocalStorage(AUTH_SERVICE_KEY.LANGUAGE) ||
       DEFAULT_LANGUAGE) as SupportLanguage;
   }
-  setName(name: string): void {
-    storage.setLocalStorage(AUTH_SERVICE_KEY.NAME, name);
-  }
+  // setName(name: string): void {
+  //   storage.setLocalStorage(AUTH_SERVICE_KEY.NAME, name);
+  // }
 
-  getName(): string {
-    return storage.getLocalStorage(AUTH_SERVICE_KEY.NAME);
-  }
+  // getName(): string {
+  //   return storage.getLocalStorage(AUTH_SERVICE_KEY.NAME);
+  // }
 
-  setPhone(phone: string): void {
-    storage.setLocalStorage(AUTH_SERVICE_KEY.PHONE, phone);
-  }
+  // setPhone(phone: string): void {
+  //   storage.setLocalStorage(AUTH_SERVICE_KEY.PHONE, phone);
+  // }
 
-  getPhone(): string {
-    return storage.getLocalStorage(AUTH_SERVICE_KEY.PHONE);
-  }
-  setAvatar(avatar: string): void {
-    storage.setLocalStorage(AUTH_SERVICE_KEY.AVATAR, avatar);
-  }
-  getAvatar(): string {
-    return storage.getLocalStorage(AUTH_SERVICE_KEY.AVATAR);
-  }
+  // getPhone(): string {
+  //   return storage.getLocalStorage(AUTH_SERVICE_KEY.PHONE);
+  // }
+  // setAvatar(avatar: string): void {
+  //   storage.setLocalStorage(AUTH_SERVICE_KEY.AVATAR, avatar);
+  // }
+  // getAvatar(): string {
+  //   return storage.getLocalStorage(AUTH_SERVICE_KEY.AVATAR);
+  // }
   getHeader() {
     return {
       Authorization: `Bearer ${this.getAccessToken()}`,

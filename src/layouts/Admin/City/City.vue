@@ -28,7 +28,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in citys" :key="index">
+              <tr v-if="citys.length > 0" v-for="(item, index) in citys" :key="index">
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
@@ -45,7 +45,11 @@
                   </v-btn>
                 </td>
               </tr>
-              <tr></tr>
+              <tr v-else>
+                <td colspan="6">
+                  <p class="text-center text-red">Không có dữ liệu</p>
+                </td>
+              </tr>
             </tbody>
           </v-table>
           <v-row class="ma-2 ">
@@ -83,7 +87,7 @@
 </template>
 <script setup>
 import {  onMounted, ref, watch } from 'vue';
-import CityDialog from '../City/CityDialog.vue';
+import CityDialog from '../City/CreateDialog.vue';
 import Confirmations from '@/components/Confirmations/Confirmations.vue'
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)

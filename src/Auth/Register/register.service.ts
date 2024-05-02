@@ -17,12 +17,6 @@ export const userRegisterForm = () => {
     validationSchema: registerWithPasswordSchema,
   });
   const {
-    value: phone,
-    setValue: setPhone,
-    errorMessage: phoneError,
-  } = useField('phone');
-
-  const {
     value: email,
     setValue: setEmail,
     errorMessage: emailError,
@@ -39,20 +33,12 @@ export const userRegisterForm = () => {
     setValue: setConfirmPassword,
     errorMessage: confirmPasswordError,
   } = useField('confirmPassword');
-
-  const {
-    value: avatar,
-    setValue: setAvatar,
-    errorMessage: avatarError,
-  } = useField('avatar');
   const handleRegister = handleSubmit(async (values) => {
     loading.setLoading(true)
     const res = await authStore.register({
-      fullname:values.fullname,
       email: values.email,
       password: values.password,
-      phone: values.phone,
-      avatar: values.avatar,
+     
     });
     loading.setLoading(false)
     if (res) {
@@ -78,11 +64,5 @@ export const userRegisterForm = () => {
     confirmPassword,
     setConfirmPassword,
     confirmPasswordError,
-    phone,
-    setPhone,
-    phoneError,
-    avatar,
-    setAvatar,
-    avatarError,
   };
 };

@@ -5,14 +5,14 @@ import { showWarningsNotification } from '@/common/helper/helpers';
 import router from '@/router';
 
 export const logout = (redirectToLogin = true) => {
-  showWarningsNotification("Vui lòng đăng nhập lại");
-
-  if (redirectToLogin) {
-    const currentPage = router.currentRoute;
-    if (currentPage.value.name !== PageName.LOGIN_PAGE) {
-      sessionStorage.setItem('redirect', currentPage.value.fullPath);
-      router.push({ name: PageName.LOGIN_PAGE }).catch(() => {});
-    }
+  showWarningsNotification("Hết phiên đăng nhập. Vui lòng đăng nhập lại")
+  localStorageAuthService.removeAll();
+  const currentPage = router.currentRoute;
+  if (redirectToLogin && currentPage.value.name !== PageName.HOME) {
+    sessionStorage.setItem('redirect', currentPage.value.fullPath);
+    router
+      .push({ name: PageName.HOME })
+      .catch(() => { });
   }
 };
 
@@ -20,14 +20,14 @@ export const sendRefreshToken = async () => {
   let response;
   try {
     const API_URL = process.env.VUE_APP_API_URL;
-    const formData=new FormData()
-    formData.append("refresh_token",localStorageAuthService.getRefreshToken())
+    const formData = new FormData()
+    formData.append("refresh_token", localStorageAuthService.getRefreshToken())
     response = await axios.post(
       `${API_URL}/auth/refresh`,
       formData,
-      { 
+      {
         headers: {
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json'
         }
       }
     );

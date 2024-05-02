@@ -137,7 +137,14 @@ export const getDiffFormData = (
 export const formatDateString = (ds: string, format: string): string => {
   return dayjs(ds).format(format);
 };
-
+export const formatPhoneNumber = (phoneNumber: string): string => {
+  const cleaned = phoneNumber.replace(/\D/g, '');
+  if (cleaned.length === 10) {
+      return `${cleaned.substr(0, 3)}-${cleaned.substr(3, 3)}-${cleaned.substr(6)}`;
+  } else {
+      return phoneNumber;
+  }
+};
 export const removeEmptyValue = (arrays: any[]) => {
   const result: any[] = [];
   arrays?.forEach((item) => {

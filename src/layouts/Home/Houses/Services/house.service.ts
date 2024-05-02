@@ -1,59 +1,59 @@
+
 import { useLoadingStore } from "@/store/loading";
-import { houseServiceApi } from "./house.api";
 import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
-import { IHouse } from "@/common/interface/interfaces";
-import { ref } from "vue";
+import { showErrors } from "@/common/helper/helpers";
+import { houseApi } from "./house.api";
+const loading = useLoadingStore();
 export const useHouse = () => {
-  const loading = useLoadingStore();
-  const houses = ref<IHouse[]>([])
-  const query=DEFAULT_COMMON_LIST_QUERY
-  const fetchHouse = async () => {
+  const query = DEFAULT_COMMON_LIST_QUERY;
+  const fetchHouses = async () => {
     try {
-      loading.setLoading(true)
-      const res = await houseServiceApi._getList<IHouse>(query);
-      console.log(res);
-      loading.setLoading(false)
-      if(res.success)
+      loading.setLoading(true);
+      const res = await houseApi._getList<any>(query);
+      if (res.errors !== undefined) {
+        showErrors(res.errors);
+    }
+      if (res.success) {
         return {
-          data:res.items,
-          totalItems:res.totalItems
-        }
-    else{
-      return {
-        data:[],
-        totalItems:0
+          items: res.items,
+          totalItems: res.totalItems,
+        };
       }
-    }     
-  } catch (error) {
-      console.error('Error fetching Houses:', error);
+      return {
+        items: [],
+        totalItems: 0,
+      };
+    } catch (error) {
+      console.error("Error Fetching:", error);
+    } finally {
+      loading.setLoading(false);
     }
   };
-  const searchHouse = async () => {
+  const searchHouses = async () => {
     try {
-      console.log(FormData);
-      
-      loading.setLoading(true); // Bắt đầu hiển thị trạng thái tải
-  
-      const res = await houseServiceApi._getList<IHouse>(query);
-      
+      loading.setLoading(true);
+
+      const res = await houseApi._getList<any>(query);
       if (res.success) {
-        const data = res.items;
-        const totalItems = res.totalItems;
-        return { data, totalItems };
+        return {
+          items: res.items,
+          totalItems: res.totalItems,
+        };
       }
-      
-      return null;
+      return {
+        items: [],
+        totalItems: 0,
+      };
     } catch (error) {
-      console.error('Error fetching Houses:', error);
-      return null;
+      console.error("Error Search:", error);
     } finally {
-      loading.setLoading(false); // Kết thúc hiển thị trạng thái tải
+      loading.setLoading(false);
     }
   };
   const createHouse = async (data: any) => {
     try {
       loading.setLoading(true);
-      return await houseServiceApi.createData(data);
+      return await houseApi.createData(data);
     } catch (error) {
       console.error("Error Create:", error);
     } finally {
@@ -64,7 +64,7 @@ export const useHouse = () => {
   const updateHouse=async(data:any,id:any)=>{
     try{
       loading.setLoading(true);
-      return await houseServiceApi.updateData(data,id);
+      return await houseApi.updateData(data,id);
     }catch (error) {
       console.error("Error Update:", error);
     }finally {
@@ -75,7 +75,7 @@ export const useHouse = () => {
   const getData=async(id:any)=>{
     try{
       loading.setLoading(true);
-      return await houseServiceApi.getData(id);
+      return await houseApi.getData(id);
     }catch (error) {
       console.error("Error GetDetail:", error);
     }finally {
@@ -86,23 +86,20 @@ export const useHouse = () => {
   const deleteHouse=async(id:any)=>{
     try{
       loading.setLoading(true);
-      return await houseServiceApi.deleteData(id);
+      return await houseApi.deleteData(id);
     }catch (error) {
       console.error("Error Delete:", error);
     }finally {
       loading.setLoading(false);
     }
   };
-  
-  
   return {
-    fetchHouse,
-    houses,
+    fetchHouses,
     createHouse,
     updateHouse,
     deleteHouse,
     query,
     getData,
-    searchHouse,
+    searchHouses,
   };
 };

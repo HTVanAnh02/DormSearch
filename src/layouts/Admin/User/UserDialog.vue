@@ -9,10 +9,10 @@
                 <v-container class="mt-9" style="background-color: #F7F8FA">
                     <div style="display: block; margin-top: 12px;">
                         <span>Tên người dùng</span> <span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="name" placeholder="Nhập tên người dùng"
+                        <v-text-field class="mt-1" v-model="fullname" placeholder="Nhập tên người dùng"
                             style="background-color: white;" density="compact" single-line hide-details
                             variant="outlined"></v-text-field>
-                        <span style="color:red">{{ nameError }}</span>
+                        <span style="color:red">{{ fullnameError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
                         <span>Email</span><span class="text-blue ml-2">*</span>
@@ -34,7 +34,6 @@
                             style="background-color: white;border-radius: 6px;" density="compact" single-line
                             hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ phoneError }}</span>
-
                     </div>
                     <div style="display: block; margin-top: 12px;">
                         <span>Quyền</span><span class="text-blue ml-2">*</span>
@@ -46,8 +45,9 @@
                         <span style="color:red">{{ roleError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
-                        <span>Avatar</span><span class="text-blue ml-2">*</span><br>
+                        <span>Ảnh đại diện</span><span v-show="!itemEdit" class="text-blue ml-2">*</span><br>
                         <input @change="handleImageChange" type="file" class="custom-file-input mt-1" />
+                        <span style="color:red">{{ errorFile }}</span>
                     </div>
                 </v-container>
                 <v-card-actions class="pr-4">
@@ -70,14 +70,13 @@
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
-import {  onUpdated, watch } from 'vue';
+import { ref,onUpdated, watch } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
+import { MESSAGE_ERROR, Regex, Role } from '@/common/contant/contants';
 import { useLoadingStore } from '@/store/loading';
-import { Role } from '@/common/contant/contants';
 import { userServiceApi } from './user.api';
 const loading = useLoadingStore()
-
-
+const errorFile=ref(null)
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
 watch(() => props.itemEdit, (newValue, oldValue) => {
@@ -92,39 +91,37 @@ const getUserById = async (id) => {
         const data = await userServiceApi._getDetail(id);
         loading.setLoading(false)
         if (data.success) {
-            
-            name.value = data.data.name;
+
+            fullname.value = data.data.fullname;
             email.value = data.data.email;
             birthday.value = data.data.birthday;
             phone.value = data.data.phone;
             role.value = data.data.role;
-            avatar.value = data.data.avatar;
         }
         else {
             showWarningsNotification(data.message)
         }
     } catch (error) {
-        console.error('Error fetching product detail:', error);
+        console.error('Error fetching user detail:', error);
     }
 }
 onUpdated(() => {
     if (props.itemEdit === null)
+    {
         resetForm()
+        errorFile.value=null
+    }
 })
-
-
-
-
 const { handleSubmit, resetForm } = useForm();
 
-const { value: name, errorMessage: nameError } = useField(
-    'name',
+const { value: fullname, errorMessage: fullnameError } = useField(
+    'fullname',
     yup
         .string()
-        .required('Không được bỏ trống')
+        .required(MESSAGE_ERROR.REQUIRE)
         .matches(
-            /^[a-zA-ZÀ-Ỹà-ỹ ]*$/,
-            'Tên không hợp lệ. Tên chỉ được chứa chữ cái và khoảng trắng.'
+            Regex.NAME,
+            MESSAGE_ERROR.NAME
         )
 );
 
@@ -132,22 +129,22 @@ const { value: email, errorMessage: emailError } = useField(
     'email',
     yup
         .string()
-        .required('Không được bỏ trống')
+        .required(MESSAGE_ERROR.REQUIRE)
         .matches(
-            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-            'Email không hợp lệ'
+            Regex.EMAIL,
+            MESSAGE_ERROR.EMAIL
         )
 );
 const { value: birthday, errorMessage: birthdayError } = useField(
     'birthday',
     yup
         .string()
-        .required('Không được bỏ trống')
+        .required(MESSAGE_ERROR.REQUIRE)
         .matches(
-            /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/,
-            'Ngày sinh không hợp lệ. Vui lòng nhập theo định dạng YYYY-MM-DD.'
+            Regex.BIRTHDAY,
+            MESSAGE_ERROR.BIRTHDAY
         )
-        .test('not-in-future', 'Ngày sinh không được trong tương lai', function (value) {
+        .test('not-in-future', 'Ngày sinh không được chọn ở tương lai', function (value) {
             const birthdayDate = new Date(value);
             const currentDate = new Date();
             return birthdayDate <= currentDate;
@@ -160,28 +157,28 @@ const { value: phone, errorMessage: phoneError } = useField(
     'phone',
     yup
         .string()
-        .required('Không được bỏ trống')
+        .required(MESSAGE_ERROR.REQUIRE)
         .matches(
-            /^0\d{9,10}$/,
-            'Số điện thoại không hợp lệ. Số điện thoại phải có 10 chữ số.'
+            Regex.PHONE,
+            MESSAGE_ERROR.PHONE
         )
 );
 const { value: role, errorMessage: roleError } = useField(
     'role',
     yup
         .string()
-        .required('Không được bỏ trống')
+        .required(MESSAGE_ERROR.REQUIRE)
 );
 
 const submit = handleSubmit(async () => {
     try {
         loading.setLoading(true)
         const formData = new FormData();
-        formData.append('name', name.value);
+        formData.append('fullname', fullname.value);
         formData.append('email', email.value);
         formData.append('birthday', birthday.value);
         formData.append('phone', phone.value);
-        formData.append('avatar', avatar.value);
+        formData.append('file', imageFile.value);
         formData.append('role', role.value);
         if (props.itemEdit == null) {
             const data = await userServiceApi.createUser(formData);
@@ -216,12 +213,20 @@ const submit = handleSubmit(async () => {
         loading.setLoading(false)
     }
 });
+const empty = () => {
+    imageFile.value = null;
+    props.itemEdit = null
+}
+
+
+const imageFile = ref(null);
+const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    imageFile.value = file;
+};
 const close = () => {
     emit('close')
     resetForm()
-}
-const empty = () => {
-    props.itemEdit = null
 }
 
 </script>

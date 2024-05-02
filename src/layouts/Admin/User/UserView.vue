@@ -28,18 +28,24 @@
                   Email
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Ngày sinh
+                  Giới tính
+                </th>
+                <th class="text-left text-uppercase text-medium-emphasis">
+                  Địa chỉ
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Số điện thoại
                 </th>
+                <!-- <th class="text-left text-uppercase text-medium-emphasis">
+                 Trạng thái
+                </th> -->
                 <th class="text-center text-uppercase text-medium-emphasis">
                   Hành Động
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in users" :key="index">
+              <tr v-if="users.length > 0" v-for="item in users" :key="item">
                 <td>
                   <v-img class="ma-1" style="border-radius: 2px;" width="36" height="36" :src="item.avatar"></v-img>
                 </td>
@@ -49,18 +55,12 @@
                       {{ item.fullname }}</p>
                   </b></td>
                 <td>{{ item.email }}</td>
-                <td class="v-text-truncate">
-                  {{
-                    item.birthday === undefined ||
-                    item.birthday === "" ||
-                    item.birthday === null
-                        ? ""
-                        : formatDatetime(i.birthday)
-                }}
-                </td>
+                <td>{{ item.gender }}</td>
+                <td>{{ item.address }}</td>
                 <td>
-                  {{ item.phone }}
+                  {{ item.phonenumber? formatPhoneNumber(item.phonenumber):"" }}
                 </td>
+                <!-- <td>{{ item.active }}</td> -->
                 <td class="text-center">
                   <v-btn density="compact" variant="text" @click="updateUserById(item.id)" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
@@ -71,6 +71,11 @@
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
                       width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
                   </v-btn>
+                </td>
+              </tr>
+              <tr v-else>
+                <td colspan="6">
+                  <p class="text-center text-red">Không có dữ liệu</p>
                 </td>
               </tr>
             </tbody>
@@ -88,7 +93,8 @@
             </v-col>
             <v-col cols="4" sm="4" md="4" lg="4">
               <p class="text-center page-table1" style="font-size: 15px;display: none">
-                <span @click="page = page - 1" :class="{ 'text-grey-lighten-2': page === 1, 'text-black': page !== 1 }"><i
+                <span @click="page = page - 1"
+                  :class="{ 'text-grey-lighten-2': page === 1, 'text-black': page !== 1 }"><i
                     class="fa-solid fa-angle-left" style="cursor: pointer;"></i></span>
                 <span
                   style="background-color: rgb(109, 148, 227);color: blue;opacity: 0.6;;border-radius: 2px;padding: 5px;"
@@ -111,14 +117,17 @@
 <script setup>
 import { DATE_TIME_FORMAT } from '../../../common/contant/contants'
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { checkSearchUserEnter } from '../../../common/helper/helpers'
+import { checkSearchUserEnter, formatDateString,formatPhoneNumber } from '../../../common/helper/helpers'
 import { onMounted, ref, watch } from 'vue';
 import UserDialog from '@/layouts/Admin/User/UserDialog.vue';
 import { useUser } from './user.service'
 import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
 import { showErrorNotification, showSuccessNotification } from '@/common/helper/helpers';
 import { userServiceApi } from './user.api';
-const DD_MM_YYYY = DATE_TIME_FORMAT.DD_MM_YYYY_DASH
+import { showWarningsNotification } from '../../../common/helper/helpers';
+import { useLoadingStore } from "@/store/loading";
+const loading = useLoadingStore()
+const YYYY_MM_DD_DASH = DATE_TIME_FORMAT.YYYY_MM_DD_DASH
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
 const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)
@@ -134,20 +143,17 @@ onMounted(async () => {
   query.page = 1
   loadData()
 })
-const formatDatetime = (date) => {
-    const dateObject = new Date(date);
-    const ngay = dateObject.getDate().toString().padStart(2, "0");
-    const thang = (dateObject.getMonth() + 1).toString().padStart(2, "0");
-    const nam = dateObject.getFullYear();
-    const ngayThangNam = `${thang}/${ngay}/${nam}`;
-    return ngayThangNam;
-};
 const loadData = async () => {
   const res = await fetchUsers()
   users.value = res.data;
   lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-  TotalUsers.value = res.totalItems
-  return
+  if (res.data) {
+    users.value = res.data;
+    lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
+    TotalUsers.value = res.totalItems
+    return
+  }
+  users.value = []
 }
 const addUser = () => {
   isShowDialog.value = true
@@ -159,30 +165,27 @@ const updateUserById = id => {
   itemEdit = id
 }
 const searchEnter = () => {
-  if(checkSearchUserEnter(search.value))
-  {
+  if (checkSearchUserEnter(search.value)) {
     query.keyword = search.value
     query.page = 1
     searchData()
   }
-  else
-  {
+  else {
     showWarningsNotification("Không nhập ký tự đặc biệt")
   }
 };
 const searchData = async () => {
   const res = await searchUsers()
-  if(res.data)
-  {
+  if (res.data) {
     users.value = res.data;
     lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalUsers.value=res.totalItems
+    TotalUsers.value = res.totalItems
     return
   }
-  users.value=[]
+  users.value = []
 }
-
 const deleteUserById = async (id) => {
+  loading.setLoading(true)
   const data = await userServiceApi._delete(id)
   if (data.success) {
     loadData()
@@ -205,19 +208,22 @@ watch(seletedValue, (newval) => {
   loadData()
 })
 watch(search, (newval) => {
-  if(search.value==="")
-  {
-    query.keyword = search.value
-    query.page = 1
-    searchData()
-  }
+  if (newval !== "")
+    return
+  query.keyword = newval
+  query.page = 1
+  searchData()
 })
 watch(page, (newVal) => {
   query.page = newVal
   loadData()
 })
+watch(isShowDialog, (newVal) => {
+  if (newVal == false)
+    itemEdit = null
+})
 </script>
-  
+
 <style scoped>
 .text-truncate {
   overflow: hidden;

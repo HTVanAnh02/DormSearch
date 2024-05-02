@@ -21,4 +21,3 @@ class CityApiService extends ApiService {
 export const cityApi = new CityApiService(
   { baseUrl: "/city" },axiosInstance
 );
-

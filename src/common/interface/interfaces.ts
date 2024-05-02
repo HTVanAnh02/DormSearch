@@ -212,14 +212,17 @@ export type ICitys = {
 }
 export type IAreas ={
   id: string,
-  areaname: string
+  areasname: string
 }
+
 export type IUser={
     id:string
     fullname:string;
-    birthday:string,
+    gender:string,
     email:string,
-    phone:string,
+    phonenumber:string,
+    address:string,
+    active:string,
     avatar?: string;
     role:string
 }
@@ -256,13 +259,6 @@ export interface IResponseError<T = any> {
   data?: T;
 }
 
-export type IRegister = {
-  fullname?:string;
-  email?: string;
-  password?: string;
-  phone?:string;
-  avatar?: string;
-};
 export interface IBodyResponse<T> extends AxiosResponse {
   success: boolean;
   isRequestError?: boolean;
@@ -293,7 +289,10 @@ export type IBodyLogin = {
   email?: string;
   password?: string;
 };
-
+export type IBodyRegister = {
+  email?: string;
+  password?: string;
+};
 // export type IBodyLogin = {
 //   // provider: LoginProvider;
 //   email?: string;
@@ -378,7 +377,11 @@ export interface IUserProfile {
   status: UserStatus;
   signedContractDate?: string;
 }
-
+export type IRole={
+  roleId: String,
+  rolename: String,
+  roledescription: String,
+}
 export interface ITableSorter {
   field: string;
   direction?: IOrderDirection;

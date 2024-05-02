@@ -18,7 +18,8 @@
               style="cursor: pointer;">
               <v-list-item-title>
                 <v-list-item-icon>
-                  <v-icon class="mr-2"  color="primary" @click="this.$router.push({ name: 'login_page' })">mdi-city</v-icon>
+                  <v-icon class="mr-2" color="primary"
+                    @click="this.$router.push({ name: 'login_page' })">mdi-city</v-icon>
                 </v-list-item-icon>
                 Căn hộ,chung cư
               </v-list-item-title>
@@ -27,7 +28,7 @@
               style="cursor: pointer;">
               <v-list-item-title>
                 <v-list-item-icon>
-                  <v-icon class="mr-2"  color="red"  @click="this.$router.push({ name: 'login_page' })">mdi-home</v-icon>
+                  <v-icon class="mr-2" color="red" @click="this.$router.push({ name: 'login_page' })">mdi-home</v-icon>
                 </v-list-item-icon>
                 Nhà trọ,phòng trọ
               </v-list-item-title>
@@ -53,6 +54,7 @@
           </div>
         </div>
         <v-btn class="text-capitalize" variant="outlined"
+        @click="addHouses()"
           style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700; margin-left: auto;margin-right: 16px;">Đăng
           <span class="text-lowercase ml-1">tin</span> <v-icon class="ml-2"
             style="height: 40px;">mdi-cloud-upload</v-icon></v-btn>
@@ -195,6 +197,7 @@
       <Footer />
     </v-row>
   </v-app>
+  <HouseDialog v-model="isShowDialog"  @close="close()" @loadData="loadData()" />
 </template>
 
 <script lang="ts" setup>
@@ -202,7 +205,9 @@ import Slidebar from "@/components/Application/Slidebar.vue";
 import Footer from "@/components/Application/Footer.vue";
 import { reactive, ref } from "vue"
 import { useLoadingStore } from "@/store/loading";
+import HouseDialog from "@/layouts/Admin/House/HouseDialog.vue";
 const loading = useLoadingStore();
+const isShowDialog = ref(false);
 const dialog = ref(false);
 const itemsListCitys = ref<any | null>([]);
 const itemsListSalarys = ref<any | null>([]);
@@ -225,6 +230,12 @@ const loadData = async () => {
   // itemsListCitys.value = itemcitys.data;
   loading.setLoading(false);
 };
+const addHouses = () => {
+  isShowDialog.value = true
+}
+const close = () => {
+  isShowDialog.value = false
+}
 const products = reactive([
   {
     image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
@@ -334,13 +345,13 @@ const products = reactive([
     sale: 36,
     feedback: 4.7
   },
-  
+
 ]);
 </script>
 
 <style scop>
 .hoverable-list-item:hover {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .custom-card {

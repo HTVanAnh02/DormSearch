@@ -22,4 +22,3 @@ class AreaApiService extends ApiService {
 export const areaApi = new AreaApiService(
   { baseUrl: "/area" },axiosInstance
 );
-

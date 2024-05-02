@@ -5,7 +5,7 @@ import dayjs from '@/plugins/dayjs';
 import { logout } from '@/plugins/axios/utils';
 import { showWarningsNotification } from '@/common/helper/helpers';
 import { authServiceApi } from '@/Auth/auth.api';
-import { IBodyLogin, IRegister } from '@/common/interface/interfaces';
+import { IBodyLogin, IBodyRegister } from '@/common/interface/interfaces';
 
 export const AuthStore = defineStore('authStore', () => {
 
@@ -31,7 +31,7 @@ export const AuthStore = defineStore('authStore', () => {
 
     return false;
 }
-  async function register(body: IRegister) {
+  async function register(body: IBodyRegister) {
     const res = await authServiceApi.register(body)
     if (!res.success) {
       showWarningsNotification(res.message)

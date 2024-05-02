@@ -74,7 +74,7 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { houseServiceApi } from '@/layouts/Home/Houses/Services/house.api';
+import { houseApi } from './Services/house.api';
 const loading = useLoadingStore();
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
@@ -172,7 +172,7 @@ const submit = handleSubmit(async () => {
         formData.append('interior', interior.value);
         formData.append('file', imageFile.value);
         if (props.itemEdit == null) {
-            const data = await houseServiceApi.createData(formData);
+            const data = await houseApi.createData(formData);
             // console.log(data)
             if (!data.success) {
                 alert("Tạo lỗi")
@@ -186,7 +186,7 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await houseServiceApi.updateProduct(props.itemEdit.id, formData);
+            const data = await houseApi.updateProduct(props.itemEdit.id, formData);
             console.log(data)
             if (!data.success) {
                 showWarningsNotification(data.message)
