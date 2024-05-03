@@ -41,24 +41,24 @@
           style="background-color: #F0F0F0; width: 15%;border-radius: 20px !important;" prepend-inner-icon="mdi-magnify"
           single-line flat hide-details rounded></v-text-field>
       </div>
-      <div style="width: 33%; " class="d-flex align-center justify-space-between">
-        <div class="ml-12">
-          <div class="ml-12">
-            <div class="ml-6">
-              <v-btn class="text-capitalize ml-12 " elevation="1" style="color: #2264D1;font-weight: 700;">
-                Thông
-                <span class="text-lowercase">báo</span>
-                <v-icon class="ml-2" style="height: 40px;">mdi-bell</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </div>
-        <v-btn class="text-capitalize" variant="outlined"
-        @click="addHouses()"
-          style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700; margin-left: auto;margin-right: 16px;">Đăng
-          <span class="text-lowercase ml-1">tin</span> <v-icon class="ml-2"
-            style="height: 40px;">mdi-cloud-upload</v-icon></v-btn>
-        <div style="display: flex; align-items: center;">
+      <v-row style="width: 33%; " class="d-flex align-center justify-space-between">
+        <v-col cols="4">
+          <!-- <v-row cols="4">
+            <v-btn class="text-capitalize ml-12 " elevation="1" style="color: #2264D1;font-weight: 700;">
+              Thông
+              <span class="text-lowercase">báo</span>
+              <v-icon class="ml-2" style="height: 40px;">mdi-bell</v-icon>
+            </v-btn>
+          </v-row> -->
+        </v-col>
+        <v-col cols="8" style="display: flex; align-items: center;">
+          <v-row cols="4">
+            <v-btn class="text-capitalize" variant="outlined" @click="addHouses()"
+              style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700; margin-left: auto;margin-right: 16px;">Đăng
+              <span class="text-lowercase ml-1">tin</span> <v-icon class="ml-2"
+                style="height: 40px;">mdi-cloud-upload</v-icon>
+            </v-btn>
+          </v-row>
           <v-menu open-on-hover>
             <template v-slot:activator="{ props }">
               <v-avatar style="cursor: pointer;" v-bind="props">
@@ -117,8 +117,8 @@
               </v-list-item>
             </v-list>
           </v-menu>
-        </div>
-      </div>
+        </v-col>
+      </v-row>
     </v-app-bar>
     <Slidebar />
     <v-row>
@@ -197,7 +197,7 @@
       <Footer />
     </v-row>
   </v-app>
-  <HouseDialog v-model="isShowDialog"  @close="close()" @loadData="loadData()" />
+  <HouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
 </template>
 
 <script lang="ts" setup>

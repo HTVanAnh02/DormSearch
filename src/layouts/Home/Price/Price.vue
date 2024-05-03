@@ -8,7 +8,7 @@
           class="mr-2" @keydown.enter="searchEnter()"></v-text-field>
       </v-col>
       <v-col cols="7" class="text-right" lg="9" sm="8" md="8">
-        <v-btn @click="addArea()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
+        <v-btn @click="addPrice()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
           <b>Tạo</b> <span class="text-lowercase" style="margin-left: 3px; font-weight: bold;">mới</span>
         </v-btn>
       </v-col>
@@ -20,7 +20,7 @@
             <thead style="height: 47px;">
               <tr>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Tên khu vực
+                 Giá nhà trọ
                 </th>
                 <th class="text-center text-uppercase text-medium-emphasis">
                   Hành động
@@ -28,14 +28,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="areas.length > 0" v-for="(item, index) in areas" :key="index">
+              <tr v-if="prices.length > 0" v-for="(item, index) in prices" :key="index">
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.areasname }}</p>
+                      {{ item.price }}</p>
                   </b></td>
                 <td class="text-center">
-                  <v-btn density="compact" variant="text" @click="updateCityById(item)" style="max-witemdth: 24px;">
+                  <v-btn density="compact" variant="text" @click="updatePrice(item)" style="max-witemdth: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                       width="24px" height="24px"></v-img>
                   </v-btn>
@@ -55,12 +55,12 @@
           <v-row class="ma-2 ">
             <v-col cols="8" sm="8" md="8" lg="8">
               <v-row>
-                <span class="mt-5 opacity">Tổng số khu vực</span>
+                <span class="mt-5 opacity">Tổng</span>
                 <v-col style="max-width: 105px" cols="5" sm="4" md="5" lg="2">
                   <v-select v-model="seletedValue" density="compact" :items="['10', '20', '25', '30', '50']"
                     variant="outlined"></v-select>
                 </v-col>
-                <span class="mt-5 opacity">of {{ TotalAreas }}</span>
+                <span class="mt-5 opacity">of {{ TotalPrices }}</span>
               </v-row>
             </v-col>
             <v-col cols="4" sm="4" md="4" lg="4">
@@ -82,12 +82,12 @@
       </v-col>
     </v-row>
   </div>
-  <AreaDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
-  <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
+  <PriceDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
+  <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deletePrice" />
 </template>
 <script setup>
 import {  onMounted, ref, watch } from 'vue';
-import AreaDialog from './AreaDialog.vue';
+import PriceDialog from './PriceDialog.vue';
 import Confirmations from '@/components/Confirmations/Confirmations.vue'
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
@@ -97,38 +97,38 @@ let idDelete = ref(null)
 let lengthPage = ref(1)
 let page = ref(1)
 const search = ref(null)
-const TotalAreas = ref(null)
+const TotalPrices = ref(null)
 const id = ref('');
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { cityApi } from '../City/Services/city.api';
 import { checkSearchEnter } from '../../../common/helper/helpers'
-import { useArea } from './Services/area.service';
-const { fetchAreas, areas, query, searchAreas  } = useArea()
+import { usePrice } from './Services/price.service';
+import { priceApi } from './Services/price.api';
+const { fetchPrice, prices, query, searchPrice  } = usePrice()
 onMounted(async () => {
   query.keyword = ''
   query.page = 1
   loadData()
 })
 const loadData = async () => {
-  const res = await fetchAreas()
+  const res = await fetchPrice()
   if (res.data) {
-    areas.value = res.data;
+    prices.value = res.data;
     lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalAreas.value = res.totalItems
+    TotalPrices.value = res.totalItems
     return
   }
-  areas.value = []
+  prices.value = []
 }
-const addArea = () => {
+const addPrice = () => {
   isShowDialog.value = true
   idEdit = null
 }
-const updateCityById = item => {
+const updatePrice = item => {
   isShowDialog.value = true
   idEdit = item
 }
-const deleteCityById = async (id) => {
-  const data = await cityApi._delete(id)
+const deletePrice = async (id) => {
+  const data = await priceApi._delete(id)
   if (data.success) {
     loadData()
     isDialogDelete.value = false
@@ -140,15 +140,15 @@ const deleteCityById = async (id) => {
   }
 }
 const searchData = async () => {
-  const res = await searchAreas ()
+  const res = await searchPrice ()
   if(res.data)
   {
-    areas.value = res.data;
+    prices.value = res.data;
     lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalAreas.value=res.totalItems
+    TotalPrices.value=res.totalItems
     return
   }
-  areas.value=[]
+  prices.value=[]
 }
 const close = () => {
   isShowDialog.value = false

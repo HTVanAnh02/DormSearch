@@ -1,8 +1,7 @@
 import { IBodyResponse, ItemsList } from "@/common/interface/interfaces";
-import axiosInstance, { ApiService } from "@/plugins/axios";
-
-
-class RoleApiService extends ApiService {
+import axiosInstance from "@/plugins/axios";
+import { ApiService } from "@/plugins/axios/api";
+class PriceApiService extends ApiService {
   createData(data: FormData): Promise<IBodyResponse<any>> {
     return this.client.post(`${this.baseUrl}`, data);
   }
@@ -19,8 +18,6 @@ class RoleApiService extends ApiService {
     return this.client.get(`${this.baseUrl}/ItemsList`);
   }
 }
-
-export const roleApi = new RoleApiService(
-  { baseUrl: "/Role" },
-  axiosInstance
+export const priceApi = new PriceApiService(
+  { baseUrl: "/prices" },axiosInstance
 );

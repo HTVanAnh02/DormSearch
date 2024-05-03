@@ -4,7 +4,7 @@
             <v-card style="border-radius: 12px !important;">
                 <v-card-title
                     style="font-weight: bold;position:fixed;width: 100%;top: 0;background-color: white;z-index: 100;border-top-left-radius:12px ;border-top-right-radius: 12px;">
-                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa phòng trọ" : "Tạo mới phòng trọ" }}</h4>
+                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa phòng trọ" : "Đăng tin phòng trọ" }}</h4>
                 </v-card-title>
                 <v-container class="mt-10" style="background-color: #F7F8FA">
                     <div style="display: block; margin-top: 8px;">

@@ -1,9 +1,9 @@
 
 import { useLoadingStore } from "@/store/loading";
-import { areaApi } from "./area.api";
 import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
-import { IAreas } from "@/common/interface/interfaces";
 import { ref } from "vue";
+import { IAreas } from "./interface";
+import { areaApi } from "./area.api";
 export const useArea = () => {
   const loading = useLoadingStore();
   const areas = ref <IAreas[]>([])
@@ -26,7 +26,7 @@ export const useArea = () => {
         }
       }
     } catch (error) {
-      console.error('Error fetching city:', error);
+      console.error('Error fetching area:', error);
     }
   };
   const searchAreas = async () => {
@@ -44,7 +44,7 @@ export const useArea = () => {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching city:', error);
+      console.error('Error fetching area:', error);
       return null;
     } finally {
       loading.setLoading(false); // Kết thúc hiển thị trạng thái tải

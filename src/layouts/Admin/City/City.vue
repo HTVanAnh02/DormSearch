@@ -55,7 +55,7 @@
           <v-row class="ma-2 ">
             <v-col cols="8" sm="8" md="8" lg="8">
               <v-row>
-                <span class="mt-5 opacity">Showing</span>
+                <span class="mt-5 opacity">Tổng số thành phố</span>
                 <v-col style="max-width: 105px" cols="5" sm="4" md="5" lg="2">
                   <v-select v-model="seletedValue" density="compact" :items="['10', '20', '25', '30', '50']"
                     variant="outlined"></v-select>
@@ -82,17 +82,17 @@
       </v-col>
     </v-row>
   </div>
-  <CityDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
+  <CityDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
   <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
 </template>
 <script setup>
 import {  onMounted, ref, watch } from 'vue';
-import CityDialog from '../City/CreateDialog.vue';
+import CityDialog from './CityDialog.vue';
 import Confirmations from '@/components/Confirmations/Confirmations.vue'
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
 const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)
-let itemEdit = ref(null)
+let idEdit = ref(null)
 let idDelete = ref(null)
 let lengthPage = ref(1)
 let page = ref(1)
@@ -121,15 +121,14 @@ const loadData = async () => {
 }
 const addCity = () => {
   isShowDialog.value = true
-  itemEdit = null
+  idEdit = null
 }
 const updateCityById = item => {
   isShowDialog.value = true
-  itemEdit = item
+  idEdit = item
 }
-const deleteCityById = async () => {
+const deleteCityById = async (id) => {
   const data = await cityApi._delete(id)
-
   if (data.success) {
     loadData()
     isDialogDelete.value = false
@@ -197,7 +196,7 @@ watch(page, (newVal,oldVal) => {
 })
 watch(isShowDialog,(newVal)=>{
   if(newVal==false)
-    itemEdit=null
+    idEdit=null
 })
 </script>
 <style scoped>

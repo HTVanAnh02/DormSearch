@@ -39,6 +39,14 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
+  {
+    path: '/prices',
+    name: PageName.PRICE,
+    component: () => import('../layouts/Home/Price/Price.vue'),
+    meta: {
+      public: true,
+    },
+  },
   // {
   //   path: '/homedetail',
   //   name: PageName.HOMEDETAIL,
@@ -58,7 +66,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Admin.vue'),
     children: [
       {
-        path: 'area',
+        path: 'areas',
         name:PageName.ADMIN_AREA,
         component: () => import('../layouts/Admin/Area/Area.vue'),
         meta: {
@@ -83,7 +91,16 @@ const routes: Array<RouteRecordRaw> = [
           role:Role.ADMIN,
           public:false,
         },
-      }
+      },
+      {
+        path: 'role',
+        name:PageName.ROLE_PAGE,
+        component: () => import('../layouts/Admin/Roles/RolesIndex.vue'),
+        meta: {
+          role:Role.ADMIN,
+          public:false,
+        },
+      },
     ]
   },
   {

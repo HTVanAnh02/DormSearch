@@ -5,8 +5,8 @@
                 <v-btn class="ma-2" color="blue" icon=" mdi-ammunition"></v-btn>
             </v-col>
             <v-col cols="8">
-                <p style="font-weight: bold;" class="mt-3 ma-0 text-red">Tổng sản phẩm</p>
-                <span style="font-weight: bold;" class="ml-1 text-black">{{ toatalproduct }} sản phẩm</span>
+                <p style="font-weight: bold;" class="mt-3 ma-0 text-red">Tổng số bài đăng</p>
+                <span style="font-weight: bold;" class="ml-1 text-black">{{ toatalpost }}Tổng số bài đăng</span>
             </v-col>
         </v-row>
     </v-card>
@@ -18,17 +18,17 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            toatalproduct: 0,
+            toatalpost: 0,
         }
     },
     created() {
-        this.gettoatalproduct()
+        this.gettoatalpost()
     },
     methods:
     {
-        gettoatalproduct() {
+        gettoatalpost() {
             axios.get('http://localhost:5224/api/DashBoard/getTotalProduct').then(rs => {
-                this.toatalproduct = rs.data
+                this.toatalpost = rs.data
             }).catch(erro => {
                 console.log(erro)
             })

@@ -5,16 +5,16 @@
                 <v-col cols="8">
                     <v-row>
                         <v-col cols="6">
-                            <TongKhachHang />
+                            <TongNguoiDung />
                         </v-col>
                         <v-col cols="6">
-                            <TongSanPham />
+                            <TongSoBaiDang />
                         </v-col>
                         <v-col cols="6">
-                            <TongDonHang />
+                            <TongDanhGia />
                         </v-col>
                         <v-col cols="6">
-                            <DonCanDuyet />
+                            <TongSoBaiDangCanDuyet />
                         </v-col>
                         <v-col cols="12">
                             <don-hang-can-duyet />
@@ -49,14 +49,14 @@
 <script>
 import DoanhThuTheoTuan from './DoanhThuTheoTuan.vue';
 import TestAmchartjsVue from './TestAmchartjs.vue';
-import ThongKeSanPham from './ThongKeSanPham.vue';
-import TongKhachHang from './TongKhachHang.vue';
-import TongSanPham from './TongSanPham.vue';
-import TongDonHang from './TongDonHang.vue';
-import DonCanDuyet from './DonCanDuyet.vue';
-import DonHangCanDuyet from './DonHangCanDuyet.vue';
+import ThongKeBaiDang from './ThongKeBaiDang.vue';
+import TongNguoiDung from './TongNguoiDung.vue';
+import TongSoBaiDang from './TongSoBaiDang.vue';
+import TongDanhGia from './TongDanhGia.vue';
+import TongSoBaiDangCanDuyet from './TongSoBaiDangCanDuyet.vue';
+import BaiDangCanDuyet from './BaiDangCanDuyet.vue';
 export default {
-    components: { DonCanDuyet, DoanhThuTheoTuan, ThongKeSanPham, TestAmchartjsVue, TongKhachHang, TongSanPham, TongDonHang, DonHangCanDuyet }
+    components: { TongSoBaiDangCanDuyet, DoanhThuTheoTuan, ThongKeBaiDang, TestAmchartjsVue, TongNguoiDung, TongSoBaiDang, TongDanhGia, BaiDangCanDuyet }
 }
 </script>
 

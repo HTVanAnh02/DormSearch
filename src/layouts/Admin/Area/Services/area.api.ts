@@ -1,5 +1,4 @@
 import { IBodyResponse, ItemsList } from "@/common/interface/interfaces";
-import localStorageAuthService from "@/common/storages/authStorage";
 import axiosInstance from "@/plugins/axios";
 import { ApiService } from "@/plugins/axios/api";
 class AreaApiService extends ApiService {
@@ -20,5 +19,5 @@ class AreaApiService extends ApiService {
   }
 }
 export const areaApi = new AreaApiService(
-  { baseUrl: "/area" },axiosInstance
+  { baseUrl: "/areas" },axiosInstance
 );

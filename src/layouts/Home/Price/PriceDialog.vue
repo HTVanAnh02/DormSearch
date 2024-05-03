@@ -4,15 +4,15 @@
             <v-card style="border-radius: 12px !important;">
                 <v-card-title
                     style="font-weight: bold;position:fixed;width: 100%;top: 0;background-color: white;z-index: 100;border-top-left-radius:12px ;border-top-right-radius: 12px;">
-                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa khu vực" : "Tạo mới khu vực" }}</h4>
+                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa giá" : "Tạo mới giá" }}</h4>
                 </v-card-title>
                 <v-container class="mt-10" style="background-color: #F7F8FA">
-                    <div style="display: block; margin-top: 8px;">
-                        <span>Tên khu vực </span> <span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="areasname" placeholder="Nhập tên khu vực"
-                            :error-messages="areasnameError" style="background-color: white;" density="compact"
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Giá</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="price" placeholder="Nhập giá nhà trọ"
+                            :error-messages="priceError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ areasnameError }}</span>
+                        <span style="color:red">{{ priceError }}</span>
                     </div>
                 </v-container>
                 <v-card-actions class="pr-4">
@@ -36,20 +36,20 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { areaApi } from './Services/area.api';
+import { priceApi } from './Services/price.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
 watch(() => props.itemEdit, (newValue, oldValue) => {
     resetForm()
     if (props.itemEdit !== null) {
-        getAreaById(newValue)
+        getPriceById(newValue)
     }
 });
 
-const getAreaById = (item) => {
+const getPriceById = (item) => {
     console.log(item)
-    areasname.value = item.areasname;
+    price.value = item.price;
 }
 onUpdated(() => {
     if (props.itemEdit === null)
@@ -57,21 +57,23 @@ onUpdated(() => {
 })
 const { handleSubmit, resetForm } = useForm();
 
-const { value: areasname, errorMessage: areasnameError } = useField(
-    'areasname',
+const { value: price, errorMessage: priceError } = useField(
+    'price',
     yup
-        .string()
+        .number()
         .required('Không được bỏ trống')
-        .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên khu vực chỉ được chứa ký tự chữ cái, số và khoảng trắng')
+        .min(0, 'Giá không được nhỏ hơn 0')
+        .typeError('Giá phải là một số')
+        .max(1000000000, 'Giá phải nhỏ hơn 1 tỷ')
 );
 
 const submit = handleSubmit(async () => {
     try {
         loading.setLoading(true)
         const formData = new FormData();
-        formData.append('areasname', areasname.value);
+        formData.append('price', price.value);
         if (props.itemEdit == null) {
-            const data = await areaApi.createData(formData);
+            const data = await priceApi.createData(formData);
             // console.log(data)
             if (!data.success) {
                 alert("Tạo lỗi")
@@ -85,7 +87,7 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await areaApi.updateData(props.itemEdit.id, formData);
+            const data = await priceApi.updateData(props.itemEdit.id, formData);
             console.log(data)
             if (!data.success) {
                 showWarningsNotification(data.message)

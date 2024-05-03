@@ -210,10 +210,6 @@ export type ICitys = {
   id: string,
   cityname: string
 }
-export type IAreas ={
-  id: string,
-  areasname: string
-}
 
 export type IUser={
     id:string

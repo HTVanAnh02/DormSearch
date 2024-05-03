@@ -34,7 +34,7 @@
                 </v-list-item>
                 <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh sách khu vực' }"
-                    @click="setTitleCity('Danh sách khu vực')" to='area'>
+                    @click="setTitleCity('Danh sách khu vực')" to='areas'>
                     <div style="display: flex; align-items: flex-start;">
                         <img src="https://cdn-icons-png.flaticon.com/128/2803/2803287.png"
                             style="width: 22px; height: 22px;"><img>
@@ -45,8 +45,8 @@
                     </div>
                 </v-list-item>
                 <v-list-item style="color: #8B909A;font-size: 24px;"
-                    :class="{ 'font-weight-bold': titleuser === 'Danh sách người dùng' }"
-                    @click="setTitleCity('Danh sách người dùng')" to='user'>
+                    :class="{ 'font-weight-bold': titleuser === 'Danh quyền người dùng' }"
+                    @click="setTitleCity('Danh quyền người dùng')" to='user'>
                     <div style="display: flex; align-items: flex-start;">
                         <img src="https://cdn-icons-png.flaticon.com/128/1165/1165725.png"
                             style="width: 22px; height: 22px;"><img>
@@ -56,18 +56,30 @@
                         </div>
                     </div>
                 </v-list-item>
-                <!-- <v-list-item style="color: #8B909A;font-size: 24px;"
-                    :class="{ 'font-weight-bold': titleuser === 'Danh sách loại phòng' }"
-                    @click="setTitleRoomstyle('Danh sách loại phòng')" to='roomstyle'>
+                <v-list-item style="color: #8B909A;font-size: 24px;"
+                    :class="{ 'font-weight-bold': titleuser === 'Danh sách quyền' }"
+                    @click="setTitleCity('Danh sách quyền')" to='role'>
                     <div style="display: flex; align-items: flex-start;">
-                        <img src="https://cdn-icons-png.flaticon.com/128/1165/1165725.png"
+                        <img src="https://cdn-icons-png.flaticon.com/128/7141/7141726.png"
+                            style="width: 22px; height: 22px;"><img>
+                        <div
+                            style="width: 170px; height: 22px; margin-left: 8px; font-family: Public Sans, sans-serif; font-size: 15px; font-weight: 400; line-height: 22px; color: #8B909A;">
+                            Quyền
+                        </div>
+                    </div>
+                </v-list-item>
+                <v-list-item style="color: #8B909A;font-size: 24px;"
+                    :class="{ 'font-weight-bold': titleuser === 'Danh sách loại phòng' }"
+                    @click="setTitleCity('Danh sách loại phòng')" to='user'>
+                    <div style="display: flex; align-items: flex-start;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/489/489401.png"
                             style="width: 22px; height: 22px;"><img>
                         <div
                             style="width: 170px; height: 22px; margin-left: 8px; font-family: Public Sans, sans-serif; font-size: 15px; font-weight: 400; line-height: 22px; color: #8B909A;">
                             Loại phòng
                         </div>
                     </div>
-                </v-list-item> -->
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
         <v-app-bar class="px-4 v-app-bar" color="rgb(247, 247, 247)" :elevation="0" rounded="0">

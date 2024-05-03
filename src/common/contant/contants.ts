@@ -51,9 +51,8 @@ export const MESSAGE_ERROR={
 export enum PageName {
   LOGIN_PAGE = 'login_page',
   HOME = 'home',
+  PRICE='price',
   HOMEDETAIL='homedetail',
-  AREA_PAGE ='area_page',
-  CITY_PAGE = 'city_page',
   PRICE_PAGE = 'price_page',
   ROOMSTYLE ='roomstyle',
   RATING_PAGE ='rating_page',
