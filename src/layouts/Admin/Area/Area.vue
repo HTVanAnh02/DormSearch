@@ -32,16 +32,16 @@
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.areasname }}</p>
+                      {{ item.areasName }}</p>
                   </b></td>
                 <td class="text-center">
-                  <v-btn density="compact" variant="text" @click="updateCityById(item)" style="max-witemdth: 24px;">
+                  <v-btn density="compact" variant="text" @click="updateAreaId(item)" style="max-witemdth: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                       width="24px" height="24px"></v-img>
                   </v-btn>
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.areasId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
@@ -100,9 +100,10 @@ const search = ref(null)
 const TotalAreas = ref(null)
 const id = ref('');
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { cityApi } from '../City/Services/city.api';
-import { checkSearchEnter } from '../../../common/helper/helpers'
+import { checkSearchEnter, showErrorNotification, showSuccessNotification } from '../../../common/helper/helpers'
 import { useArea } from './Services/area.service';
+import { ApiService } from '@/plugins/axios';
+import { areaApi } from './Services/area.api';
 const { fetchAreas, areas, query, searchAreas  } = useArea()
 onMounted(async () => {
   query.keyword = ''
@@ -123,12 +124,12 @@ const addArea = () => {
   isShowDialog.value = true
   idEdit = null
 }
-const updateCityById = item => {
+const updateAreaId = item => {
   isShowDialog.value = true
   idEdit = item
 }
 const deleteCityById = async (id) => {
-  const data = await cityApi._delete(id)
+  const data = await areaApi._delete(id)
   if (data.success) {
     loadData()
     isDialogDelete.value = false

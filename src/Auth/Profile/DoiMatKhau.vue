@@ -1,5 +1,6 @@
 <template>
     <v-container justify="center" align="center">
+        
         <v-card width="500px" class="rounded-0">
             <v-toolbar class="text-center bold-text" style="background-color: #46694f;color: white;"
                 title="Đổi mật khẩu"></v-toolbar>
@@ -54,7 +55,7 @@ export default {
                 }, 3000);
                 return
             }
-            axios.get('http://localhost:5224/api/Account/DoiMatKhau2',{
+            axios.get('',{
                 params:{
                     UserId:this.$store.state.UserId,
                     PassCu:this.FormData.PasswordCu,

@@ -5,7 +5,7 @@ class AreaApiService extends ApiService {
   createData(data: FormData): Promise<IBodyResponse<any>> {
     return this.client.post(`${this.baseUrl}`, data);
   }
-  updateData(data: FormData, id: string): Promise<IBodyResponse<any>> {
+  updateData( id: string ,data: FormData,): Promise<IBodyResponse<any>> {
     return this.client.patch(`${this.baseUrl}/${id}`, data);
   }
   getData(id:string,data: FormData): Promise<IBodyResponse<any>> {

@@ -32,7 +32,7 @@
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.cityname }}</p>
+                      {{ item.cityName }}</p>
                   </b></td>
                 <td class="text-center">
                   <v-btn density="compact" variant="text" @click="updateCityById(item)" style="max-witemdth: 24px;">
@@ -41,7 +41,7 @@
                   </v-btn>
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.cityId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
@@ -102,7 +102,7 @@ const id = ref('');
 import { useCity } from '../City/Services/city.service'
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
 import { cityApi } from '../City/Services/city.api';
-import { checkSearchEnter } from '../../../common/helper/helpers'
+import { checkSearchEnter, showSuccessNotification } from '../../../common/helper/helpers'
 const { fetchCitys, citys, query, searchCitys  } = useCity()
 onMounted(async () => {
   query.keyword = ''

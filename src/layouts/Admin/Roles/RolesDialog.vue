@@ -47,7 +47,8 @@ import { roleApi } from './Services/role.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
-watch(() => props.itemEdit, (newValue, oldValue) => {
+const editId= ref('')
+watch(() => props.itemEdit, (newValue) => {
     resetForm()
     if (props.itemEdit !== null) {
         getRoleById(newValue)
@@ -56,6 +57,7 @@ watch(() => props.itemEdit, (newValue, oldValue) => {
 
 const getRoleById = (item) => {
     console.log(item)
+    editId.value =item.roleId;
     rolename.value = item.rolename;
     roledescription.value = item.roledescription;
 }
@@ -105,7 +107,7 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await roleApi.updateData(props.itemEdit.id, formData);
+            const data = await roleApi.updateData(editId.value, formData);
             console.log(data)
             if (!data.success) {
                 showWarningsNotification(data.message)
@@ -113,7 +115,7 @@ const submit = handleSubmit(async () => {
             else {
                 close()
                 emit('loadData')
-                showSuccessNotification("cập nhật thành công")
+                showSuccessNotification("Cập nhật thành công")
                 empty()
             }
         }

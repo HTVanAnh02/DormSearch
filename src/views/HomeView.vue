@@ -9,10 +9,10 @@
           class="hoverable-list-item">Trang Chủ </router-link>
         <router-link href="#" style="margin-left: 12px;font-family: Inter, sans-serif; " v-bind="props"
           class="hoverable-list-item">Tin Tức</router-link>
-        <v-menu open-on-hover>
+        <!-- <v-menu open-on-hover>
           <template v-slot:activator="{ props }">
             <p style="margin-left: 12px;font-family: Inter, sans-serif; " v-bind="props">Bất động sản</p>
-          </template>
+          </template>z
           <v-list class="ma-2">
             <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
               style="cursor: pointer;">
@@ -34,7 +34,7 @@
               </v-list-item-title>
             </v-list-item>
           </v-list>
-        </v-menu>
+        </v-menu> -->
       </div>
       <div style="width: 34%; display: flex; align-items: center;">
         <v-text-field clearable density="compact" variant="solo-filled" label="Tìm kiếm"
@@ -43,13 +43,6 @@
       </div>
       <v-row style="width: 33%; " class="d-flex align-center justify-space-between">
         <v-col cols="4">
-          <!-- <v-row cols="4">
-            <v-btn class="text-capitalize ml-12 " elevation="1" style="color: #2264D1;font-weight: 700;">
-              Thông
-              <span class="text-lowercase">báo</span>
-              <v-icon class="ml-2" style="height: 40px;">mdi-bell</v-icon>
-            </v-btn>
-          </v-row> -->
         </v-col>
         <v-col cols="8" style="display: flex; align-items: center;">
           <v-row cols="4">
@@ -78,12 +71,12 @@
                   Đăng Nhập
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'profile' })"
                 style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
                     <v-icon class="mr-2" color="secondary"
-                      @click="this.$router.push({ name: 'login_page' })">mdi-account</v-icon>
+                      @click="this.$router.push({ name: 'profile' })">mdi-account</v-icon>
                   </v-list-item-icon>
                   Thông tin tài khoản
                 </v-list-item-title>
@@ -206,6 +199,7 @@ import Footer from "@/components/Application/Footer.vue";
 import { reactive, ref } from "vue"
 import { useLoadingStore } from "@/store/loading";
 import HouseDialog from "@/layouts/Admin/House/HouseDialog.vue";
+import NarbarVue from "@/components/Application/Narbar.vue";
 const loading = useLoadingStore();
 const isShowDialog = ref(false);
 const dialog = ref(false);

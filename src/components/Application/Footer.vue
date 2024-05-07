@@ -49,6 +49,3 @@
 <script lang="ts" setup>
 import logo from "../../assets/image/logo.png"
 </script>
-
-
-<style></style>

@@ -34,12 +34,12 @@
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.rolename }}</p>
+                      {{ item.roleName }}</p>
                   </b></td>
                   <td style="width: 250px;height: 58px;" class="v-text-truncate">
                   <p
                     style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                    {{ item.roledescription }}</p>
+                    {{ item.roleDescription }}</p>
                 </td>
                 <td class="text-center">
                   <v-btn density="compact" variant="text" @click="updateRole(item)" style="max-witemdth: 24px;">
@@ -48,7 +48,7 @@
                   </v-btn>
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.roleId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
@@ -108,7 +108,7 @@ const search = ref(null)
 const TotalRoles = ref(null)
 const id = ref('');
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { checkSearchEnter } from '../../../common/helper/helpers'
+import { checkSearchEnter, showErrorNotification, showSuccessNotification } from '../../../common/helper/helpers'
 import { useRole } from './Services/role.service';
 import { roleApi } from './Services/role.api';
 const { fetchRole, roles, query, searchRoles } = useRole()

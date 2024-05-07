@@ -29,7 +29,6 @@
         </v-form>
     </v-dialog>
 </template>
-
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
@@ -40,6 +39,7 @@ import { areaApi } from './Services/area.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
+const editId= ref('')
 watch(() => props.itemEdit, (newValue, oldValue) => {
     resetForm()
     if (props.itemEdit !== null) {
@@ -49,7 +49,8 @@ watch(() => props.itemEdit, (newValue, oldValue) => {
 
 const getAreaById = (item) => {
     console.log(item)
-    areasname.value = item.areasname;
+    areasname.value = item.areasName;
+    editId.value =item.areasId;
 }
 onUpdated(() => {
     if (props.itemEdit === null)
@@ -85,15 +86,14 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await areaApi.updateData(props.itemEdit.id, formData);
-            console.log(data)
+            const data = await areaApi.updateData(editId.value, formData);
             if (!data.success) {
                 showWarningsNotification(data.message)
             }
             else {
                 close()
                 emit('loadData')
-                showSuccessNotification("cập nhật thành công")
+                showSuccessNotification("Cập nhật thành công")
                 empty()
             }
         }

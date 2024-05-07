@@ -14,7 +14,14 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
- 
+  // {
+  //   path: '/nar_bar',
+  //   name: PageName.NAR_BAR,
+  //   component: () => import('../Auth/Register/RegisterView.vue'),
+  //   meta: {
+  //     public: true,
+  //   },
+  // },
   {
     path: '/register',
     name: PageName.REGISTER_PAGE,
@@ -34,7 +41,23 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/forgot_password',
     name: PageName.FORGOT_PASSWORD,
-    component: () => import('../Auth/Login/FormQuenMatKhau.vue'),
+    component: () => import('../Auth/Profile/FormQuenMatKhau.vue'),
+    meta: {
+      public: true,
+    },
+  },
+  {
+    path: '/re_password',
+    name: PageName.RE_PASSWORD,
+    component: () => import('../Auth/Profile/NhapLaiMatKhau.vue'),
+    meta: {
+      public: true,
+    },
+  },
+  {
+    path: '/profile',
+    name: PageName.PROFILE,
+    component: () => import('../Auth/Profile/ProfileView.vue'),
     meta: {
       public: true,
     },

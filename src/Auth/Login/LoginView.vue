@@ -32,8 +32,8 @@
                 </div>
                 <div class="d-flex justify-space-between align-center mt-8" style="width: 425px; height: 20px;">
                     <v-row></v-row>
-                    <router-link to="/forgot_password"
-                        class="text-caption text-decoration-none text-blue mb-6 custom-link mt-4" style="height: 28px;">
+                    <router-link to="forgot_password" class="text-caption text-decoration-none text-blue mb-6 custom-link mt-4"
+                        style="height: 28px;">
                         Quên mật khẩu?
                     </router-link>
                 </div>

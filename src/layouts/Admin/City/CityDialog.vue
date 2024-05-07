@@ -40,7 +40,8 @@ import { cityApi } from './Services/city.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
-watch(() => props.itemEdit, (newValue, oldValue) => {
+const editId= ref('')
+watch(() => props.itemEdit, (newValue) => {
     resetForm()
     if (props.itemEdit !== null) {
         getCityById(newValue)
@@ -49,7 +50,8 @@ watch(() => props.itemEdit, (newValue, oldValue) => {
 
 const getCityById = (item) => {
     console.log(item)
-    cityname.value = item.cityname;
+    cityname.value = item.cityName;
+    editId.value =item.cityId;
 }
 onUpdated(() => {
     if (props.itemEdit === null)
@@ -87,15 +89,14 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await cityApi.updateData(props.itemEdit.id, formData);
-            console.log(data)
+            const data = await cityApi.updateData(editId.value, formData);
             if (!data.success) {
                 showWarningsNotification(data.message)
             }
             else {
                 close()
                 emit('loadData')
-                showSuccessNotification("cập nhật thành công")
+                showSuccessNotification("Cập nhật thành công")
                 empty()
             }
         }
