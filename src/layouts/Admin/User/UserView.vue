@@ -52,24 +52,23 @@
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.fullname }}</p>
+                      {{ item.fullName }}</p>
                   </b></td>
                 <td>{{ item.email }}</td>
                 <td>{{ item.gender }}</td>
                 <td>{{ item.address }}</td>
                 <td>
-                  {{ item.phonenumber? formatPhoneNumber(item.phonenumber):"" }}
+                  {{ item.phoneNumber? formatPhoneNumber(item.phoneNumber):"" }}
                 </td>
-                <!-- <td>{{ item.active }}</td> -->
                 <td class="text-center">
-                  <v-btn density="compact" variant="text" @click="updateUserById(item.id)" style="max-width: 24px;">
+                  <v-btn density="compact" variant="text" @click="updateUserById(item.userId)" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                       width="24px" height="24px"></v-img>
                   </v-btn>
 
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.userId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
@@ -115,7 +114,6 @@
   <ConfirmVue v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteUserById" />
 </template>
 <script setup>
-import { DATE_TIME_FORMAT } from '../../../common/contant/contants'
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
 import { checkSearchUserEnter, formatDateString,formatPhoneNumber } from '../../../common/helper/helpers'
 import { onMounted, ref, watch } from 'vue';
@@ -127,7 +125,6 @@ import { userServiceApi } from './user.api';
 import { showWarningsNotification } from '../../../common/helper/helpers';
 import { useLoadingStore } from "@/store/loading";
 const loading = useLoadingStore()
-const YYYY_MM_DD_DASH = DATE_TIME_FORMAT.YYYY_MM_DD_DASH
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
 const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)

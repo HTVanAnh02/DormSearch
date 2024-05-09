@@ -28,6 +28,13 @@
                             hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ interiorError }}</span>
                     </div>
+                      <div style="display: block; margin-top: 8px;">
+                        <span>Nội thất </span> <span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="interior" placeholder="Nhập nội thất phòng"
+                            :error-messages="interiorError" style="background-color: white;" density="compact" single-line
+                            hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ interiorError }}</span>
+                    </div>
                     <div style="display: block; margin-top: 8px;">
                         <span>Địa chỉ </span> <span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="addresshouses" placeholder="Địa chỉ phòng"

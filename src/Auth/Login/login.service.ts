@@ -47,7 +47,7 @@ export const userLoginForm=()=>{
           else if(localStorageAuthService.getUserRole()===Role.USER)
           {
             showSuccessNotification("Đăng nhập thành công")
-            router.push('/home')
+            router.push('/')
           }
           // else
           //   showWarningsNotification("Lỗi Role ở login")

@@ -206,10 +206,7 @@ export interface IUserInterface {
   isUserLoggedIn: boolean
   token: string | undefined
 }
-export type ICitys = {
-  id: string,
-  cityname: string
-}
+
 
 export type IUser={
     id:string

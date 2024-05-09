@@ -4,15 +4,15 @@
             <v-card style="border-radius: 12px !important;">
                 <v-card-title
                     style="font-weight: bold;position:fixed;width: 100%;top: 0;background-color: white;z-index: 100;border-top-left-radius:12px ;border-top-right-radius: 12px;">
-                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa khu vực" : "Tạo mới khu vực" }}</h4>
+                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa loại phòng" : "Tạo mới loại phòng" }}</h4>
                 </v-card-title>
                 <v-container class="mt-10" style="background-color: #F7F8FA">
                     <div style="display: block; margin-top: 8px;">
-                        <span>Tên khu vực </span> <span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="areasname" placeholder="Nhập tên khu vực"
-                            :error-messages="areasnameError" style="background-color: white;" density="compact"
+                        <span>Tên loại phòng </span> <span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="roomstylename" placeholder="Nhập tên loại phòng"
+                            :error-messages="roomstylenameError" style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ areasnameError }}</span>
+                        <span style="color:red">{{ roomstylenameError }}</span>
                     </div>
                 </v-container>
                 <v-card-actions class="pr-4">
@@ -29,50 +29,53 @@
         </v-form>
     </v-dialog>
 </template>
+
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { ref, watch, onUpdated } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { areaApi } from './Services/area.api';
+import { roomApi } from './Services/roomstyle.api';
 const loading = useLoadingStore()
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
 const editId= ref('')
-watch(() => props.itemEdit, (newValue, oldValue) => {
+watch(() => props.itemEdit, (newValue) => {
     resetForm()
     if (props.itemEdit !== null) {
-        getAreaById(newValue)
+        getRoomById(newValue)
     }
 });
 
-const getAreaById = (item) => {
+const getRoomById = (item) => {
     console.log(item)
-    editId.value =item.areasId;
-    areasname.value = item.areasName;
+    editId.value =item.roomstyleId;
+    roomstylename.value = item.roomstyleName;
 }
 onUpdated(() => {
     if (props.itemEdit === null)
         resetForm()
 })
+
+
 const { handleSubmit, resetForm } = useForm();
 
-const { value: areasname, errorMessage: areasnameError } = useField(
-    'areasname',
+const { value: roomstylename, errorMessage: roomstylenameError } = useField(
+    'roomstylename',
     yup
         .string()
         .required('Không được bỏ trống')
-        .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên khu vực chỉ được chứa ký tự chữ cái, số và khoảng trắng')
+        .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên loại phòng chỉ được chứa ký tự chữ cái, số và khoảng trắng')
 );
 
 const submit = handleSubmit(async () => {
     try {
         loading.setLoading(true)
         const formData = new FormData();
-        formData.append('areasname', areasname.value);
+        formData.append('roomstylename', roomstylename.value);
         if (props.itemEdit == null) {
-            const data = await areaApi.createData(formData);
+            const data = await roomApi.createData(formData);
             // console.log(data)
             if (!data.success) {
                 alert("Tạo lỗi")
@@ -86,7 +89,7 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await areaApi.updateData(editId.value, formData);
+            const data = await roomApi.updateData(editId.value, formData);
             if (!data.success) {
                 showWarningsNotification(data.message)
             }

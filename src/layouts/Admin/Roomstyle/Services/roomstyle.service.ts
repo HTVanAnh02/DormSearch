@@ -1,17 +1,17 @@
 
 import { useLoadingStore } from "@/store/loading";
-import { cityApi } from "./city.api";
 import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
 import { ref } from "vue";
-import { ICitys } from "./interface";
-export const useCity = () => {
+import { IRoomstyles } from "./interface";
+import { roomApi } from "./roomstyle.api";
+export const useRoom = () => {
   const loading = useLoadingStore();
-  const citys = ref <ICitys[]>([])
+  const rooms = ref <IRoomstyles[]>([])
   const query = DEFAULT_COMMON_LIST_QUERY
-  const fetchCitys = async () => {
+  const fetchRooms = async () => {
     try {
       loading.setLoading(true)
-      const res = await cityApi._getList<ICitys>(query);
+      const res = await roomApi._getList<IRoomstyles>(query);
       console.log(res);
       loading.setLoading(false)
       if (res.success)
@@ -26,16 +26,16 @@ export const useCity = () => {
         }
       }
     } catch (error) {
-      console.error('Error fetching city:', error);
+      console.error('Error fetching rooms:', error);
     }
   };
-  const searchCitys = async () => {
+  const searchRooms = async () => {
     try {
       console.log(FormData);
 
       loading.setLoading(true); // Bắt đầu hiển thị trạng thái tải
 
-      const res = await cityApi._getList<ICitys>(query);
+      const res = await roomApi._getList<IRoomstyles>(query);
 
       if (res.success) {
         const data = res.items;
@@ -44,34 +44,16 @@ export const useCity = () => {
       }
       return null;
     } catch (error) {
-      console.error('Error fetching city:', error);
+      console.error('Error fetching rooms:', error);
       return null;
     } finally {
       loading.setLoading(false); // Kết thúc hiển thị trạng thái tải
     }
   };
-  const citysItem = async () => {
-    try {
-      const res = await cityApi._getList<any>(query);
-      if (res.success) {
-        return {
-          items: res.items,
-          totalItems: res.totalItems,
-        };
-      }
-      return {
-        items: [],
-        totalItems: 0,
-      };
-    } catch (error) {
-      console.error("Error Fetching:", error);
-    }
-  };
   return {
-    citys, 
-    fetchCitys, 
+    rooms, 
+    fetchRooms, 
     query, 
-    searchCitys,
-    citysItem
+    searchRooms 
   };
 };

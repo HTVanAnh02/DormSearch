@@ -22,11 +22,11 @@
                         <span style="color:red">{{ emailError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
-                        <span>Ngày sinh</span><span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="birthday" type="date"
-                            style="background-color: white; border-radius: 6px;" density="compact" single-line
+                        <span>Giới tính</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="gender" placeholder="Nhập giới tính"
+                            style="background-color: white;border-radius: 6px;" density="compact" single-line
                             hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ birthdayError }}</span>
+                        <span style="color:red">{{ genderError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
                         <span>Số điện thoại</span><span class="text-blue ml-2">*</span>
@@ -34,6 +34,13 @@
                             style="background-color: white;border-radius: 6px;" density="compact" single-line
                             hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ phoneError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
+                        <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ"
+                            style="background-color: white;border-radius: 6px;" density="compact" single-line
+                            hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ addressError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
                         <span>Quyền</span><span class="text-blue ml-2">*</span>
@@ -79,6 +86,7 @@ const loading = useLoadingStore()
 const errorFile=ref(null)
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
+const editId= ref('')
 watch(() => props.itemEdit, (newValue, oldValue) => {
     resetForm()
     if (props.itemEdit !== null) {
@@ -91,11 +99,12 @@ const getUserById = async (id) => {
         const data = await userServiceApi._getDetail(id);
         loading.setLoading(false)
         if (data.success) {
-
-            fullname.value = data.data.fullname;
+            editId.value = data.data.userId;
+            fullname.value = data.data.fullName;
             email.value = data.data.email;
-            birthday.value = data.data.birthday;
-            phone.value = data.data.phone;
+            gender.value = data.data.gender;
+            address.value = data.data.address;
+            phone.value = data.data.phoneNumber;
             role.value = data.data.role;
         }
         else {
@@ -124,7 +133,18 @@ const { value: fullname, errorMessage: fullnameError } = useField(
             MESSAGE_ERROR.NAME
         )
 );
-
+const { value: gender, errorMessage: genderError } = useField(
+    'gender',
+    yup
+        .string()
+        .required(MESSAGE_ERROR.REQUIRE)
+);
+const { value: address, errorMessage: addressError } = useField(
+    'address',
+    yup
+        .string()
+        .required(MESSAGE_ERROR.REQUIRE)
+)
 const { value: email, errorMessage: emailError } = useField(
     'email',
     yup
@@ -135,23 +155,6 @@ const { value: email, errorMessage: emailError } = useField(
             MESSAGE_ERROR.EMAIL
         )
 );
-const { value: birthday, errorMessage: birthdayError } = useField(
-    'birthday',
-    yup
-        .string()
-        .required(MESSAGE_ERROR.REQUIRE)
-        .matches(
-            Regex.BIRTHDAY,
-            MESSAGE_ERROR.BIRTHDAY
-        )
-        .test('not-in-future', 'Ngày sinh không được chọn ở tương lai', function (value) {
-            const birthdayDate = new Date(value);
-            const currentDate = new Date();
-            return birthdayDate <= currentDate;
-        })
-);
-
-
 
 const { value: phone, errorMessage: phoneError } = useField(
     'phone',
@@ -174,14 +177,15 @@ const submit = handleSubmit(async () => {
     try {
         loading.setLoading(true)
         const formData = new FormData();
-        formData.append('fullname', fullname.value);
+        formData.append('fullName',fullname.value);
         formData.append('email', email.value);
-        formData.append('birthday', birthday.value);
-        formData.append('phone', phone.value);
+        formData.append('gender', gender.value);
+        formData.append('address', address.value);
+        formData.append('phoneNumber', phone.value);
         formData.append('file', imageFile.value);
         formData.append('role', role.value);
         if (props.itemEdit == null) {
-            const data = await userServiceApi.createUser(formData);
+            const data = await userServiceApi.createData(formData);
             // console.log(data)
             if (!data.success) {
                 alert("Tạo lỗi")
@@ -195,7 +199,7 @@ const submit = handleSubmit(async () => {
             }
         }
         else {
-            const data = await userServiceApi.updateUser(props.itemEdit.id, formData);
+            const data = await userServiceApi.updateData(editId.value, formData);
             console.log(data)
             if (!data.success) {
                 showWarningsNotification(data.message)
@@ -203,7 +207,7 @@ const submit = handleSubmit(async () => {
             else {
                 close()
                 emit('loadData')
-                showSuccessNotification("cập nhật thành công")
+                showSuccessNotification("Cập nhật thành công")
                 empty()
             }
         }

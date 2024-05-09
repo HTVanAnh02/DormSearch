@@ -14,14 +14,6 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
-  // {
-  //   path: '/nar_bar',
-  //   name: PageName.NAR_BAR,
-  //   component: () => import('../Auth/Register/RegisterView.vue'),
-  //   meta: {
-  //     public: true,
-  //   },
-  // },
   {
     path: '/register',
     name: PageName.REGISTER_PAGE,
@@ -92,36 +84,60 @@ const routes: Array<RouteRecordRaw> = [
         path: 'areas',
         name:PageName.ADMIN_AREA,
         component: () => import('../layouts/Admin/Area/Area.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
         meta: {
-          role:Role.ADMIN,
-          public:false,
+          public: true,
         },
       },
       {
         path: 'city',
         name:PageName.ADMIN_CITY,
         component: () => import('../layouts/Admin/City/City.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
         meta: {
-          role:Role.ADMIN,
-          public:false,
+          public: true,
         },
       },
       {
         path: 'user',
         name:PageName.ADMIN_USER,
         component: () => import('../layouts/Admin/User/UserView.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
         meta: {
-          role:Role.ADMIN,
-          public:false,
+          public: true,
         },
       },
       {
         path: 'role',
         name:PageName.ROLE_PAGE,
         component: () => import('../layouts/Admin/Roles/RolesIndex.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
         meta: {
-          role:Role.ADMIN,
-          public:false,
+          public: true,
+        },
+      },
+      {
+        path: 'roomstyle',
+        name:PageName.ROOMSTYLE,
+        component: () => import('../layouts/Admin/Roomstyle/Roomstyle.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
+        meta: {
+          public: true,
         },
       },
     ]

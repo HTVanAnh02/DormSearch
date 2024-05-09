@@ -70,7 +70,7 @@
                 </v-list-item>
                 <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh sách loại phòng' }"
-                    @click="setTitleCity('Danh sách loại phòng')" to='user'>
+                    @click="setTitleCity('Danh sách loại phòng')" to='roomstyle'>
                     <div style="display: flex; align-items: flex-start;">
                         <img src="https://cdn-icons-png.flaticon.com/128/489/489401.png"
                             style="width: 22px; height: 22px;"><img>

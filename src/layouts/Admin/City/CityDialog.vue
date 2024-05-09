@@ -50,8 +50,8 @@ watch(() => props.itemEdit, (newValue) => {
 
 const getCityById = (item) => {
     console.log(item)
-    cityname.value = item.cityName;
     editId.value =item.cityId;
+    cityname.value = item.cityName;
 }
 onUpdated(() => {
     if (props.itemEdit === null)

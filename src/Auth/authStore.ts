@@ -17,10 +17,6 @@ export const AuthStore = defineStore('authStore', () => {
     const res = await authServiceApi.login(header);
     if (res.success) {
         const { data } = res;
-        // localStorageAuthService.setAccessToken(data.accessToken.token);
-        // localStorageAuthService.setAccessTokenExpiredAt(data.accessToken.expiresIn);
-        // localStorageAuthService.setRefreshToken(data.refreshToken.token);
-        // localStorageAuthService.setRefresh_TokenExpiredAt(data.refreshToken.expiresIn);
         localStorageAuthService.setAccessToken(data.accessToken);
         localStorageAuthService.setAccessTokenExpiredAt(data.accessTokenExpiration);
         localStorageAuthService.setRefreshToken(data.refreshToken);
@@ -39,8 +35,8 @@ export const AuthStore = defineStore('authStore', () => {
     }
     return true
   }
-
   const isAuthenticated = computed(() => {
+    
     const token = localStorageAuthService.getAccessToken();
     const expiredAt = localStorageAuthService.getAccessTokenExpiredAt();
     return Boolean(token && expiredAt && !dayjs(dayjs(expiredAt)).isBefore());
@@ -48,6 +44,15 @@ export const AuthStore = defineStore('authStore', () => {
   const hasToken = computed(() => {
     return !!localStorageAuthService.getAccessToken();
   });
+
+  // const isAuthenticated = computed(() => {
+  //   const token = localStorageAuthService.getAccessToken();
+  //   const expiredAt = localStorageAuthService.getAccessTokenExpiredAt();
+  //   return Boolean(token && expiredAt && !dayjs(dayjs(expiredAt)).isBefore());
+  // });
+  // const hasToken = computed(() => {
+  //   return !!localStorageAuthService.getAccessToken();
+  // });
   return {
     login,
     logoutAction,

@@ -1,9 +1,8 @@
 <template>
-  <v-app>
     <v-app-bar height="88px" elevation="1" class="d-flex">
       <div class="d-flex align-center" style="width: 33%;">
         <v-col cols="4">
-          <v-img height="50px" src="../assets/image/logo.png" style="width: 200px;"></v-img>
+          <v-img height="50px" :src="logo" style="width: 200px;"></v-img>
         </v-col>
         <router-link href="/" style="margin-left: 12px;font-family: Inter, sans-serif; " v-bind="props"
           class="hoverable-list-item">Trang Chủ </router-link>
@@ -85,15 +84,6 @@
                 style="cursor: pointer;">
                 <v-list-item-title>
                   <v-list-item-icon>
-                    <v-icon style="width: 14px; height: 12.85px;" color="red">mdi-heart-outline</v-icon>
-                  </v-list-item-icon>
-                  Tin yêu thích
-                </v-list-item-title>
-              </v-list-item>
-              <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
-                style="cursor: pointer;">
-                <v-list-item-title>
-                  <v-list-item-icon>
                     <v-icon style="width: 14px; height: 12.85px;" color="blue">mdi-cloud-upload</v-icon>
                   </v-list-item-icon>
                   Quản lý bài đăng
@@ -113,11 +103,18 @@
         </v-col>
       </v-row>
     </v-app-bar>
-  </v-app>
+  <HouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
 </template>
-<script>
-export default {
-
+<script lang="ts" setup>
+import logo from '../../assets/image/logo.png'
+import HouseDialog from "@/layouts/Home/Houses/HouseDialog.vue";
+import { ref } from "vue";
+const isShowDialog = ref(false);
+const addHouses = () => {
+  isShowDialog.value = true
+}
+const close = () => {
+  isShowDialog.value = false
 }
 </script>
 

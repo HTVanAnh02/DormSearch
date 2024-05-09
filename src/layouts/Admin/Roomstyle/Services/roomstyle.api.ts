@@ -1,18 +1,9 @@
-import type {
-  IBodyResponse,
-  ItemsList,
-} from "@/common/interface/interfaces";
+import { IBodyResponse, ItemsList } from "@/common/interface/interfaces";
 import axiosInstance from "@/plugins/axios";
 import { ApiService } from "@/plugins/axios/api";
-
-class UserApiService extends ApiService {
+class RoomApiService extends ApiService {
   createData(data: FormData): Promise<IBodyResponse<any>> {
-    return this.client.post(`${this.baseUrl}`, data,
-    {
-      headers: { "Content-Type": "multipart/form-data" }
-    }
-  );
-    
+    return this.client.post(`${this.baseUrl}`, data);
   }
   updateData( id: string ,data: FormData,): Promise<IBodyResponse<any>> {
     return this.client.patch(`${this.baseUrl}/${id}`, data);
@@ -27,7 +18,6 @@ class UserApiService extends ApiService {
     return this.client.get(`${this.baseUrl}/ItemsList`);
   }
 }
-export const userServiceApi = new UserApiService(
-  { baseUrl: "/user" },
-  axiosInstance
+export const roomApi = new RoomApiService(
+  { baseUrl: "/roomstyle" },axiosInstance
 );

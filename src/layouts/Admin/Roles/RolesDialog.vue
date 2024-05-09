@@ -36,7 +36,6 @@
         </v-form>
     </v-dialog>
 </template>
-
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
@@ -58,8 +57,8 @@ watch(() => props.itemEdit, (newValue) => {
 const getRoleById = (item) => {
     console.log(item)
     editId.value =item.roleId;
-    rolename.value = item.rolename;
-    roledescription.value = item.roledescription;
+    rolename.value = item.roleName;
+    roledescription.value = item.roleDescription;
 }
 onUpdated(() => {
     if (props.itemEdit === null)

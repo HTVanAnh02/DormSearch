@@ -101,9 +101,9 @@ const TotalAreas = ref(null)
 const id = ref('');
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
 import { checkSearchEnter, showErrorNotification, showSuccessNotification } from '../../../common/helper/helpers'
-import { useArea } from './Services/area.service';
 import { ApiService } from '@/plugins/axios';
 import { areaApi } from './Services/area.api';
+import { useArea } from './Services/area.service';
 const { fetchAreas, areas, query, searchAreas  } = useArea()
 onMounted(async () => {
   query.keyword = ''

@@ -1,3 +1,4 @@
+
 <template>
     <div style="margin: 1.5%;">
       <v-row>
@@ -7,7 +8,7 @@
             class="mr-2" @keydown.enter="searchEnter()"></v-text-field>
         </v-col>
         <v-col cols="7" class="text-right" lg="9" sm="8" md="8">
-          <v-btn @click="addHouse()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
+          <v-btn @click="addRoom()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
             <b>Tạo</b> <span class="text-lowercase" style="margin-left: 3px; font-weight: bold;">mới</span>
           </v-btn>
         </v-col>
@@ -19,22 +20,7 @@
               <thead style="height: 47px;">
                 <tr>
                   <th class="text-left text-uppercase text-medium-emphasis">
-                    Tiêu đề
-                  </th>
-                  <th class="text-left text-uppercase text-medium-emphasis">
-                    Giá
-                  </th>
-                  <th class="text-left text-uppercase text-medium-emphasis">
-                    Mô tả
-                  </th>
-                  <th class="text-left text-uppercase text-medium-emphasis">
-                    Nội Thất
-                  </th>
-                  <th class="text-left text-uppercase text-medium-emphasis">
-                    Địa chỉ
-                  </th>
-                  <th class="text-left text-uppercase text-medium-emphasis">
-                    Ảnh
+                    Tên loại phòng
                   </th>
                   <th class="text-center text-uppercase text-medium-emphasis">
                     Hành động
@@ -42,55 +28,39 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in houses" :key="index">
+                <tr v-if="rooms.length > 0" v-for="(item, index) in rooms" :key="index">
                   <td style="width: 250px;height: 58px;"><b>
                       <p
                         style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                        {{ item.housename }}</p>
+                        {{ item.roomstyleName }}</p>
                     </b></td>
-                  <td>{{ formatNumberWithCommas(item.price) }}</td>
-                  <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                    <p
-                      style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.title }}</p>
-                  </td>
-                  <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                    <p
-                      style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.interior }}</p>
-                  </td>
-                  <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                    <p
-                      style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.addresshouses }}</p>
-                  </td>
-                  <td>
-                    <v-img style="border-radius: 2px;" width="36" height="36" :src="item.imageUrl"></v-img>
-                  </td>
                   <td class="text-center">
-                    <v-btn density="compact" variant="text" @click="updateHouseById(item)" style="max-witemdth: 24px;">
+                    <v-btn density="compact" variant="text" @click="updateRoomById(item)" style="max-witemdth: 24px;">
                       <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                         width="24px" height="24px"></v-img>
                     </v-btn>
-  
                     <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                       <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                        width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                        width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.roomstyleId }"></v-img>
                     </v-btn>
                   </td>
                 </tr>
-                <tr></tr>
+                <tr v-else>
+                  <td colspan="6">
+                    <p class="text-center text-red">Không có dữ liệu</p>
+                  </td>
+                </tr>
               </tbody>
             </v-table>
             <v-row class="ma-2 ">
               <v-col cols="8" sm="8" md="8" lg="8">
                 <v-row>
-                  <span class="mt-5 opacity">Showing</span>
+                  <span class="mt-5 opacity">Tổng số loại phòng</span>
                   <v-col style="max-width: 105px" cols="5" sm="4" md="5" lg="2">
                     <v-select v-model="seletedValue" density="compact" :items="['10', '20', '25', '30', '50']"
                       variant="outlined"></v-select>
                   </v-col>
-                  <span class="mt-5 opacity">of {{ TotalHouses }}</span>
+                  <span class="mt-5 opacity">of {{ TotalRooms }}</span>
                 </v-row>
               </v-col>
               <v-col cols="4" sm="4" md="4" lg="4">
@@ -112,56 +82,53 @@
         </v-col>
       </v-row>
     </div>
-    <HouseDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
-    <ConfirmVue v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteHouseById" />
+    <RoomstyleDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
+    <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
   </template>
   <script setup>
   import {  onMounted, ref, watch } from 'vue';
-  import HouseDialog from '@/layouts/Admin/House/HouseDialog.vue';
-  import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
+  import RoomstyleDialog from './RoomstyleDialog.vue';
+  import Confirmations from '@/components/Confirmations/Confirmations.vue'
   const isShowDialog = ref(false);
   const isDialogDelete = ref(false)
   const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)
-  let itemEdit = ref(null)
+  let idEdit = ref(null)
   let idDelete = ref(null)
   let lengthPage = ref(1)
   let page = ref(1)
   const search = ref(null)
-  const TotalHouses = ref(null)
-  import { formatNumberWithCommas, showErrorNotification, showSuccessNotification, showWarningsNotification } from '../../../common/helper/helpers'
-  import { useHouse } from './house'
+  const TotalRooms = ref(null)
+  const id = ref('');
+  import { useRoom } from '../Roomstyle/Services/roomstyle.service'
   import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-  import { houseApi } from './house.api';
-  import { checkSearchEnter } from '../../../common/helper/helpers'
-  const { fetchHouses, houses, query, searchHouses } = useHouse()
+  import { checkSearchEnter, showSuccessNotification } from '../../../common/helper/helpers'
+import { roomApi } from './Services/roomstyle.api';
+  const { fetchRooms, rooms, query, searchRooms  } = useRoom()
   onMounted(async () => {
     query.keyword = ''
     query.page = 1
     loadData()
   })
-  
   const loadData = async () => {
-    const res = await fetchHouses()
+    const res = await fetchRooms()
     if (res.data) {
-      houses.value = res.data;
+      rooms.value = res.data;
       lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-      TotalHouses.value = res.totalItems
+      TotalRooms.value = res.totalItems
       return
     }
-    houses.value = []
+    rooms.value = []
   }
-  
-  const addHouse = () => {
+  const addRoom = () => {
     isShowDialog.value = true
-    itemEdit = null
+    idEdit = null
   }
-  const updateHouseById = item => {
+  const updateRoomById = item => {
     isShowDialog.value = true
-    itemEdit = item
+    idEdit = item
   }
-  const deleteHouseById = async (id) => {
-    const data = await houseApi._delete(id)
-  
+  const deleteCityById = async (id) => {
+    const data = await roomApi._delete(id)
     if (data.success) {
       loadData()
       isDialogDelete.value = false
@@ -173,15 +140,15 @@
     }
   }
   const searchData = async () => {
-    const res = await searchHouses()
+    const res = await searchRooms ()
     if(res.data)
     {
-      houses.value = res.data;
+      rooms.value = res.data;
       lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-      TotalHouses.value=res.totalItems
+      TotalRooms.value=res.totalItems
       return
     }
-    houses.value=[]
+    rooms.value=[]
   }
   const close = () => {
     isShowDialog.value = false
@@ -229,7 +196,7 @@
   })
   watch(isShowDialog,(newVal)=>{
     if(newVal==false)
-      itemEdit=null
+      idEdit=null
   })
   </script>
   <style scoped>

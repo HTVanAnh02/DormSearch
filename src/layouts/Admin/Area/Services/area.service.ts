@@ -50,10 +50,28 @@ export const useArea = () => {
       loading.setLoading(false); // Kết thúc hiển thị trạng thái tải
     }
   };
+  const areasItem = async () => {
+    try {
+      const res = await areaApi._getList<any>(query);
+      if (res.success) {
+        return {
+          items: res.items,
+          totalItems: res.totalItems,
+        };
+      }
+      return {
+        items: [],
+        totalItems: 0,
+      };
+    } catch (error) {
+      console.error("Error Fetching:", error);
+    }
+  };
   return {
     areas, 
     fetchAreas, 
     query, 
-    searchAreas 
+    searchAreas ,
+    areasItem
   };
 };
