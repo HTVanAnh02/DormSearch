@@ -6,11 +6,6 @@
             density="compact" variant="solo" label="Tìm kiếm" append-inner-icon="mdi mdi-magnify" single-line hide-details
             class="mr-2" @keydown.enter="searchEnter()"></v-text-field>
         </v-col>
-        <v-col cols="7" class="text-right" lg="9" sm="8" md="8">
-          <v-btn @click="addHouse()" color="#0F60FF" prepend-icon="mdi mdi-plus" class="text-capitalize">
-            <b>Tạo</b> <span class="text-lowercase" style="margin-left: 3px; font-weight: bold;">mới</span>
-          </v-btn>
-        </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
@@ -19,16 +14,22 @@
               <thead style="height: 47px;">
                 <tr>
                   <th class="text-left text-uppercase text-medium-emphasis">
+                    Tên nhà trọ
+                  </th>
+                  <th class="text-left text-uppercase text-medium-emphasis">
                     Tiêu đề
+                  </th>
+                  <th class="text-left text-uppercase text-medium-emphasis">
+                    Nội Thất
                   </th>
                   <th class="text-left text-uppercase text-medium-emphasis">
                     Giá
                   </th>
                   <th class="text-left text-uppercase text-medium-emphasis">
-                    Mô tả
+                    Diện tích
                   </th>
                   <th class="text-left text-uppercase text-medium-emphasis">
-                    Nội Thất
+                    Liên hệ
                   </th>
                   <th class="text-left text-uppercase text-medium-emphasis">
                     Địa chỉ
@@ -131,7 +132,7 @@
   import { formatNumberWithCommas, showErrorNotification, showSuccessNotification, showWarningsNotification } from '../../../common/helper/helpers'
   import { useHouse } from './house'
   import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-  import { houseApi } from './house.api';
+  import { houseApi } from '../../Home/Houses/Services/house.api';
   import { checkSearchEnter } from '../../../common/helper/helpers'
   const { fetchHouses, houses, query, searchHouses } = useHouse()
   onMounted(async () => {

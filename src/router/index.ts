@@ -54,6 +54,14 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
+  // {
+  //   path: '/homehouse',
+  //   name: PageName.HOMEHOUSE,
+  //   component: () => import('../layouts/Home/Houses/House.vue'),
+  //   meta: {
+  //     public: true,
+  //   },
+  // },
   {
     path: '/prices',
     name: PageName.PRICE,

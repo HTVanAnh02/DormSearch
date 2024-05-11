@@ -15,69 +15,71 @@
                             single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ housenameError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block;">
                         <span>Khu vực</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="cityId"
+                        <v-select v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
                             density="compact" variant="outlined"></v-select>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block;">
                         <span>Thành Phố</span><span class="text-blue ml-2">*</span>
                         <v-select v-model="cityId" :items="itemsListCitys" item-title="cityName" item-value="cityId"
                             density="compact" variant="outlined"></v-select>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block;">
                         <span>Loại Phòng</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="cityId" :items="itemsListCitys" item-title="cityName" item-value="cityId"
+                        <v-select v-model="roomstyleId" :items="itemsListRoomstyles" item-title="roomstyleName" item-value="roomstyleId"
                             density="compact" variant="outlined"></v-select>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Giá</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="cityId" :items="itemsListCitys" item-title="cityName" item-value="cityId"
-                            density="compact" variant="outlined"></v-select>
+                        <v-text-field class="mt-1" v-model="price" placeholder="Nhập giá phòng trọ"
+                            :error-messages="priceError" required style="background-color: white;" density="compact"
+                            single-line hide-details variant="outlined"></v-text-field>
+                        <span style="color:red">{{ priceError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block;">
                         <span>Diện tích</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="acreage" placeholder="Nhập diện tích nhà trọ"
                             :error-messages="acreageError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ acreageError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Nội thất</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="interior" placeholder="Nhập nội thất nhà trọ"
                             :error-messages="interiorError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ interiorError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ nhà trọ"
                             :error-messages="addressError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ addressError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Ngày đăng</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="datesubmitted" type="date"
                             style="background-color: white; border-radius: 6px;" density="compact" single-line
                             hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ datesubmittedError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Liên hệ</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="contact" placeholder="Nhập số liên hệ của nhà trọ"
                             :error-messages="contactError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ contactError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Mô tả</span><span class="text-blue ml-2">*</span>
                         <v-textarea class="mt-1" v-model="interior" placeholder="Nhập mô tả"
                             :error-messages="interiorError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-textarea>
                         <span style="color:red">{{ interiorError }}</span>
                     </div>
-                    <div style="display: block; margin-top: 12px;">
+                    <div style="display: block; ">
                         <span>Ảnh nhà trọ</span><span class="text-blue ml-2">*</span><br>
                         <input @change="handleImageChange" type="file" class="custom-file-input mt-1" />
                     </div>
@@ -105,18 +107,21 @@ import { useLoadingStore } from '@/store/loading';
 import { houseApi } from './Services/house.api';
 import { AuthStore } from '@/Auth/authStore';
 import { useCity } from '@/layouts/Admin/City/Services/city.service';
+import { useArea } from '@/layouts/Admin/Area/Services/area.service';
+import { useRoom } from '@/layouts/Admin/Roomstyle/Services/roomstyle.service';
 const { isAuthenticated } = AuthStore();
 const loading = useLoadingStore();
 const props = defineProps(['itemEdit'])
 const emit = defineEmits(['close', 'loadData'])
 const { citysItem } = useCity()
 const { areasItem } = useArea()
+const { roomstylesItem } = useRoom()
 const itemsListCitys = ref([]);
 const itemsListAreas = ref([]);
 const itemsListRoomstyles = ref([]);
 const cityId = ref('');
 const AreasId = ref('');
-const RoomstyleId = ref('');
+const roomstyleId = ref('');
 const loadData = async () => {
     const res = await citysItem()
     if (res) {
@@ -129,6 +134,12 @@ const loadData = async () => {
         itemsListAreas.value = res1.items;
         console.log(res1.items);
         console.log(itemsListAreas.value);
+    }
+    const res2 = await roomstylesItem()
+    if (res2) {
+        itemsListRoomstyles.value = res2.items;
+        console.log(res2.items);
+        console.log(itemsListRoomstyles.value);
     }
 }
 watch(() => props.itemEdit, (newValue,) => {

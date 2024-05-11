@@ -54,6 +54,7 @@ export enum PageName {
   PRICE='price',
   NAR_BAR='narbar',
   HOMEDETAIL='homedetail',
+  HOMEHOUSE='homehouse',
   PRICE_PAGE = 'price_page',
   ROOMSTYLE ='roomstyle',
   RATING_PAGE ='rating_page',
@@ -76,7 +77,7 @@ export enum PageName {
   ADMIN_AREA = 'area',
   ADMIN_HOUSE='house',
   ADMIN_USER='user',
-  ADMIN_ROOM ='c'
+  ADMIN_ROOM ='room'
 
 }
 

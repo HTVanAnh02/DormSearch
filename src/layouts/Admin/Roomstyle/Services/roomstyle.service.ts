@@ -50,10 +50,28 @@ export const useRoom = () => {
       loading.setLoading(false); // Kết thúc hiển thị trạng thái tải
     }
   };
+  const roomstylesItem = async () => {
+    try {
+      const res = await roomApi._getList<any>(query);
+      if (res.success) {
+        return {
+          items: res.items,
+          totalItems: res.totalItems,
+        };
+      }
+      return {
+        items: [],
+        totalItems: 0,
+      };
+    } catch (error) {
+      console.error("Error Fetching:", error);
+    }
+  };
   return {
     rooms, 
     fetchRooms, 
     query, 
-    searchRooms 
+    searchRooms ,
+    roomstylesItem
   };
 };

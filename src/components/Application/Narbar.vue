@@ -107,7 +107,7 @@
 </template>
 <script lang="ts" setup>
 import logo from '../../assets/image/logo.png'
-import HouseDialog from "@/layouts/Home/Houses/HouseDialog.vue";
+import HouseDialog from "@/layouts/Home/Houses/HomeHouseDialog.vue";
 import { ref } from "vue";
 const isShowDialog = ref(false);
 const addHouses = () => {

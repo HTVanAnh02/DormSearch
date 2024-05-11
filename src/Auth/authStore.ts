@@ -17,6 +17,7 @@ export const AuthStore = defineStore('authStore', () => {
     const res = await authServiceApi.login(header);
     if (res.success) {
         const { data } = res;
+        console.log(res)
         localStorageAuthService.setAccessToken(data.accessToken);
         localStorageAuthService.setAccessTokenExpiredAt(data.accessTokenExpiration);
         localStorageAuthService.setRefreshToken(data.refreshToken);
