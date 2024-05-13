@@ -37,18 +37,27 @@ export const userLoginForm=()=>{
             password:values.password
           });
         loading.setLoading(false)
-        if(res)
+        if(res.success)
         {
-          if(localStorageAuthService.getUserRole()===Role.ADMIN)
-          {
+          // if(localStorageAuthService.getUserRole()===Role.ADMIN)
+          // {
             
+          //   showSuccessNotification("Đăng nhập thành công")
+          //   router.push('/admin/city')
+          // }
+          // else if(localStorageAuthService.getUserRole()===Role.USER)
+          // {
+          //   showSuccessNotification("Đăng nhập thành công")
+          //   router.push('/')
+          // }
+          console.log(res.data.role);
+          if(res.data.role==="User"){
             showSuccessNotification("Đăng nhập thành công")
-            router.push('/admin/city')
+              router.push('/');
           }
-          else if(localStorageAuthService.getUserRole()===Role.USER)
-          {
+          else{
             showSuccessNotification("Đăng nhập thành công")
-            router.push('/')
+            router.push('/admin/city');
           }
           // else
           //   showWarningsNotification("Lỗi Role ở login")

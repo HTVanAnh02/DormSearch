@@ -167,7 +167,6 @@ export const DEFAULT_FIRST_PAGE = 1;
 
 export enum Role {
   USER = 'User',
-  MANAGER = 'MANAGER',
   ADMIN='Admin',
 }
 

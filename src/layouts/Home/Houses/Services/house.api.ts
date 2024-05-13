@@ -3,7 +3,7 @@ import axiosInstance from "@/plugins/axios";
 
 class HouseApiService extends ApiService {
   createData(data: any): Promise<any> {
-    return this.client.post(`${this.baseUrl}`, data,{
+    return this.client.post(`https://localhost:44309/api/Houses`, data,{
         headers: { "Content-Type": "multipart/form-data" }
     });
   }

@@ -4,7 +4,7 @@ import { ApiService } from '@/plugins/axios/api';
 
 class AuthApiService extends ApiService {
   async login(body: IBodyLogin): Promise<IBodyResponse<ILoginResponse>> {
-    return await this.client.post(`${this.baseUrl}/login`, body);
+    return await this.client.post(`${this.baseUrl}/Login`, body);
   }
   async register(body: IBodyRegister): Promise<IBodyResponse<ILoginResponse>> {
     return await this.client.post(`${this.baseUrl}/register`, body);

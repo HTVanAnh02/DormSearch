@@ -147,7 +147,21 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           public: true,
         },
+        
       },
+      // {
+      //   path: 'house',
+      //   name:PageName.ADMIN_HOUSE,
+      //   component: () => import('../layouts/Admin/House/House.vue'),
+      //   // meta: {
+      //   //   role:Role.ADMIN,
+      //   //   public:false,
+      //   // },
+      //   meta: {
+      //     public: true,
+      //   },
+        
+      // },
     ]
   },
   {

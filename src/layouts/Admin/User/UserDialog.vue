@@ -4,7 +4,7 @@
             <v-card style="border-radius: 12px !important;">
                 <v-card-title
                     style="font-weight: bold;position:fixed;width: 100%;top: 0;background-color: white;z-index: 100;border-top-left-radius:12px ;border-top-right-radius: 12px;">
-                    <h4 style="font-size: 18px;">{{ itemEdit ? "Tạo mới người dùng" : "Sửa người dùng" }}</h4>
+                    <h4 style="font-size: 18px;">{{ itemEdit ? "Sửa người dùng" : "Tạo mới người dùng" }}</h4>
                 </v-card-title>
                 <v-container class="mt-9" style="background-color: #F7F8FA">
                     <div style="display: block; margin-top: 12px;">
@@ -20,6 +20,15 @@
                             style="background-color: white;border-radius: 6px;" density="compact" single-line
                             hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ emailError }}</span>
+                    </div>
+                    <div style="display: block; margin-top: 12px;">
+                        <span>Password</span><span class="text-blue ml-2">*</span>
+                        <v-text-field v-model="password"
+                        :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'" :type="visible ? 'text' : 'password'"
+                        density="compact" placeholder="••••••••••••••" variant="outlined"
+                        @click:append-inner="visible = !visible">
+                    </v-text-field>
+                    <span style="color:red">{{ passwordError }}</span>
                     </div>
                     <div style="display: block; margin-top: 12px;">
                         <span>Giới tính</span><span class="text-blue ml-2">*</span>
@@ -62,12 +71,10 @@
                     <v-btn width="70px" variant="outlined" height="32px"
                         style="font-family: Public Sans, sans-serif; font-size: 14px; margin-right: 16px; border: 1px solid #A1A9B8;border-radius: 6px;"
                         @click="close()" class="text-capitalize" text="Hủy"></v-btn>
-                    <v-btn width="105px" height="32px"
-                        style="font-family: Public Sans, sans-serif; font-size: 14px; border-radius: 6px;" type="submit"
-                        color="#0F60FF" class="text-capitalize" variant="elevated">
-                        {{ itemEdit ? "Tạo" : "Update" }}
-                        <span class="text-lowercase">{{ itemEdit ? " mới" : "" }}</span>
-                    </v-btn>
+                        <v-btn width="105px" height="32px"
+                        style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;" type="submit"
+                        color="#0F60FF" class="text-capitalize" variant="elevated">{{ itemEdit ? "Update" :
+                            "Tạo" }}<span class="text-lowercase">{{ itemEdit ? "" : "mới" }}</span></v-btn>
                 </v-card-actions>
             </v-card>
         </v-form>
@@ -77,11 +84,12 @@
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
-import { ref,onUpdated, watch } from 'vue';
+import { ref,onUpdated, watch, onMounted } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { MESSAGE_ERROR, Regex, Role } from '@/common/contant/contants';
 import { useLoadingStore } from '@/store/loading';
 import { userServiceApi } from './user.api';
+const visible = ref(false)
 const loading = useLoadingStore()
 const errorFile=ref(null)
 const props = defineProps(['itemEdit'])
@@ -102,6 +110,7 @@ const getUserById = async (id) => {
             editId.value = data.data.userId;
             fullname.value = data.data.fullName;
             email.value = data.data.email;
+            password.value = data.data.password;
             gender.value = data.data.gender;
             address.value = data.data.address;
             phone.value = data.data.phoneNumber;
@@ -114,6 +123,9 @@ const getUserById = async (id) => {
         console.error('Error fetching user detail:', error);
     }
 }
+// onMounted(() => {
+//     getUserById
+// })
 onUpdated(() => {
     if (props.itemEdit === null)
     {
@@ -156,6 +168,17 @@ const { value: email, errorMessage: emailError } = useField(
         )
 );
 
+const { value: password, errorMessage: passwordError } = useField(
+    'password',
+    yup
+        .string()
+        .required(MESSAGE_ERROR.REQUIRE)
+        .matches(
+            Regex.PASSWORD,
+            MESSAGE_ERROR.PASSWORD_CHECK
+        )
+);
+
 const { value: phone, errorMessage: phoneError } = useField(
     'phone',
     yup
@@ -174,21 +197,27 @@ const { value: role, errorMessage: roleError } = useField(
 );
 
 const submit = handleSubmit(async () => {
+    // console.log(editId.value);
     try {
         loading.setLoading(true)
         const formData = new FormData();
+        formData.append('userId',editId.value);
         formData.append('fullName',fullname.value);
         formData.append('email', email.value);
+        formData.append('password', password.value);
         formData.append('gender', gender.value);
         formData.append('address', address.value);
         formData.append('phoneNumber', phone.value);
         formData.append('file', imageFile.value);
         formData.append('role', role.value);
+        // console.log(imageFile.value);
+        console.log(formData);
         if (props.itemEdit == null) {
             const data = await userServiceApi.createData(formData);
             // console.log(data)
             if (!data.success) {
-                alert("Tạo lỗi")
+                // alert("Tạo lỗi")
+                // console.log(data.status);
                 showWarningsNotification(data.message)
             }
             else {

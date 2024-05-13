@@ -76,6 +76,9 @@ class LocalStorageAuthService {
   resetAccessToken(): void {
     storage.setLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN, '');
   }
+  resetRoleUser(): void {
+    storage.setLocalStorage(AUTH_SERVICE_KEY.ROLE, '');
+  }
   resetAccessTokenExpiredAt(): void {
     storage.setLocalStorage(AUTH_SERVICE_KEY.ACCESS_TOKEN_EXPIRED_AT, '');
   }
@@ -118,6 +121,10 @@ class LocalStorageAuthService {
   resetAll(): void {
     this.resetAccessToken();
     this.resetAccessTokenExpiredAt();
+    this.resetRoleUser();
+    localStorage.clear();
+    
+
     // this.setLoginUser(null, null);
   }
   removeAll(): void {

@@ -1,4 +1,5 @@
 import { PageName, Role } from '@/common/contant/contants';
+import { showErrorNotification, showWarningsNotification } from '@/common/helper/helpers';
 import localStorageAuthService from '@/common/storages/authStorage';
 import dayjs from '@/plugins/dayjs';
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
@@ -22,16 +23,17 @@ export default async (
   }
   if(IS_PUBLIC)
   {
-    return next()
+    if(IS_PUBLIC)
+      {
+        return next()
+      }
   }
-  if (!IS_AUTHENTICATED && to.name !== PageName.LOGIN_PAGE && !IS_PUBLIC) {
-    if(isExpiredRefresh)
-    {
+  if (!IS_AUTHENTICATED) {
+    if (isExpiredRefresh) {
+      showWarningsNotification("Vui lòng đăng nhập lại");
       return next({ name: PageName.LOGIN_PAGE });
-    }
-    else
-    {
-      return next()
+    } else {
+      return next();
     }
   }
   if (!IS_PUBLIC) {
@@ -39,7 +41,9 @@ export default async (
       if (role===RoleRouter) {
         return next();
       } else {
-        return next({ name: PageName.LOGIN_PAGE });
+        showErrorNotification("Không thể thực hiện");
+        return next(false);
+        // return next({ name: PageName.LOGIN_PAGE });
       }
     }
   }

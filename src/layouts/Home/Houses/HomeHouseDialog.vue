@@ -90,8 +90,8 @@
                         style="font-family: Public Sans, sans-serif; font-size: 14px; margin-right: 16px; border: 1px solid #A1A9B8;border-radius: 6px;"
                         @click="close()" class="text-capitalize" text="Hủy"></v-btn>
                     <v-btn width="105px" height="32px"
-                        style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;" type="submit"
-                        color="#0F60FF" class="text-capitalize" variant="elevated">{{ itemEdit ? "Update" :
+                        style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;" 
+                        color="#0F60FF" class="text-capitalize" variant="elevated" @click="submit">{{ itemEdit ? "Update" :
                             "Tạo" }}<span class="text-lowercase">{{ itemEdit ? "" : "mới" }}</span></v-btn>
                 </v-card-actions>
             </v-card>
@@ -189,8 +189,6 @@ const { value: interior, errorMessage: interiorError } = useField(
     yup
         .string()
         .required('Không được bỏ trống')
-        .min(10, 'Mô tả phải có ít nhất 10 ký tự')
-        .max(500, 'Mô tả không được quá 500 ký tự')
 );
 const { value: price, errorMessage: priceError } = useField(
     'price',
@@ -226,20 +224,39 @@ const { value: addresshouses, errorMessage: addresshousesError } = useField(
         .min(10, 'Mô tả phải có ít nhất 10 ký tự')
         .max(500, 'Mô tả không được quá 500 ký tự')
 );
-const submit = handleSubmit(async () => {
+
+const { value: contact, errorMessage: contactError } = useField(
+    'contact',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+        .min(10, 'Mô tả phải có ít nhất 10 ký tự')
+        .max(500, 'Mô tả không được quá 500 ký tự')
+);
+
+const { value: acreage, errorMessage: acreageError } = useField(
+    'acreage',
+    yup
+        .string()
+        .required('Không được bỏ trống')
+);
+const submit = async () => {
     try {
+        console.log("Đã vào")
         console.log(isAuthenticated)
         if (isAuthenticated) {
+            console.log(imageFile)    
             loading.setLoading(true)
             const formData = new FormData();
-            formData.append('housename', housename.value);
-            formData.append('title', title.value);
-            formData.append('price', price.value);
-            formData.append('contact', contact.value);
-            formData.append('acreage', acreage.value);
-            formData.append('addresshouses', addresshouses.value);
-            formData.append('interior', interior.value);
+            formData.append('HousesName', housename.value);
+            formData.append('Title', title.value);
+            formData.append('Price', price.value);
+            formData.append('Contact', contact.value);
+            formData.append('Acreage', acreage.value);
+            formData.append('AddressHouses', addresshouses.value);
+            formData.append('Interior', interior.value);
             formData.append('file', imageFile.value);
+            
             if (props.itemEdit == null) {
                 const data = await houseApi.createData(formData);
                 if (!data.success) {
@@ -262,7 +279,7 @@ const submit = handleSubmit(async () => {
                 else {
                     close()
                     emit('loadData')
-                    showSuccessNotification("cập nhật thành công")
+                    showSuccessNotification("Cập nhật thành công")
                     empty()
                 }
             }
@@ -275,7 +292,7 @@ const submit = handleSubmit(async () => {
     } finally {
         loading.setLoading(false)
     }
-});
+};
 
 const empty = () => {
     imageFile.value = null;

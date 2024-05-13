@@ -4,6 +4,7 @@ import { showSuccessNotification, showWarningsNotification } from '@/common/help
 import {  useLoadingStore } from '@/store/loading';
 import { registerWithPasswordSchema } from '../schema';
 import { computed } from 'vue';
+import router from '@/router';
 export const userRegisterForm = () => {
   const loading = useLoadingStore();
   const authStore = AuthStore();
@@ -43,6 +44,7 @@ export const userRegisterForm = () => {
     loading.setLoading(false)
     if (res) {
       showSuccessNotification("Đăng ký thành công")
+      router.push('/login')
     }
     else {
       showWarningsNotification("Đăng ký thất bại. Vui lòng thử lại");

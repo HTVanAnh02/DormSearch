@@ -19,70 +19,73 @@
             <thead style="height: 47px;">
               <tr>
                 <th class="text-left text-uppercase text-medium-emphasis">
+                  Ảnh nhà trọ
+                </th>
+                <th class="text-left text-uppercase text-medium-emphasis">
+                  Tên nhà trọ
+                </th>
+                <th class="text-left text-uppercase text-medium-emphasis">
                   Tiêu đề
+                </th>
+                <th class="text-left text-uppercase text-medium-emphasis">
+                  Nội thất
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Giá
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Mô tả
-                </th>
-                <th class="text-left text-uppercase text-medium-emphasis">
-                  Nội Thất
+                  Diện tích
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Địa chỉ
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Ảnh
+                  Số điện thoại
+                </th>
+                <th class="text-left text-uppercase text-medium-emphasis">
+                 Trạng thái
                 </th>
                 <th class="text-center text-uppercase text-medium-emphasis">
-                  Hành động
+                  Hành Động
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in houses" :key="index">
+              <tr v-if="users.length > 0" v-for="item in users" :key="item">
+                <td>
+                  <v-img class="ma-1" style="border-radius: 2px;" width="36" height="36" :src="item.avatar"></v-img>
+                </td>
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.housename }}</p>
+                      {{ item.fullName }}</p>
                   </b></td>
-                <td>{{ formatNumberWithCommas(item.price) }}</td>
-                <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                  <p
-                    style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                    {{ item.title }}</p>
-                </td>
-                <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                  <p
-                    style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                    {{ item.interior }}</p>
-                </td>
-                <td style="width: 250px;height: 58px;" class="v-text-truncate">
-                  <p
-                    style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                    {{ item.addresshouses }}</p>
-                </td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.gender }}</td>
+                <td>{{ item.address }}</td>
                 <td>
-                  <v-img style="border-radius: 2px;" width="36" height="36" :src="item.imageUrl"></v-img>
+                  {{ item.phoneNumber? formatPhoneNumber(item.phoneNumber):"" }}
                 </td>
                 <td class="text-center">
-                  <v-btn density="compact" variant="text" @click="updateHouseById(item)" style="max-witemdth: 24px;">
+                  <v-btn density="compact" variant="text" @click="updateUserById(item.userId)" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                       width="24px" height="24px"></v-img>
                   </v-btn>
 
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.id }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.userId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
-              <tr></tr>
+              <tr v-else>
+                <td colspan="6">
+                  <p class="text-center text-red">Không có dữ liệu</p>
+                </td>
+              </tr>
             </tbody>
           </v-table>
-          <v-row class="ma-2 ">
+          <v-row class="ma-2">
             <v-col cols="8" sm="8" md="8" lg="8">
               <v-row>
                 <span class="mt-5 opacity">Showing</span>
@@ -90,12 +93,13 @@
                   <v-select v-model="seletedValue" density="compact" :items="['10', '20', '25', '30', '50']"
                     variant="outlined"></v-select>
                 </v-col>
-                <span class="mt-5 opacity">of {{ TotalHouses }}</span>
+                <span class="mt-5 opacity">of {{ TotalUsers }}</span>
               </v-row>
             </v-col>
             <v-col cols="4" sm="4" md="4" lg="4">
               <p class="text-center page-table1" style="font-size: 15px;display: none">
-                <span @click="page = page - 1" :class="{ 'text-grey-lighten-2': page === 1, 'text-black': page !== 1 }"><i
+                <span @click="page = page - 1"
+                  :class="{ 'text-grey-lighten-2': page === 1, 'text-black': page !== 1 }"><i
                     class="fa-solid fa-angle-left" style="cursor: pointer;"></i></span>
                 <span
                   style="background-color: rgb(109, 148, 227);color: blue;opacity: 0.6;;border-radius: 2px;padding: 5px;"
@@ -112,56 +116,80 @@
       </v-col>
     </v-row>
   </div>
-  <HouseDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
-  <ConfirmVue v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteHouseById" />
+  <UserDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
+  <ConfirmVue v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteUserById" />
 </template>
 <script setup>
-import {  onMounted, ref, watch } from 'vue';
-import HouseDialog from '@/layouts/Admin/House/HouseDialog.vue';
+import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
+import { checkSearchUserEnter, formatDateString,formatPhoneNumber } from '../../../common/helper/helpers'
+import { onMounted, ref, watch } from 'vue';
+import UserDialog from '@/layouts/Admin/User/UserDialog.vue';
+import { useUser } from './user.service'
 import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
+import { showErrorNotification, showSuccessNotification } from '@/common/helper/helpers';
+import { userServiceApi } from './user.api';
+import { showWarningsNotification } from '../../../common/helper/helpers';
+import { useLoadingStore } from "@/store/loading";
+const loading = useLoadingStore()
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
 const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)
+const { fetchUsers, users, query, searchUsers } = useUser()
+const search = ref(null)
+const TotalUsers = ref(null)
 let itemEdit = ref(null)
 let idDelete = ref(null)
 let lengthPage = ref(1)
 let page = ref(1)
-const search = ref(null)
-const TotalHouses = ref(null)
-import { formatNumberWithCommas, showErrorNotification, showSuccessNotification, showWarningsNotification } from '../../../common/helper/helpers'
-import { useHouse } from './house'
-import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { houseApi } from './house.api';
-import { checkSearchEnter } from '../../../common/helper/helpers'
-const { fetchHouses, houses, query, searchHouses } = useHouse()
 onMounted(async () => {
   query.keyword = ''
   query.page = 1
   loadData()
 })
-
 const loadData = async () => {
-  const res = await fetchHouses()
+  const res = await fetchUsers()
+  users.value = res.data;
+  lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
   if (res.data) {
-    houses.value = res.data;
+    users.value = res.data;
     lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalHouses.value = res.totalItems
+    TotalUsers.value = res.totalItems
     return
   }
-  houses.value = []
+  users.value = []
 }
-
 const addHouse = () => {
   isShowDialog.value = true
   itemEdit = null
 }
-const updateHouseById = item => {
-  isShowDialog.value = true
-  itemEdit = item
-}
-const deleteHouseById = async (id) => {
-  const data = await houseApi._delete(id)
 
+const updateUserById = id => {
+  isShowDialog.value = true
+  itemEdit = id
+}
+const searchEnter = () => {
+  if (checkSearchUserEnter(search.value)) {
+    query.keyword = search.value
+    query.page = 1
+    searchData()
+  }
+  else {
+    showWarningsNotification("Không nhập ký tự đặc biệt")
+  }
+};
+const searchData = async () => {
+  const res = await searchUsers()
+  if (res.data) {
+    users.value = res.data;
+    lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
+    TotalUsers.value = res.totalItems
+    return
+  }
+  users.value = []
+}
+const deleteUserById = async (id) => {
+  loading.setLoading(true)
+  const data = await userServiceApi._delete(id)
   if (data.success) {
     loadData()
     isDialogDelete.value = false
@@ -172,33 +200,10 @@ const deleteHouseById = async (id) => {
     showErrorNotification(data.message)
   }
 }
-const searchData = async () => {
-  const res = await searchHouses()
-  if(res.data)
-  {
-    houses.value = res.data;
-    lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalHouses.value=res.totalItems
-    return
-  }
-  houses.value=[]
-}
 const close = () => {
   isShowDialog.value = false
   isDialogDelete.value = false
 }
-const searchEnter = () => {
-  if(checkSearchEnter(search.value))
-  {
-    query.keyword = search.value
-    query.page = 1
-    searchData()
-  }
-  else
-  {
-    showWarningsNotification("Không nhập ký tự đặc biệt")
-  }
-};
 watch(seletedValue, (newval) => {
   query.limit = newval
   query.page = 1
@@ -206,32 +211,22 @@ watch(seletedValue, (newval) => {
   loadData()
 })
 watch(search, (newval) => {
-  if(search.value==="")
-  {
-    query.keyword = search.value
-    query.page = 1
-    searchData()
-  }
-})
-watch(page, (newVal,oldVal) => {
-  if(page.value<1)
-  {
-    page.value=oldVal
-    return 
-  }
-  if(page.value>lengthPage.value)
-  {
-    page.value=oldVal
+  if (newval !== "")
     return
-  }
+  query.keyword = newval
+  query.page = 1
+  searchData()
+})
+watch(page, (newVal) => {
   query.page = newVal
   loadData()
 })
-watch(isShowDialog,(newVal)=>{
-  if(newVal==false)
-    itemEdit=null
+watch(isShowDialog, (newVal) => {
+  if (newVal == false)
+    itemEdit = null
 })
 </script>
+
 <style scoped>
 .text-truncate {
   overflow: hidden;
@@ -241,35 +236,5 @@ watch(isShowDialog,(newVal)=>{
 
 .opacity {
   opacity: 0.6;
-}
-
-.hover-effect {
-  opacity: 1;
-}
-
-.v-table {
-  font-size: 15px;
-}
-
-@media (max-width: 500px) {
-  .opacity {
-    display: none;
-  }
-
-  .v-btn__content {
-    font-size: 10px;
-  }
-
-  .text-medium-emphasis {
-    font-size: 12px;
-  }
-
-  .page-table1 {
-    display: inline !important;
-  }
-
-  .page-table2 {
-    display: none !important;
-  }
 }
 </style>
