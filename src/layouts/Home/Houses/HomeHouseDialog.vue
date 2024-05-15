@@ -74,10 +74,10 @@
                     </div>
                     <div style="display: block; ">
                         <span>Mô tả</span><span class="text-blue ml-2">*</span>
-                        <v-textarea class="mt-1" v-model="interior" placeholder="Nhập mô tả"
-                            :error-messages="interiorError" required style="background-color: white;" density="compact"
+                        <v-textarea class="mt-1" v-model="title" placeholder="Nhập mô tả"
+                            :error-messages="titleError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-textarea>
-                        <span style="color:red">{{ interiorError }}</span>
+                        <span style="color:red">{{ titleError }}</span>
                     </div>
                     <div style="display: block; ">
                         <span>Ảnh nhà trọ</span><span class="text-blue ml-2">*</span><br>

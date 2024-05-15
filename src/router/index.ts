@@ -54,22 +54,15 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
-  // {
-  //   path: '/homehouse',
-  //   name: PageName.HOMEHOUSE,
-  //   component: () => import('../layouts/Home/Houses/House.vue'),
-  //   meta: {
-  //     public: true,
-  //   },
-  // },
   {
-    path: '/prices',
-    name: PageName.PRICE,
-    component: () => import('../layouts/Home/Price/Price.vue'),
+    path: '/user',
+    name: PageName.USER,
+    component: () => import('../layouts/Home/User/UserView.vue'),
     meta: {
       public: true,
     },
   },
+
   // {
   //   path: '/homedetail',
   //   name: PageName.HOMEDETAIL,
@@ -112,18 +105,18 @@ const routes: Array<RouteRecordRaw> = [
           public: true,
         },
       },
-      {
-        path: 'user',
-        name:PageName.ADMIN_USER,
-        component: () => import('../layouts/Admin/User/UserView.vue'),
-        // meta: {
-        //   role:Role.ADMIN,
-        //   public:false,
-        // },
-        meta: {
-          public: true,
-        },
-      },
+      // {
+      //   path: 'user',
+      //   name:PageName.ADMIN_USER,
+      //   component: () => import('../layouts/Admin/User/UserView.vue'),
+      //   // meta: {
+      //   //   role:Role.ADMIN,
+      //   //   public:false,
+      //   // },
+      //   meta: {
+      //     public: true,
+      //   },
+      // },
       {
         path: 'role',
         name:PageName.ROLE_PAGE,
@@ -149,19 +142,20 @@ const routes: Array<RouteRecordRaw> = [
         },
         
       },
-      // {
-      //   path: 'house',
-      //   name:PageName.ADMIN_HOUSE,
-      //   component: () => import('../layouts/Admin/House/House.vue'),
-      //   // meta: {
-      //   //   role:Role.ADMIN,
-      //   //   public:false,
-      //   // },
-      //   meta: {
-      //     public: true,
-      //   },
+      {
+        path: 'adminhouse',
+        name:PageName.ADMIN_HOUSE,
+        component: () => import('../layouts/Admin/House/House.vue'),
+        // meta: {
+        //   role:Role.ADMIN,
+        //   public:false,
+        // },
+        meta: {
+          public: true,
+        },
         
-      // },
+      },
+      
     ]
   },
   {

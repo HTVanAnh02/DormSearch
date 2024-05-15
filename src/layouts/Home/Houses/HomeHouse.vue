@@ -118,7 +118,7 @@
   </template>
   <script setup>
   import {  onMounted, ref, watch } from 'vue';
-  import HouseDialog from '@/layouts/Admin/House/HouseDialog.vue';
+  import HouseDialog from '@/layouts/Home/Houses/HomeHouseDialog.vue';
   import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
   const isShowDialog = ref(false);
   const isDialogDelete = ref(false)

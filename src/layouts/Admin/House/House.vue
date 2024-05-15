@@ -25,7 +25,7 @@
                   Tên nhà trọ
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Tiêu đề
+                  Mô tả
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Nội thất
@@ -40,41 +40,53 @@
                   Địa chỉ
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Số điện thoại
+                  DateSubmitted
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                 Trạng thái
+                  Liên hệ
                 </th>
                 <th class="text-center text-uppercase text-medium-emphasis">
-                  Hành Động
+                  Hành động
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="users.length > 0" v-for="item in users" :key="item">
+              <tr v-if="houses.length > 0" v-for="(item, index) in houses" :key="index">
                 <td>
-                  <v-img class="ma-1" style="border-radius: 2px;" width="36" height="36" :src="item.avatar"></v-img>
+                  <v-img class="ma-1" style="border-radius: 2px;" width="36" height="36" :src="item.photos"></v-img>
                 </td>
                 <td style="width: 250px;height: 58px;"><b>
                     <p
                       style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
-                      {{ item.fullName }}</p>
+                      {{ item.housesName }}</p>
                   </b></td>
-                <td>{{ item.email }}</td>
-                <td>{{ item.gender }}</td>
-                <td>{{ item.address }}</td>
-                <td>
-                  {{ item.phoneNumber? formatPhoneNumber(item.phoneNumber):"" }}
+                <td style="width: 250px;height: 58px;" class="v-text-truncate">
+                  <p
+                    style="width: 100%;max-height: 58px;overflow: hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1;">
+                    {{ item.title }}</p>
                 </td>
+                <td>{{ item.interior }}</td>
+                <td>VND{{ formatNumberWithCommas(item.price) }}</td>
+                <td>{{ item.acreage }}</td>
+                <td>{{ item.addressHouses }}</td>
+                <td class="v-text-truncate">
+                  {{
+                    i.dateSubmitted === undefined ||
+                        i.dateSubmitted === "" ||
+                        i.dateSubmitted === null
+                        ? ""
+                        : formatDatetime(i.dateSubmitted)
+                }}
+                </td>
+                <td>{{ item.contact }}</td>
                 <td class="text-center">
-                  <v-btn density="compact" variant="text" @click="updateUserById(item.userId)" style="max-width: 24px;">
+                  <v-btn density="compact" variant="text" @click="updateHouse(item)" style="max-witemdth: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200255/edit_sh0ub9.png"
                       width="24px" height="24px"></v-img>
                   </v-btn>
-
                   <v-btn density="compact" variant="text" class="ml-2" style="max-width: 24px;">
                     <v-img src="https://res.cloudinary.com/dyo42vgdj/image/upload/v1709200260/trash_wsowgu.png"
-                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.userId }"></v-img>
+                      width="24px" height="24px" @click="{ isDialogDelete = true; idDelete = item.housesId }"></v-img>
                   </v-btn>
                 </td>
               </tr>
@@ -85,15 +97,15 @@
               </tr>
             </tbody>
           </v-table>
-          <v-row class="ma-2">
+          <v-row class="ma-2 ">
             <v-col cols="8" sm="8" md="8" lg="8">
               <v-row>
-                <span class="mt-5 opacity">Showing</span>
+                <span class="mt-5 opacity">Tổng số nhà trọ</span>
                 <v-col style="max-width: 105px" cols="5" sm="4" md="5" lg="2">
                   <v-select v-model="seletedValue" density="compact" :items="['10', '20', '25', '30', '50']"
                     variant="outlined"></v-select>
                 </v-col>
-                <span class="mt-5 opacity">of {{ TotalUsers }}</span>
+                <span class="mt-5 opacity">of {{ TotalHouse }}</span>
               </v-row>
             </v-col>
             <v-col cols="4" sm="4" md="4" lg="4">
@@ -116,80 +128,53 @@
       </v-col>
     </v-row>
   </div>
-  <UserDialog v-model="isShowDialog" :itemEdit="itemEdit" @close="close()" @loadData="loadData()" />
-  <ConfirmVue v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteUserById" />
+  <HouseDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
+  <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
 </template>
 <script setup>
-import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { checkSearchUserEnter, formatDateString,formatPhoneNumber } from '../../../common/helper/helpers'
 import { onMounted, ref, watch } from 'vue';
-import UserDialog from '@/layouts/Admin/User/UserDialog.vue';
-import { useUser } from './user.service'
-import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
-import { showErrorNotification, showSuccessNotification } from '@/common/helper/helpers';
-import { userServiceApi } from './user.api';
-import { showWarningsNotification } from '../../../common/helper/helpers';
-import { useLoadingStore } from "@/store/loading";
-const loading = useLoadingStore()
+import HouseDialog from './HouseDialog.vue';
+import Confirmations from '@/components/Confirmations/Confirmations.vue'
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
 const seletedValue = ref(DEFAULT_LIMIT_FOR_PAGINATION)
-const { fetchUsers, users, query, searchUsers } = useUser()
-const search = ref(null)
-const TotalUsers = ref(null)
-let itemEdit = ref(null)
+let idEdit = ref(null)
 let idDelete = ref(null)
 let lengthPage = ref(1)
 let page = ref(1)
+const search = ref(null)
+const TotalHouse = ref(null)
+const id = ref('');
+import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
+import { checkSearchEnter, showSuccessNotification } from '../../../common/helper/helpers'
+import { useHouse } from './house.service';
+import { houseApi } from './house.api';
+const { fetchHouse, houses, query, searchHouse } = useHouse()
 onMounted(async () => {
   query.keyword = ''
   query.page = 1
   loadData()
 })
 const loadData = async () => {
-  const res = await fetchUsers()
-  users.value = res.data;
-  lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
+  const res = await fetchHouse()
   if (res.data) {
-    users.value = res.data;
+    houses.value = res.data;
     lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalUsers.value = res.totalItems
+    TotalHouse.value = res.totalItems
     return
   }
-  users.value = []
+  houses.value = []
 }
 const addHouse = () => {
   isShowDialog.value = true
-  itemEdit = null
+  idEdit = null
 }
-
-const updateUserById = id => {
+const updateHouse = item => {
   isShowDialog.value = true
-  itemEdit = id
+  idEdit = item
 }
-const searchEnter = () => {
-  if (checkSearchUserEnter(search.value)) {
-    query.keyword = search.value
-    query.page = 1
-    searchData()
-  }
-  else {
-    showWarningsNotification("Không nhập ký tự đặc biệt")
-  }
-};
-const searchData = async () => {
-  const res = await searchUsers()
-  if (res.data) {
-    users.value = res.data;
-    lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
-    TotalUsers.value = res.totalItems
-    return
-  }
-  users.value = []
-}
-const deleteUserById = async (id) => {
-  loading.setLoading(true)
-  const data = await userServiceApi._delete(id)
+const deleteCityById = async (id) => {
+  const data = await houseApi._delete(id)
   if (data.success) {
     loadData()
     isDialogDelete.value = false
@@ -200,10 +185,30 @@ const deleteUserById = async (id) => {
     showErrorNotification(data.message)
   }
 }
+const searchData = async () => {
+  const res = await searchHouse()
+  if (res.data) {
+    houses.value = res.data;
+    lengthPage.value = Math.ceil(res.totalItems / seletedValue.value);
+    TotalHouse.value = res.totalItems
+    return
+  }
+  houses.value = []
+}
 const close = () => {
   isShowDialog.value = false
   isDialogDelete.value = false
 }
+const searchEnter = () => {
+  if (checkSearchEnter(search.value)) {
+    query.keyword = search.value
+    query.page = 1
+    searchData()
+  }
+  else {
+    showWarningsNotification("Không nhập ký tự đặc biệt")
+  }
+};
 watch(seletedValue, (newval) => {
   query.limit = newval
   query.page = 1
@@ -211,22 +216,29 @@ watch(seletedValue, (newval) => {
   loadData()
 })
 watch(search, (newval) => {
-  if (newval !== "")
-    return
-  query.keyword = newval
-  query.page = 1
-  searchData()
+  if (search.value === "") {
+    query.keyword = search.value
+    query.page = 1
+    searchData()
+  }
 })
-watch(page, (newVal) => {
+watch(page, (newVal, oldVal) => {
+  if (page.value < 1) {
+    page.value = oldVal
+    return
+  }
+  if (page.value > lengthPage.value) {
+    page.value = oldVal
+    return
+  }
   query.page = newVal
   loadData()
 })
 watch(isShowDialog, (newVal) => {
   if (newVal == false)
-    itemEdit = null
+    idEdit = null
 })
 </script>
-
 <style scoped>
 .text-truncate {
   overflow: hidden;
@@ -236,5 +248,35 @@ watch(isShowDialog, (newVal) => {
 
 .opacity {
   opacity: 0.6;
+}
+
+.hover-effect {
+  opacity: 1;
+}
+
+.v-table {
+  font-size: 15px;
+}
+
+@media (max-width: 500px) {
+  .opacity {
+    display: none;
+  }
+
+  .v-btn__content {
+    font-size: 10px;
+  }
+
+  .text-medium-emphasis {
+    font-size: 12px;
+  }
+
+  .page-table1 {
+    display: inline !important;
+  }
+
+  .page-table2 {
+    display: none !important;
+  }
 }
 </style>

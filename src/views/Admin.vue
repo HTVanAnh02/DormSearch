@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </v-list-item>
-                <v-list-item style="color: #8B909A;font-size: 24px;"
+                <!-- <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh quyền người dùng' }"
                     @click="setTitleCity('Danh quyền người dùng')" to='user'>
                     <div style="display: flex; align-items: flex-start;">
@@ -55,7 +55,7 @@
                             Người dùng
                         </div>
                     </div>
-                </v-list-item>
+                </v-list-item> -->
                 <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh sách quyền' }"
                     @click="setTitleCity('Danh sách quyền')" to='role'>
@@ -70,7 +70,7 @@
                 </v-list-item>
                 <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh sách nhà trọ' }"
-                    @click="setTitleCity('Danh sách nhà trọ')" to='roomstyle'>
+                    @click="setTitleCity('Danh sách nhà trọ')" to='adminhouse'>
                     <div style="display: flex; align-items: flex-start;">
                         <img src="https://cdn-icons-png.flaticon.com/128/619/619032.png"
                             style="width: 22px; height: 22px;"><img>

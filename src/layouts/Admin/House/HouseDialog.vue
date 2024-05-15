@@ -59,13 +59,6 @@
                         <span style="color:red">{{ addressError }}</span>
                     </div>
                     <div style="display: block; ">
-                        <span>Trạng thái</span><span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="trangthai" placeholder="Nhập địa chỉ nhà trọ"
-                            :error-messages="trangthaiError" required style="background-color: white;" density="compact"
-                            single-line hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ trangthaiError }}</span>
-                    </div>
-                    <div style="display: block; ">
                         <span>Ngày đăng</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="datesubmitted" type="date"
                             style="background-color: white; border-radius: 6px;" density="compact" single-line
@@ -81,10 +74,10 @@
                     </div>
                     <div style="display: block; ">
                         <span>Mô tả</span><span class="text-blue ml-2">*</span>
-                        <v-textarea class="mt-1" v-model="interior" placeholder="Nhập mô tả"
-                            :error-messages="interiorError" required style="background-color: white;" density="compact"
+                        <v-textarea class="mt-1" v-model="title" placeholder="Nhập mô tả"
+                            :error-messages="titleError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-textarea>
-                        <span style="color:red">{{ interiorError }}</span>
+                        <span style="color:red">{{ titleError }}</span>
                     </div>
                     <div style="display: block; ">
                         <span>Ảnh nhà trọ</span><span class="text-blue ml-2">*</span><br>
@@ -111,7 +104,7 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated, onMounted } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { houseApi } from '../House/house.api';
+import { houseApi } from './house.api';
 import { AuthStore } from '@/Auth/authStore';
 import { useCity } from '@/layouts/Admin/City/Services/city.service';
 import { useArea } from '@/layouts/Admin/Area/Services/area.service';
@@ -159,9 +152,6 @@ watch(() => props.itemEdit, (newValue,) => {
 const getHouseById = (item) => {
     console.log(item)
     housename.value = item.housename;
-    city.value = item.city;
-    area.value = item.area;
-    acreage.value = item.acreage;
     title.value = item.title;
     interior.value = item.interior;
     price.value = item.price;
@@ -252,19 +242,20 @@ const { value: acreage, errorMessage: acreageError } = useField(
 );
 const submit = async () => {
     try {
-        console.log("Đã vào")
-        console.log(isAuthenticated)
+        // console.log("Đã vào")
+        // console.log(isAuthenticated)
         if (isAuthenticated) {
             console.log(imageFile)    
             loading.setLoading(true)
             const formData = new FormData();
             formData.append('HousesName', housename.value);
             formData.append('Title', title.value);
+            formData.append('Interior', interior.value);
             formData.append('Price', price.value);
-            formData.append('Contact', contact.value);
             formData.append('Acreage', acreage.value);
             formData.append('AddressHouses', addresshouses.value);
-            formData.append('Interior', interior.value);
+            formData.append('DateSubmitted', datesubmitted.value);
+            formData.append('Contact', contact.value);
             formData.append('file', imageFile.value);
             
             if (props.itemEdit == null) {

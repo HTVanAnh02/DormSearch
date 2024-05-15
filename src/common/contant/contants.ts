@@ -75,9 +75,9 @@ export enum PageName {
   ADMIN='admin',
   ADMIN_CITY='city',
   ADMIN_AREA = 'area',
-  ADMIN_HOUSE='house',
-  ADMIN_USER='user',
-  ADMIN_ROOM ='room'
+  USER='user',
+  ADMIN_ROOM ='room',
+  ADMIN_HOUSE ='adminhouse',
 
 }
 

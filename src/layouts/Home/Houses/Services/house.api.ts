@@ -19,4 +19,4 @@ class HouseApiService extends ApiService {
    return this.client.delete(`${this.baseUrl}/${id}`);
   }
 }
-export const houseApi = new HouseApiService({ baseUrl: "/Fruit" }, axiosInstance);
+export const houseApi = new HouseApiService({ baseUrl: "/House" }, axiosInstance);

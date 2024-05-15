@@ -71,7 +71,7 @@ import { ref, onUpdated, watch } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { MESSAGE_ERROR, Regex, Role } from '@/common/contant/contants';
 import { useLoadingStore } from '@/store/loading';
-import { userServiceApi } from '@/layouts/Admin/User/user.api';
+import { userServiceApi } from '@/layouts/Home/User/user.api';
 const loading = useLoadingStore()
 const errorFile = ref(null)
 const props = defineProps(['itemEdit'])

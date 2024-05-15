@@ -57,6 +57,15 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.gender }}</td>
                 <td>{{ item.address }}</td>
+                <td class="v-text-truncate">
+                  {{
+                    i.dateSubmitted === undefined ||
+                        i.dateSubmitted === "" ||
+                        i.dateSubmitted === null
+                        ? ""
+                        : formatDatetime(i.dateSubmitted)
+                }}
+                </td>
                 <td>
                   {{ item.phoneNumber? formatPhoneNumber(item.phoneNumber):"" }}
                 </td>
@@ -117,7 +126,7 @@
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
 import { checkSearchUserEnter, formatDateString,formatPhoneNumber } from '../../../common/helper/helpers'
 import { onMounted, ref, watch } from 'vue';
-import UserDialog from '@/layouts/Admin/User/UserDialog.vue';
+import UserDialog from '@/layouts/Home/User/UserDialog.vue';
 import { useUser } from './user.service'
 import ConfirmVue from '@/components/Confirmations/Confirmations.vue'
 import { showErrorNotification, showSuccessNotification } from '@/common/helper/helpers';
@@ -140,6 +149,14 @@ onMounted(async () => {
   query.page = 1
   loadData()
 })
+const formatDatetime = (date) => {
+    const dateObject = new Date(date);
+    const ngay = dateObject.getDate().toString().padStart(2, "0");
+    const thang = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+    const nam = dateObject.getFullYear();
+    const ngayThangNam = `${thang}/${ngay}/${nam}`;
+    return ngayThangNam;
+};
 const loadData = async () => {
   const res = await fetchUsers()
   users.value = res.data;

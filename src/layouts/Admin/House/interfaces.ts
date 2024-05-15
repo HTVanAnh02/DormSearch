@@ -1,19 +1,15 @@
 
-export type IBodyUser = {
-    email?: string;
-    password?: string;
-    name?: string;
-    role?: string;
-    avatar?: string;
-    birthday?: string;
-};
 export type IHouse={
     id:string
     housename:string;
     title:string;
-    price:number;
     interior:string;
-    addresshouses:string;
+    price:string;
+    acreage:string;
+    addressHouses:string;
+    dateSubmitted:string;
+    photos:string;
+    contact:string;
 }
 export type  IHouseGetAll= {
     items: [];

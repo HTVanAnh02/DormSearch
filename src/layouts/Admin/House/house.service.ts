@@ -1,18 +1,58 @@
-import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
-import { showErrors } from "@/common/helper/helpers";
-import { useLoadingStore } from "@/store/loading";
-import { houseApi } from "./house.api";
 
-const loading = useLoadingStore();
+import { useLoadingStore } from "@/store/loading";
+import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
+import { ref } from "vue";
+import { IHouse } from "./interfaces";
+import { houseApi } from "./house.api";
 export const useHouse = () => {
-  const query = DEFAULT_COMMON_LIST_QUERY;
-  const fetchCitys = async () => {
+  const loading = useLoadingStore();
+  const houses = ref <IHouse[]>([])
+  const query = DEFAULT_COMMON_LIST_QUERY
+  const fetchHouse = async () => {
     try {
-      loading.setLoading(true);
-      const res = await houseApi._getList<any>(query);
-      if (res.errors !== undefined) {
-        showErrors(res.errors);
+      loading.setLoading(true)
+      const res = await houseApi._getList<IHouse>(query);
+      console.log(res);
+      loading.setLoading(false)
+      if (res.success)
+        return {
+          data: res.items,
+          totalItems: res.totalItems
+        }
+      else {
+        return {
+          data: [],
+          totalItems: 0
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching house:', error);
     }
+  };
+  const searchHouse = async () => {
+    try {
+      console.log(FormData);
+
+      loading.setLoading(true); // Bắt đầu hiển thị trạng thái tải
+
+      const res = await houseApi._getList<IHouse>(query);
+
+      if (res.success) {
+        const data = res.items;
+        const totalItems = res.totalItems;
+        return { data, totalItems };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching house:', error);
+      return null;
+    } finally {
+      loading.setLoading(false); // Kết thúc hiển thị trạng thái tải
+    }
+  };
+  const houseItem = async () => {
+    try {
+      const res = await houseApi._getList<any>(query);
       if (res.success) {
         return {
           items: res.items,
@@ -25,82 +65,13 @@ export const useHouse = () => {
       };
     } catch (error) {
       console.error("Error Fetching:", error);
-    } finally {
-      loading.setLoading(false);
     }
   };
-  const searchCitys = async () => {
-    try {
-      loading.setLoading(true);
-
-      const res = await houseApi._getList<any>(query);
-      if (res.success) {
-        return {
-          items: res.items,
-          totalItems: res.totalItems,
-        };
-      }
-      return {
-        items: [],
-        totalItems: 0,
-      };
-    } catch (error) {
-      console.error("Error Search:", error);
-    } finally {
-      loading.setLoading(false);
-    }
-  };
-  const createCity = async (data: any) => {
-    try {
-      loading.setLoading(true);
-      return await houseApi.createData(data);
-    } catch (error) {
-      console.error("Error Create:", error);
-    } finally {
-      loading.setLoading(false);
-    }
-  };
-
-  const updateCity=async(data:any,id:any)=>{
-    try{
-      loading.setLoading(true);
-      return await houseApi.updateData(data,id);
-    }catch (error) {
-      console.error("Error Update:", error);
-    }finally {
-      loading.setLoading(false);
-    }
-  };
-
-  const getData=async(id:any)=>{
-    try{
-      loading.setLoading(true);
-      return await houseApi.getData(id);
-    }catch (error) {
-      console.error("Error GetDetail:", error);
-    }finally {
-      loading.setLoading(false);
-    }
-  };
-
-  const deleteCity=async(id:any)=>{
-    try{
-      loading.setLoading(true);
-      return await houseApi.deleteData(id);
-    }catch (error) {
-      console.error("Error Delete:", error);
-    }finally {
-      loading.setLoading(false);
-    }
-  };
- 
   return {
-    fetchCitys,
-    createCity,
-    updateCity,
-    deleteCity,
-    query,
-    getData,
-    searchCitys,
+    houses, 
+    fetchHouse, 
+    query, 
+    searchHouse,
+    houseItem
   };
 };

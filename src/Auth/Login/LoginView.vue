@@ -32,8 +32,8 @@
                 </div>
                 <div class="d-flex justify-space-between align-center mt-8" style="width: 425px; height: 20px;">
                     <v-row></v-row>
-                    <router-link to="forgot_password" class="text-caption text-decoration-none text-blue mb-6 custom-link mt-4"
-                        style="height: 28px;">
+                    <router-link to="forgot_password"
+                        class="text-caption text-decoration-none text-blue mb-6 custom-link mt-4" style="height: 28px;">
                         Quên mật khẩu?
                     </router-link>
                 </div>
@@ -55,8 +55,7 @@
                         </v-btn>
                     </div>
                     <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="loginform.handleLogin" @enter="loginform.handleLogin" block
-                            class="mb-8 rounded-button"
+                        <v-btn block class="mb-8 rounded-button" @click="() => login()"
                             style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
                             <v-img :src="facebook" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
@@ -89,6 +88,7 @@ import { userLoginForm } from './login.service';
 const loginform = reactive(userLoginForm());
 const visible = ref(false)
 const terms = ref('')
+
 </script>
 
 <style>
