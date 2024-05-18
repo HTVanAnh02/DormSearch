@@ -53,10 +53,10 @@
                     </div>
                     <div style="display: block; ">
                         <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ nhà trọ"
-                            :error-messages="addressError" required style="background-color: white;" density="compact"
+                        <v-text-field class="mt-1" v-model="addresshouses" placeholder="Nhập địa chỉ nhà trọ"
+                            :error-messages="addresshousesError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ addressError }}</span>
+                        <span style="color:red">{{ addresshousesError }}</span>
                     </div>
                     <div style="display: block; ">
                         <span>Ngày đăng</span><span class="text-blue ml-2">*</span>
@@ -104,11 +104,11 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated, onMounted } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
-import { houseApi } from './Services/house.api';
 import { AuthStore } from '@/Auth/authStore';
 import { useCity } from '@/layouts/Admin/City/Services/city.service';
 import { useArea } from '@/layouts/Admin/Area/Services/area.service';
 import { useRoom } from '@/layouts/Admin/Roomstyle/Services/roomstyle.service';
+import { houseApi } from '@/layouts/Admin/House/house.api';
 const { isAuthenticated } = AuthStore();
 const loading = useLoadingStore();
 const props = defineProps(['itemEdit'])
@@ -240,12 +240,13 @@ const { value: acreage, errorMessage: acreageError } = useField(
         .string()
         .required('Không được bỏ trống')
 );
+
 const submit = async () => {
     try {
         console.log("Đã vào")
         console.log(isAuthenticated)
         if (isAuthenticated) {
-            console.log(imageFile)    
+            console.log(addresshouses)    
             loading.setLoading(true)
             const formData = new FormData();
             formData.append('HousesName', housename.value);
@@ -254,6 +255,7 @@ const submit = async () => {
             formData.append('Contact', contact.value);
             formData.append('Acreage', acreage.value);
             formData.append('AddressHouses', addresshouses.value);
+            formData.append('DateSubmitted', datesubmitted.value);
             formData.append('Interior', interior.value);
             formData.append('file', imageFile.value);
             

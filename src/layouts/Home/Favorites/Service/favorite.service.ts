@@ -1,16 +1,16 @@
 import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
 import { favouriteApi } from "./favorite.api";
 
-export const useFarourite = () => {
+export const useFavorites = () => {
     const query = DEFAULT_COMMON_LIST_QUERY_BY_HOME;
-    const fetchfavouriteJobs = async () => {
+    const fetchfavorites = async () => {
       try {
         return await favouriteApi.itemsList();
       } catch (error) {
         console.error("Error Fetching:", error);
       } 
     };
-    const changeFavourites = async (data:any) => {
+    const changefavorites = async (data:any) => {
         try {
             return await favouriteApi.changeFavourite(data);
           } catch (error) {
@@ -18,7 +18,7 @@ export const useFarourite = () => {
           } 
     };
     return{
-        changeFavourites,
-        fetchfavouriteJobs
+        changefavorites,
+        fetchfavorites
     }
 }

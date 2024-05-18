@@ -1,10 +1,12 @@
 
 import { useLoadingStore } from "@/store/loading";
-import { DEFAULT_COMMON_LIST_QUERY } from "@/common/contant/contants";
+import { DEFAULT_COMMON_LIST_QUERY, DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
 import { ref } from "vue";
 import { IHouse } from "./interfaces";
 import { houseApi } from "./house.api";
+import { showErrors } from "@/common/helper/helpers";
 export const useHouse = () => {
+  const query_by_house = DEFAULT_COMMON_LIST_QUERY_BY_HOME;
   const loading = useLoadingStore();
   const houses = ref <IHouse[]>([])
   const query = DEFAULT_COMMON_LIST_QUERY
@@ -67,8 +69,45 @@ export const useHouse = () => {
       console.error("Error Fetching:", error);
     }
   };
+  const getHouse=async(id:any)=>{
+    try{
+      return await houseApi.getData(id);
+    }catch (error) {
+      console.error("Error GetDetail:", error);
+    }
+  };
+  const fetchRelatedHouses =async(id:string) =>{
+    try {
+      const res = await houseApi.RelatedJobs(query_by_house,id);
+      if (res.success) {
+        return {
+          items: res.items,
+          totalItems: res.totalItems,
+        };
+      }
+      return {
+        items: [],
+        totalItems: 0,
+      };
+    } catch (error) {
+      console.error("Error fetchRelatedJobs:", error);
+    } 
+  }
+  const getById=async(id:any)=>{
+    try{
+      const res:any=await houseApi.ItemById(id);
+      if (res.errors !== undefined) {
+        showErrors(res.errors);
+    }
+      return res.data;
+    }catch (error) {
+      console.error("Error GetDetail:", error);
+    }
+  };
   return {
     houses, 
+    fetchRelatedHouses,
+    getHouse,
     fetchHouse, 
     query, 
     searchHouse,

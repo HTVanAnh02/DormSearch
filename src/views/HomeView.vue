@@ -1,49 +1,53 @@
 <template>
   <v-app>
-    <NarbarVue/>
+    <NarbarVue />
     <Slidebar />
     <v-row>
       <v-card cols="8" sm="12" md="12" lg="4" class="custom-card" style="top: 24px; border-radius: 4px;">
         <v-row class="ml-3 mt-2">
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select v-model="cityId" density="compact" label="Khu vực" variant="outlined">
-              <v-option v-for="item in itemsListCitys" :key="item.cityId" :value="item.cityId" :label="item.cityName" />
-            </v-select>
+            <v-select label="Khu vực" v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
+              density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select v-model="cityId" density="compact" label="Thành Phố" variant="outlined">
+            <v-select label="Thành Phố" v-model="cityId" :items="itemsListCitys" item-title="cityName" item-value="cityId"
+              density="compact" variant="outlined"></v-select>
+          </v-col>
+          <v-col cols="12" sm="6" md="6" lg="3">
+            <v-select density="compact" label="Giá" :items="prices" item-title="text" item-value="value" variant="outlined">
               <v-option>
               </v-option>
             </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select v-model="cityId" density="compact" label="Giá" variant="outlined">
+            <v-select density="compact" label="Diện tích" variant="outlined">
               <v-option>
               </v-option>
             </v-select>
           </v-col>
-          <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select v-model="cityId" density="compact" label="Diện tích" variant="outlined">
-              <v-option>
-              </v-option>
-            </v-select>
-          </v-col>
+          <v-row class="d-flex align-center justify-center ma-2">
+            <div style="width: 34%; display: flex; align-items: center;">
+              <v-text-field clearable density="compact" variant="solo-filled" label="Tìm kiếm" @change="searchData()"
+                v-model="search" style="background-color: #F0F0F0; width: 15%;border-radius: 20px !important;"
+                prepend-inner-icon="mdi-magnify" single-line flat hide-details rounded></v-text-field>
+            </div>
+          </v-row>
         </v-row>
         <v-row class="mr-3 ml-3 mt-1">
-          <v-col class="d-flex flex-column justify-center align-center" v-for="item in products" :key="item" cols="12"
+          <v-col class="d-flex flex-column justify-center align-center" v-for="item in houses" :key="item" cols="12"
             sm="6" md="4" lg="3" style="margin-top: 16px;">
             <v-card hover variant="flat" style="min-height: 480px;width: 350px;" class="mb-3 my-card">
-              <v-img class="mx-auto ml-4 mr-4 mt-1" width="320px" height="224px" :src="item.image"></v-img>
+              <v-img class="mx-auto ml-4 mr-4 mt-1" width="320px" height="224px" :src="item.photos"></v-img>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="max-width: 350px;font-size: 20px;line-height: 24px; height: 90px;font-family: Inter, sans-serif;;color: #19191D;">
-                {{item.name }}</v-card-text>
+                {{ item.housesName }}</v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="font-family: Inter, sans-serif;;color:#000000;max-width: 350px;font-size: 24px;font-weight: 700;padding: auto;height: 36px;">
                 {{ item.price }}
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4 mt-1"
                 style="margin-top: 8px;;height: 60px;font-size: 16px;font-family: Inter, sans-serif;;color: #787885;">{{
-                  item.description }}</v-card-text>
+                  item.title }}</v-card-text>
               <v-row style="margin-top: 5px;margin-left: 6px;" class="mb-4">
                 <v-col class="ml-3 mt-2" cols="5" style="display: flex;">
                   <v-icon color="#FB8200" size="x-small">mdi mdi-star</v-icon>
@@ -80,7 +84,6 @@
   </v-app>
   <HouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
 </template>
-
 <script lang="ts" setup>
 import Slidebar from "@/components/Application/Slidebar.vue";
 import Footer from "@/components/Application/Footer.vue";
@@ -88,147 +91,92 @@ import { reactive, ref } from "vue"
 import { useLoadingStore } from "@/store/loading";
 import HouseDialog from "@/layouts/Admin/House/HouseDialog.vue";
 import NarbarVue from "@/components/Application/Narbar.vue";
+import { onMounted } from "vue";
+import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
+import { useHouse } from "@/layouts/Admin/House/house.service";
+import { useFavorites } from "@/layouts/Home/Favorites/Service/favorite.service";
+import { useArea } from "@/layouts/Admin/Area/Services/area.service";
+import { useCity } from "@/layouts/Admin/City/Services/city.service";
 const loading = useLoadingStore();
 const isShowDialog = ref(false);
-const dialog = ref(false);
-const itemsListCitys = ref<any | null>([]);
-const itemsListSalarys = ref<any | null>([]);
-const itemsListFormofworks = ref<any | null>([]);
-const itemsListProfessions = ref<any | null>([]);
-const itemsListWorkexperienceks = ref<any | null>([]);
-const search = ref("");
-const cityId = ref("");
-const priceId = ref("");
-const acreageId = ref("");
-const roomstyleId = ref("");
 const totalItems = ref<Number | undefined>(0);
 const total = ref<number>(0);
+const search = ref();
+const houses = ref<any | undefined>([]);
+const { citysItem } = useCity()
+const { areasItem } = useArea()
+const itemsListCitys = ref([]);
+const itemsListAreas = ref([]);
+const { fetchHouse, } = useHouse();
+const prices=reactive([
+  {
+      value:'từ thấp đền cao',text:'từ thấp đền cao'
+  },
+  {
+      value:'từ cao đến thấp',text:'từ cao đến thấp'
+  }
+])
 let page = ref(1);
 let lengthPage = ref<Number | undefined>(100);
+const { fetchfavorites, changefavorites } = useFavorites();
 const liked = ref(true);
-const loadData = async () => {
+const AreasId = ref(null);
+const cityId = ref(null);
+
+const searchData = async () => {
   loading.setLoading(true);
-  // const itemcitys = await cityServiceApi.itemsList();
-  // itemsListCitys.value = itemcitys.data;
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.keyword = search.value;
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
+  // const data = await searchJobHome();
+  // houses.value = data?.items;
+  // totalItems.value = data?.totalItems;
+  // lengthPage.value = Math.ceil(data?.totalItems / 10) * 10;
+  // total.value = data?.totalItems;
+  // if (isAuthenticated.value) {
+  //   // loadFavourites();
+  // }
+  loading.setLoading(false);
+
+};
+const loadlike = async () => {
+  const favorites = await fetchfavorites();
+  // favorites.value = favorites?.data;
+}
+onMounted(() => {
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = "";
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.areaId = "";
+  loadHouse();
+  loadData();
+});
+
+const loadData = async () => {
+  const res = await citysItem()
+    if (res) {
+        itemsListCitys.value = res.items;
+        console.log(res.items);
+        console.log(itemsListCitys.value);
+    }
+    const res1 = await areasItem()
+    if (res1) {
+        itemsListAreas.value = res1.items;
+        console.log(res1.items);
+        console.log(itemsListAreas.value);
+    }
+  loading.setLoading(true);
   loading.setLoading(false);
 };
-const addHouses = () => {
-  isShowDialog.value = true
-}
 const close = () => {
   isShowDialog.value = false
 }
-const products = reactive([
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
-  {
-    image: "https://cloud.muaban.net/images/thumb-detail/2024/04/16/350/34e4623d5a4e4e41964fc52d51954780.jpg",
-    name: "Cho thuê phòng trọ đẹp kiểu CCMN 28m2 full đồ tại đường Cầu Giấy, HN",
-    description: "🏡 Địa chỉ: Số 203 ngõ 132/46, đường Cầu Giấy, phường Quan Hoa, quận Cầu Giấy, Hà Nội ",
-    price: "5.200.000 đ/tháng",
-    cool: false,
-    sale: 36,
-    feedback: 4.7
-  },
+const loadHouse = async () => {
+  loading.setLoading(true);
+  const data = await fetchHouse();
+  houses.value = data?.data;
+  totalItems.value = data?.totalItems;
+  lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
+  total.value = data?.totalItems;
+};
 
-]);
 </script>
 
 <style scop>
@@ -281,9 +229,7 @@ const products = reactive([
 
 .my-card {
   max-height: 200px;
-  /* Đặt chiều cao tối đa của thẻ */
   overflow: hidden;
-  /* Ẩn phần nội dung vượt quá chiều cao */
 }
 
 .my-card-text {

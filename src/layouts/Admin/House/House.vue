@@ -19,7 +19,7 @@
             <thead style="height: 47px;">
               <tr>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  Ảnh nhà trọ
+                  Ảnh 
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Tên nhà trọ
@@ -40,7 +40,7 @@
                   Địa chỉ
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
-                  DateSubmitted
+                  Ngày đăng
                 </th>
                 <th class="text-left text-uppercase text-medium-emphasis">
                   Liên hệ
@@ -66,16 +66,16 @@
                     {{ item.title }}</p>
                 </td>
                 <td>{{ item.interior }}</td>
-                <td>VND{{ formatNumberWithCommas(item.price) }}</td>
+                <td>{{ formatNumberWithCommas(item.price) }}.VND</td>
                 <td>{{ item.acreage }}</td>
                 <td>{{ item.addressHouses }}</td>
                 <td class="v-text-truncate">
                   {{
-                    i.dateSubmitted === undefined ||
-                        i.dateSubmitted === "" ||
-                        i.dateSubmitted === null
+                    item.dateSubmitted === undefined ||
+                    item.dateSubmitted === "" ||
+                    item.dateSubmitted === null
                         ? ""
-                        : formatDatetime(i.dateSubmitted)
+                        : formatDatetime(item.dateSubmitted)
                 }}
                 </td>
                 <td>{{ item.contact }}</td>
@@ -146,7 +146,7 @@ const search = ref(null)
 const TotalHouse = ref(null)
 const id = ref('');
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
-import { checkSearchEnter, showSuccessNotification } from '../../../common/helper/helpers'
+import { checkSearchEnter, formatNumberWithCommas, showSuccessNotification } from '../../../common/helper/helpers'
 import { useHouse } from './house.service';
 import { houseApi } from './house.api';
 const { fetchHouse, houses, query, searchHouse } = useHouse()
@@ -155,6 +155,14 @@ onMounted(async () => {
   query.page = 1
   loadData()
 })
+const formatDatetime = (date) => {
+    const dateObject = new Date(date);
+    const ngay = dateObject.getDate().toString().padStart(2, "0");
+    const thang = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+    const nam = dateObject.getFullYear();
+    const ngayThangNam = `${thang}/${ngay}/${nam}`;
+    return ngayThangNam;
+};
 const loadData = async () => {
   const res = await fetchHouse()
   if (res.data) {

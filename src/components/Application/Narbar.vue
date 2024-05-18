@@ -35,11 +35,11 @@
         </v-list>
       </v-menu>
     </div>
-    <div style="width: 34%; display: flex; align-items: center;">
-      <v-text-field clearable density="compact" variant="solo-filled" label="Tìm kiếm"
+    <!-- <div style="width: 34%; display: flex; align-items: center;">
+      <v-text-field clearable density="compact" variant="solo-filled" label="Tìm kiếm" @change="searchData()" v-model="search" 
         style="background-color: #F0F0F0; width: 15%;border-radius: 20px !important;" prepend-inner-icon="mdi-magnify"
         single-line flat hide-details rounded></v-text-field>
-    </div>
+    </div> -->
     <v-row style="width: 33%; " class="d-flex align-center justify-space-between">
       <v-col cols="4">
       </v-col>
@@ -102,7 +102,7 @@
     </v-row>
   </v-app-bar>
   <HouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
-  <!-- <ConfirmLogout :dialog="dialog" @close="dialog = false" @Logout="Logout" /> -->
+  <ConfirmLogout :dialog="dialog" @close="dialog = false" @Logout="Logout" />
 </template>
 <script lang="ts" setup>
 import logo from '../../assets/image/logo.png'
@@ -111,12 +111,18 @@ import HouseDialog from "@/layouts/Home/Houses/HomeHouseDialog.vue";
 import { ref, onMounted } from "vue";
 import { AuthStore } from '../../Auth/authStore';
 import { showErrorNotification } from '@/common/helper/helpers';
+import { useLoadingStore } from '@/store/loading';
+import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from '@/common/contant/contants';
+import { useHouse } from '@/layouts/Admin/House/house.service';
 const dialog = ref(false);
+const loading = useLoadingStore();
 const { isAuthenticated, logout } = AuthStore();
-
+const search = ref("");
+const {searchHouse} = useHouse();
 onMounted(() => {
   checkQuyen()
 });
+
 const Logout = async () => {
   const res = await logout();
   if (res) {

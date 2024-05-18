@@ -48,26 +48,15 @@
                     <span class="text-capitalize">Đăng</span>
                     <span class="text-lowercase">ký</span>
                 </v-btn>
-                <div class="container"
-                    style="display: flex; justify-content: space-between; width: 425px;">
-                    <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8 rounded-button"
-                            style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
-                            <v-img :src="google" class="mr-2"
+                <div class="container" style="display: flex; justify-content: space-between; width: 425px;">
+                    <v-btn  @click="registerform.handleRegister" @enter="registerform.handleRegister" block
+                        class="mb-5 rounded-button" color="#e0e0e0"
+                        style="font-family: 'Public Sans', sans-serif; width: 425px; height: 45px; font-size: 16px; ">
+                        <v-img :src="google" class="mr-2"
                                 style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
                             <span class="text-capitalize"
                                 style="color: secondary; vertical-align: middle;">Google</span>
-                        </v-btn>
-                    </div>
-                    <div class="text-subtitle-1 text-medium-emphasis" style="width: 200px; height:60px;">
-                        <v-btn @click="registerform.handleRegister" @enter="registerform.handleRegister" block class="mb-8 rounded-button"
-                            style="font-family: 'Public Sans', sans-serif; width: 425px; height:40px; font-size: 16px; ">
-                            <v-img :src="facebook" class="mr-2"
-                                style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />
-                            <span class="text-capitalize"
-                                style="color: secondary; vertical-align: middle;">Facebook</span>
-                        </v-btn>
-                    </div>
+                    </v-btn>
                 </div>
                 <div class="text-center" style=" width: 425px; height: 20px;">
                     <a class="text-decoration-none text-center"

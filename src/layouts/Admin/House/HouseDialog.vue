@@ -17,7 +17,7 @@
                     </div>
                     <div style="display: block;">
                         <span>Khu vực</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
+                        <v-select v-model="areasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
                             density="compact" variant="outlined"></v-select>
                     </div>
                     <div style="display: block;">
@@ -53,10 +53,10 @@
                     </div>
                     <div style="display: block; ">
                         <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
-                        <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ nhà trọ"
-                            :error-messages="addressError" required style="background-color: white;" density="compact"
+                        <v-text-field class="mt-1" v-model="addresshouses" placeholder="Nhập địa chỉ nhà trọ"
+                            :error-messages="addresshousesError" required style="background-color: white;" density="compact"
                             single-line hide-details variant="outlined"></v-text-field>
-                        <span style="color:red">{{ addressError }}</span>
+                        <span style="color:red">{{ addresshousesError }}</span>
                     </div>
                     <div style="display: block; ">
                         <span>Ngày đăng</span><span class="text-blue ml-2">*</span>
@@ -120,7 +120,7 @@ const itemsListCitys = ref([]);
 const itemsListAreas = ref([]);
 const itemsListRoomstyles = ref([]);
 const cityId = ref('');
-const AreasId = ref('');
+const areasId = ref('');
 const roomstyleId = ref('');
 const loadData = async () => {
     const res = await citysItem()
@@ -242,10 +242,8 @@ const { value: acreage, errorMessage: acreageError } = useField(
 );
 const submit = async () => {
     try {
-        // console.log("Đã vào")
-        // console.log(isAuthenticated)
+        
         if (isAuthenticated) {
-            console.log(imageFile)    
             loading.setLoading(true)
             const formData = new FormData();
             formData.append('HousesName', housename.value);
@@ -255,9 +253,10 @@ const submit = async () => {
             formData.append('Acreage', acreage.value);
             formData.append('AddressHouses', addresshouses.value);
             formData.append('DateSubmitted', datesubmitted.value);
-            formData.append('Contact', contact.value);
+            formData.append('AreasId', areasId.value);
+            formData.append('CityId', cityId.value);
+            formData.append('RoomstyleId',roomstyleId.value);
             formData.append('file', imageFile.value);
-            
             if (props.itemEdit == null) {
                 const data = await houseApi.createData(formData);
                 if (!data.success) {
@@ -272,7 +271,7 @@ const submit = async () => {
                 }
             }
             else {
-                const data = await houseApi.updateProduct(props.itemEdit.id, formData);
+                const data = await houseApi.updateData(props.itemEdit.id, formData);
                 console.log(data)
                 if (!data.success) {
                     showWarningsNotification(data.message)

@@ -96,8 +96,8 @@ let idEdit = ref(null)
 let idDelete = ref(null)
 let lengthPage = ref(1)
 let page = ref(1)
-const search = ref(null)
 const TotalCitys = ref(null)
+const search = ref(null)
 const id = ref('');
 import { useCity } from '../City/Services/city.service'
 import { DEFAULT_LIMIT_FOR_PAGINATION } from '@/common/contant/contants';
