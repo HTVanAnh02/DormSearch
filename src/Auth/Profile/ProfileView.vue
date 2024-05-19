@@ -1,70 +1,81 @@
 <template>
-    
-    <v-container justify="center" align="center">
-        <v-card  max-width="500px" class="rounded-0">
-            <v-toolbar class="text-center bold-text" style="background-color: #46694f;color: white;"
-                title="Thông tin cá nhân"></v-toolbar>
-                <v-form @submit.prevent="submit">
-                    <v-card style="border-radius: 12px !important;">
-                        <v-container class="mt-9" style="background-color: #F7F8FA">
-                            <div style="display: block; margin-top: 12px;">
+    <v-app>
+        <v-row class="float-end mt-4">
+            <NarbarVue />
+        </v-row>
+        <v-divider></v-divider>
+        <v-container justify="center" align="center" class="mt-12">
+            <v-card max-width="500px" class="rounded-0">
+                <v-toolbar class="text-center bold-text" style="background-color: #FADADD;color: black;"
+                    title="Thông tin cá nhân" ></v-toolbar>
+                <v-form @submit.prevent="submit" >
+                    <v-card style="border-radius: 12px !important;background-color: #F7F8FA;">
+                        <v-container style="background-color: #F7F8FA">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Tên người dùng</span> <span class="text-blue ml-2">*</span>
                                 <v-text-field class="mt-1" v-model="fullname" placeholder="Nhập tên người dùng"
                                     style="background-color: white;" density="compact" single-line hide-details
                                     variant="outlined"></v-text-field>
                                 <span style="color:red">{{ fullnameError }}</span>
                             </div>
-                            <div style="display: block; margin-top: 12px;">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Email</span><span class="text-blue ml-2">*</span>
                                 <v-text-field class="mt-1" v-model="email" placeholder="Nhập email"
                                     style="background-color: white;border-radius: 6px;" density="compact" single-line
                                     hide-details variant="outlined"></v-text-field>
                                 <span style="color:red">{{ emailError }}</span>
                             </div>
-                            <div style="display: block; margin-top: 12px;">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Giới tính</span><span class="text-blue ml-2">*</span>
                                 <v-text-field class="mt-1" v-model="gender" placeholder="Nhập giới tính"
                                     style="background-color: white;border-radius: 6px;" density="compact" single-line
                                     hide-details variant="outlined"></v-text-field>
                                 <span style="color:red">{{ genderError }}</span>
                             </div>
-                            <div style="display: block; margin-top: 12px;">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Số điện thoại</span><span class="text-blue ml-2">*</span>
                                 <v-text-field class="mt-1" v-model="phone" placeholder="Nhập số điện thoại"
                                     style="background-color: white;border-radius: 6px;" density="compact" single-line
                                     hide-details variant="outlined"></v-text-field>
                                 <span style="color:red">{{ phoneError }}</span>
                             </div>
-                            <div style="display: block; margin-top: 12px;">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
                                 <v-text-field class="mt-1" v-model="address" placeholder="Nhập địa chỉ"
                                     style="background-color: white;border-radius: 6px;" density="compact" single-line
                                     hide-details variant="outlined"></v-text-field>
                                 <span style="color:red">{{ addressError }}</span>
                             </div>
-                            <div style="display: block; margin-top: 12px;">
+                            <div style="display: block; margin-top: 12px; text-align: left;">
                                 <span>Ảnh đại diện</span><span v-show="!itemEdit" class="text-blue ml-2">*</span><br>
                                 <input @change="handleImageChange" type="file" class="custom-file-input mt-1" />
                                 <span style="color:red">{{ errorFile }}</span>
                             </div>
                         </v-container>
-                        <v-card-actions class="pr-4">
-                            <v-spacer></v-spacer>
+                        <v-card-actions class="d-flex justify-content-between">
                             <v-btn width="70px" variant="outlined" height="32px"
-                                style="font-family: Public Sans, sans-serif; font-size: 14px; margin-right: 16px; border: 1px solid #A1A9B8;border-radius: 6px;"
+                                style="font-family: Public Sans, sans-serif; font-size: 14px; border: 1px solid #A1A9B8;border-radius: 6px;"
                                 @click="close()" class="text-capitalize" text="Hủy"></v-btn>
+                            <v-spacer></v-spacer>
                             <v-btn width="105px" height="32px"
                                 style="font-family: Public Sans, sans-serif; font-size: 14px; border-radius: 6px;"
                                 type="submit" color="#0F60FF" class="text-capitalize" variant="elevated">
                                 Cập nhật
                             </v-btn>
                         </v-card-actions>
+
                     </v-card>
                 </v-form>
-        </v-card>
-    </v-container>
+            </v-card>
+        </v-container>
+        <v-row class="float-end mt-4">
+            <Footer />
+        </v-row>
+    </v-app>
 </template>
 <script setup>
+import NarbarVue from "@/components/Application/Narbar.vue";
+import Footer from "@/components/Application/Footer.vue";
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
 import { ref, onUpdated, watch } from 'vue';
@@ -223,3 +234,27 @@ const close = () => {
 }
 
 </script>
+<style scoped>
+.custom-file-input {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-input:hover {
+    background-color: #e0e0e0;
+}
+
+* {
+    font-family: Public Sans, sans-serif;
+    font-size: 14px;
+}
+</style>

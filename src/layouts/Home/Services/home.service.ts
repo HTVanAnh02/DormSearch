@@ -2,11 +2,14 @@
 import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
 import { homeApi } from "./home.api";
 import { showErrors } from "@/common/helper/helpers";
+import { IHouse } from "@/common/interface/interfaces";
+import { ref } from "vue";
 export const useHome = () => {
+  const houses = ref <IHouse[]>([])
   const query_by_home = DEFAULT_COMMON_LIST_QUERY_BY_HOME;
   const fetchHome = async () => {
     try {
-      const res = await homeApi.ListJobsByHome(query_by_home);
+      const res = await homeApi.ListHouseByHome(query_by_home);
       if (res.errors !== undefined) {
         showErrors(res.errors);
     }
@@ -27,7 +30,7 @@ export const useHome = () => {
   const searchHome = async () => {
     try {
 
-      const res = await homeApi.ListJobsByHome(query_by_home);
+      const res = await homeApi.ListHouseByHome(query_by_home);
       if (res.success) {
         return {
           items: res.items,
@@ -54,6 +57,7 @@ export const useHome = () => {
     }
   };
   return {
+    houses,
     query_by_home,
     fetchHome,
     searchHome,

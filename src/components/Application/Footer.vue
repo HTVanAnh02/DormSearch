@@ -1,5 +1,5 @@
 <template>
-    <v-footer dark padless>
+    <v-footer v-footer dark padless class="fluid" style="background-color: #F7F8FA;">
         <v-card cols="8" sm="12" md="12" lg="4" flat tile class="black white--text py-6 px-14"
             style=" border-radius: 12px;background-color: #F7F8FA">
             <v-row>
@@ -49,3 +49,10 @@
 <script lang="ts" setup>
 import logo from "../../assets/image/logo.png"
 </script>
+<style scoped>
+.footer {
+  width: 100%;
+  padding: 20px; /* Tùy chỉnh padding nếu cần */
+  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước footer */
+}
+</style>

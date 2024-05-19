@@ -17,7 +17,7 @@
                     </div>
                     <div style="display: block;">
                         <span>Khu vực</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
+                        <v-select v-model="areasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
                             density="compact" variant="outlined"></v-select>
                     </div>
                     <div style="display: block;">
@@ -104,11 +104,11 @@ import * as yup from 'yup';
 import { ref, watch, onUpdated, onMounted } from 'vue';
 import { showSuccessNotification, showWarningsNotification } from '@/common/helper/helpers';
 import { useLoadingStore } from '@/store/loading';
+import { houseApi } from '@/layouts/Admin/House/house.api';
 import { AuthStore } from '@/Auth/authStore';
 import { useCity } from '@/layouts/Admin/City/Services/city.service';
 import { useArea } from '@/layouts/Admin/Area/Services/area.service';
 import { useRoom } from '@/layouts/Admin/Roomstyle/Services/roomstyle.service';
-import { houseApi } from '@/layouts/Admin/House/house.api';
 const { isAuthenticated } = AuthStore();
 const loading = useLoadingStore();
 const props = defineProps(['itemEdit'])
@@ -120,7 +120,8 @@ const itemsListCitys = ref([]);
 const itemsListAreas = ref([]);
 const itemsListRoomstyles = ref([]);
 const cityId = ref('');
-const AreasId = ref('');
+const areasId = ref('');
+const houseId = ref('');
 const roomstyleId = ref('');
 const loadData = async () => {
     const res = await citysItem()
@@ -144,6 +145,7 @@ const loadData = async () => {
 }
 watch(() => props.itemEdit, (newValue,) => {
     resetForm()
+
     if (props.itemEdit !== null) {
         getHouseById(newValue)
     }
@@ -151,6 +153,7 @@ watch(() => props.itemEdit, (newValue,) => {
 
 const getHouseById = (item) => {
     console.log(item)
+    houseId.value = item.housesId;
     housename.value = item.housename;
     title.value = item.title;
     interior.value = item.interior;
@@ -240,25 +243,24 @@ const { value: acreage, errorMessage: acreageError } = useField(
         .string()
         .required('Không được bỏ trống')
 );
-
 const submit = async () => {
     try {
-        console.log("Đã vào")
-        console.log(isAuthenticated)
+        
         if (isAuthenticated) {
-            console.log(addresshouses)    
             loading.setLoading(true)
             const formData = new FormData();
             formData.append('HousesName', housename.value);
             formData.append('Title', title.value);
+            formData.append('Interior', interior.value);
             formData.append('Price', price.value);
-            formData.append('Contact', contact.value);
             formData.append('Acreage', acreage.value);
             formData.append('AddressHouses', addresshouses.value);
             formData.append('DateSubmitted', datesubmitted.value);
-            formData.append('Interior', interior.value);
+            formData.append('AreasId', areasId.value);
+            formData.append('CityId', cityId.value);
+            formData.append('RoomstyleId',roomstyleId.value);
             formData.append('file', imageFile.value);
-            
+
             if (props.itemEdit == null) {
                 const data = await houseApi.createData(formData);
                 if (!data.success) {
@@ -272,8 +274,10 @@ const submit = async () => {
                     empty()
                 }
             }
+
             else {
-                const data = await houseApi.updateProduct(props.itemEdit.id, formData);
+                console.log(houseId.value);
+                const data = await houseApi.updateData(houseId.value, formData);
                 console.log(data)
                 if (!data.success) {
                     showWarningsNotification(data.message)

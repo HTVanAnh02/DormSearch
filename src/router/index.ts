@@ -63,14 +63,22 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
 
-  // {
-  //   path: '/homedetail',
-  //   name: PageName.HOMEDETAIL,
-  //   component: () => import('../layouts/Home/Houses/Housesdetail.vue'),
-  //   meta: {
-  //     public: true,
-  //   },
-  // },
+  {
+    path: '/homehouse',
+    name: PageName.HOMEHOUSE,
+    component: () => import('../layouts/Home/Houses/HomeHouse.vue'),
+    meta: {
+      public: true,
+    },
+  },
+  {
+    path: '/homedetail/:id',
+    name: PageName.HOMEDETAIL,
+    component: () => import('../layouts/Home/Houses/Housesdetail.vue'),
+    meta: {
+      public: true,
+    },
+  },
   {
     path: '/404',
     name: PageName.NOT_FOUND_PAGE,

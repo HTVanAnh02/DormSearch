@@ -32,5 +32,5 @@ class HouseApiService extends ApiService {
   }
 }
 export const houseApi = new HouseApiService(
-  { baseUrl: "/houses" }, axiosInstance
+  { baseUrl: "/Houses" }, axiosInstance
 );

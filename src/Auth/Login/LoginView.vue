@@ -44,7 +44,7 @@
                     <span class="text-lowercase">nhập</span>
                 </v-btn>
                 <div class="container" style="display: flex; justify-content: space-between; width: 425px;">
-                    <v-btn :disabled="!isReady" @click="() => login()" block class="mb-5 rounded-button" color="#e0e0e0"
+                    <v-btn :disabled="!isReady" @click="() => login()" block class="mb-5 rounded-button" color="#5A5C6F"
                         style="font-family: 'Public Sans', sans-serif; width: 425px; height: 45px; font-size: 16px; ">
                         <v-img :src="google" class="mr-2"
                             style="width: 24px; height: 24px; margin-right: 8px; vertical-align: middle;" />

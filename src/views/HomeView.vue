@@ -6,15 +6,16 @@
       <v-card cols="8" sm="12" md="12" lg="4" class="custom-card" style="top: 24px; border-radius: 4px;">
         <v-row class="ml-3 mt-2">
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Khu vực" v-model="AreasId" :items="itemsListAreas" item-title="areasName" item-value="areasId"
-              density="compact" variant="outlined"></v-select>
+            <v-select label="Khu vực" v-model="AreasId" :items="itemsListAreas" item-title="areasName"
+              item-value="areasId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Thành Phố" v-model="cityId" :items="itemsListCitys" item-title="cityName" item-value="cityId"
-              density="compact" variant="outlined"></v-select>
+            <v-select label="Thành Phố" v-model="cityId" :items="itemsListCitys" item-title="cityName"
+              item-value="cityId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select density="compact" label="Giá" :items="prices" item-title="text" item-value="value" variant="outlined">
+            <v-select density="compact" label="Giá" :items="prices" item-title="text" item-value="value"
+              variant="outlined">
               <v-option>
               </v-option>
             </v-select>
@@ -40,7 +41,9 @@
               <v-img class="mx-auto ml-4 mr-4 mt-1" width="320px" height="224px" :src="item.photos"></v-img>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="max-width: 350px;font-size: 20px;line-height: 24px; height: 90px;font-family: Inter, sans-serif;;color: #19191D;">
-                {{ item.housesName }}</v-card-text>
+                <router-link :to="`/homedetail/${item.housesId}`" style="text-decoration: none;" class="detail__link">{{
+                  item.housesName }}</router-link>
+              </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="font-family: Inter, sans-serif;;color:#000000;max-width: 350px;font-size: 24px;font-weight: 700;padding: auto;height: 36px;">
                 {{ item.price }}
@@ -61,11 +64,24 @@
                     style="font-size: 14px; width: 88px; height: 32px; color: #5E6366; font-family: Roboto, sans-serif; font-weight: bold;">4.05</span>
                 </v-col>
                 <v-col class="text-right" cols="6">
-                  <v-btn class="text-capitalize"
+                  <!-- <v-btn class="text-capitalize"
                     style="width: 88px; height: 32px; margin-right: 6px;font-family: Inter, sans-serif;font-size: 14px;"
                     color="#2979FF" size="small" variant="outlined">
                     <v-icon style="width: 14px; height: 12.85px;">mdi-heart-outline</v-icon>
                     <div style="margin-left: 7px;">like</div>
+                  </v-btn> -->
+                  <v-btn class="text-capitalize" @click="toggleLike"
+                    :style="{ width: '88px', height: '32px', marginRight: '6px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: like ? '#FF5252' : '#2979FF' }"
+                    size="small" variant="outlined">
+                    <v-icon style="width: 14px; height: 12.85px;">mdi-heart-outline</v-icon>
+                    <div style="margin-left: 7px;">{{ like ? 'Unlike' : 'Like' }}</div>
+                    <div class="flex justify-center items-center text-sm cursor-pointer">
+                      <i v-if="isAuthenticated"
+                        :class="{ 'ri-heart-line': !showLikeByHouseId(item.jobId).isFavorites_House, 'ri-heart-fill text-red-500': showLikeByHouseId(item.jobId).isFavorites_House }"
+                        class="text-3xl cursor-pointer m-2"
+                        @click="toggleLike(item.jobId, !showLikeByHouseId(item.jobId).isFavorites_House, showLikeByHouseId(item.jobId).favorites_House_Id)"></i>
+                      <i v-else class="text-3xl cursor-pointer m-2 ri-heart-line"></i>
+                    </div>
                   </v-btn>
                 </v-col>
               </v-row>
@@ -82,14 +98,14 @@
       <Footer />
     </v-row>
   </v-app>
-  <HouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
+  <HomeHouseDialog v-model="isShowDialog" @close="close()" @loadData="loadData()" />
 </template>
 <script lang="ts" setup>
 import Slidebar from "@/components/Application/Slidebar.vue";
 import Footer from "@/components/Application/Footer.vue";
 import { reactive, ref } from "vue"
 import { useLoadingStore } from "@/store/loading";
-import HouseDialog from "@/layouts/Admin/House/HouseDialog.vue";
+import HomeHouseDialog from '@/layouts/Home/Houses/HomeHouseDialog.vue';
 import NarbarVue from "@/components/Application/Narbar.vue";
 import { onMounted } from "vue";
 import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
@@ -97,29 +113,33 @@ import { useHouse } from "@/layouts/Admin/House/house.service";
 import { useFavorites } from "@/layouts/Home/Favorites/Service/favorite.service";
 import { useArea } from "@/layouts/Admin/Area/Services/area.service";
 import { useCity } from "@/layouts/Admin/City/Services/city.service";
+import { AuthStore } from "@/Auth/authStore";
+import { showErrors } from "@/common/helper/helpers";
 const loading = useLoadingStore();
+const { fetchfavorites, changefavorites } = useFavorites();
 const isShowDialog = ref(false);
 const totalItems = ref<Number | undefined>(0);
 const total = ref<number>(0);
 const search = ref();
+// const like = ref(true);
 const houses = ref<any | undefined>([]);
 const { citysItem } = useCity()
 const { areasItem } = useArea()
 const itemsListCitys = ref([]);
 const itemsListAreas = ref([]);
-const { fetchHouse, } = useHouse();
-const prices=reactive([
+const { fetchHouse,searchHouse } = useHouse();
+const { isAuthenticated } = AuthStore();
+const favorites_houses = ref<any | undefined>([]);
+const prices = reactive([
   {
-      value:'từ thấp đền cao',text:'từ thấp đền cao'
+    value: 'từ thấp đền cao', text: 'từ thấp đền cao'
   },
   {
-      value:'từ cao đến thấp',text:'từ cao đến thấp'
+    value: 'từ cao đến thấp', text: 'từ cao đến thấp'
   }
 ])
 let page = ref(1);
 let lengthPage = ref<Number | undefined>(100);
-const { fetchfavorites, changefavorites } = useFavorites();
-const liked = ref(true);
 const AreasId = ref(null);
 const cityId = ref(null);
 
@@ -127,20 +147,54 @@ const searchData = async () => {
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.keyword = search.value;
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
-  // const data = await searchJobHome();
-  // houses.value = data?.items;
-  // totalItems.value = data?.totalItems;
-  // lengthPage.value = Math.ceil(data?.totalItems / 10) * 10;
-  // total.value = data?.totalItems;
-  // if (isAuthenticated.value) {
-  //   // loadFavourites();
-  // }
+  const data = await searchHouse();
+  houses.value = data?.items;
+  totalItems.value = data?.totalItems;
+  lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
+  total.value = data?.totalItems;
+  if (isAuthenticated) {
+    loadlike();
+  }
   loading.setLoading(false);
 
 };
+const showLikeByHouseId = (id: any) => {
+  const filteredHouse = favorites_houses.value.filter((x: any) => x.jobId === id);
+  if (filteredHouse.length > 0) {
+    return {
+      isFavorites_House: filteredHouse[0].isFavorites_House,
+      favorites_House_Id: filteredHouse[0].favorites_House_Id
+    };
+  } else {
+    return {
+      isFavorites_House: false,
+      favorites_House_Id: ''
+    };
+  }
+}
+const toggleLike = async (item: any, like: any, favorites_House_Id: any) => {
+  if (isAuthenticated) {
+    console.log(item, like, favorites_House_Id);
+    const formData = new FormData();
+    formData.append('houseId', item);
+    formData.append('isFavorites_House', like);
+    formData.append('favorites_House_Id', favorites_House_Id);
+    const res = await changefavorites(formData);
+    if (res.success) {;
+      loadlike();
+
+    }
+    else {
+      console.log(res.errors);
+      if (res.errors !== undefined) {
+        showErrors(res.errors);
+      }
+    }
+  }
+}
 const loadlike = async () => {
   const favorites = await fetchfavorites();
-  // favorites.value = favorites?.data;
+  favorites_houses.value = favorites?.data;
 }
 onMounted(() => {
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = "";
@@ -151,23 +205,27 @@ onMounted(() => {
 
 const loadData = async () => {
   const res = await citysItem()
-    if (res) {
-        itemsListCitys.value = res.items;
-        console.log(res.items);
-        console.log(itemsListCitys.value);
-    }
-    const res1 = await areasItem()
-    if (res1) {
-        itemsListAreas.value = res1.items;
-        console.log(res1.items);
-        console.log(itemsListAreas.value);
-    }
+  if (res) {
+    itemsListCitys.value = res.items;
+    console.log(res.items);
+    console.log(itemsListCitys.value);
+  }
+  const res1 = await areasItem()
+  if (res1) {
+    itemsListAreas.value = res1.items;
+    console.log(res1.items);
+    console.log(itemsListAreas.value);
+  }
   loading.setLoading(true);
   loading.setLoading(false);
 };
 const close = () => {
   isShowDialog.value = false
 }
+const deTail = async (id: string) => {
+  if (isAuthenticated)
+    alert(id);
+};
 const loadHouse = async () => {
   loading.setLoading(true);
   const data = await fetchHouse();

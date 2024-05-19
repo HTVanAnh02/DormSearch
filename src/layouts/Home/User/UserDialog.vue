@@ -80,7 +80,6 @@
         </v-form>
     </v-dialog>
 </template>
-
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
@@ -123,9 +122,6 @@ const getUserById = async (id) => {
         console.error('Error fetching user detail:', error);
     }
 }
-// onMounted(() => {
-//     getUserById
-// })
 onUpdated(() => {
     if (props.itemEdit === null)
     {
@@ -197,7 +193,6 @@ const { value: role, errorMessage: roleError } = useField(
 );
 
 const submit = handleSubmit(async () => {
-    // console.log(editId.value);
     try {
         loading.setLoading(true)
         const formData = new FormData();
@@ -210,14 +205,11 @@ const submit = handleSubmit(async () => {
         formData.append('phoneNumber', phone.value);
         formData.append('file', imageFile.value);
         formData.append('role', role.value);
-        // console.log(imageFile.value);
         console.log(formData);
         if (props.itemEdit == null) {
             const data = await userServiceApi.createData(formData);
-            // console.log(data)
+           
             if (!data.success) {
-                // alert("Tạo lỗi")
-                // console.log(data.status);
                 showWarningsNotification(data.message)
             }
             else {

@@ -128,12 +128,12 @@
       </v-col>
     </v-row>
   </div>
-  <HouseDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
+  <HomeHouseDialog v-model="isShowDialog" :itemEdit="idEdit" @close="close()" @loadData="loadData()" />
   <Confirmations v-model="isDialogDelete" @close="close()" :idDelete="idDelete" @delete="deleteCityById" />
 </template>
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import HouseDialog from './HouseDialog.vue';
+import HomeHouseDialog from '@/layouts/Home/Houses/HomeHouseDialog.vue';
 import Confirmations from '@/components/Confirmations/Confirmations.vue'
 const isShowDialog = ref(false);
 const isDialogDelete = ref(false)
