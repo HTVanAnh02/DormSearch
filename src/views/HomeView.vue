@@ -227,9 +227,10 @@ const deTail = async (id: string) => {
     alert(id);
 };
 const loadHouse = async () => {
-  loading.setLoading(true);
+  loading.setLoading(true);``
   const data = await fetchHouse();
   houses.value = data?.data;
+  console.log(houses.value)
   totalItems.value = data?.totalItems;
   lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
   total.value = data?.totalItems;

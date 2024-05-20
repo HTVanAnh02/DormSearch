@@ -6,7 +6,7 @@
         <v-row>
           <v-col cols="12" md="6" style="display: flex; align-items: center;padding: 10px;">
             <v-card class="d-flex flex-column" flat outlined tile>
-              <v-img object-fit="cover" max-width="100%" width="400" height="400" :src="item.photos"></v-img>
+              <v-img v-if="item.photos !== null" object-fit="cover" max-width="100%" width="400" height="400" :src="item.photos"></v-img>
               {{ item.photos }}
             </v-card>
           </v-col>
@@ -143,7 +143,7 @@ import { showErrorNotification } from '@/common/helper/helpers';
 const { getById, fetchHome } = useHome();
 const loading = useLoadingStore();
 const houses = ref<any | undefined>([]);
-const item = ref<any | ''>('');
+const item = ref<any | undefined>({});
 const total = ref<number>(0);
 const id = ref<any | undefined>('');
 const page = ref<number>(10);
@@ -172,7 +172,8 @@ onMounted(async () => {
   loading.setLoading(true);
   id.value = router.currentRoute.value.params.id;
   const res = await getById(id.value);
-  console.log(res);
+
+  console.log("ABC   " + res);
   item.value = res;
   searchData();
   loading.setLoading(false);
@@ -180,8 +181,8 @@ onMounted(async () => {
 const searchData = async () => {
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
-  DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = item.value.cityId;
-  DEFAULT_COMMON_LIST_QUERY_BY_HOME.areaId = item.value.areaId;
+  // DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = item.value.cityId;
+  // DEFAULT_COMMON_LIST_QUERY_BY_HOME.areaId = item.value.areaId;
   const data = await fetchHome();
   houses.value = data?.items;
   total.value = houses.value.length;
