@@ -17,40 +17,40 @@ export default async (
   const isExpired = dayjs().isAfter(dayjs(tokenExpiredAt), 'second');
   const RoleRouter=to?.meta?.role || Role.USER
   const IS_AUTHENTICATED = tokenExpiredAt && !isExpired && hasToken;
-  if(to.name === PageName.LOGIN_PAGE)
-  {
-    localStorageAuthService.resetAll()
-  }
-  if(IS_PUBLIC)
-  {
-    if(IS_PUBLIC)
-      {
-        return next()
-      }
-  }
-  if (!IS_AUTHENTICATED) {
-    if (isExpiredRefresh) {
-      showWarningsNotification("Vui lòng đăng nhập lại");
-      return next({ name: PageName.LOGIN_PAGE });
-    } else {
-      return next();
-    }
-  }
-  if (!IS_PUBLIC) {
-    if (IS_AUTHENTICATED) {
-      if (role===RoleRouter) {
-        return next();
-      } else {
-        showErrorNotification("Không thể thực hiện");
-        return next(false);
-        // return next({ name: PageName.LOGIN_PAGE });
-      }
-    }
-  }
-  if (!IS_PUBLIC && !IS_AUTHENTICATED) {
-    return next({
-      name: PageName.LOGIN_PAGE,
-    });
-  }
+  // if(to.name === PageName.LOGIN_PAGE)
+  // {
+  //   localStorageAuthService.resetAll()
+  // }
+  // if(IS_PUBLIC)
+  // {
+  //   if(IS_PUBLIC)
+  //     {
+  //       return next()
+  //     }
+  // }
+  // if (!IS_AUTHENTICATED) {
+  //   if (isExpiredRefresh) {
+  //     showWarningsNotification("Vui lòng đăng nhập lại");
+  //     return next({ name: PageName.LOGIN_PAGE });
+  //   } else {
+  //     return next();
+  //   }
+  // }
+  // if (!IS_PUBLIC) {
+  //   if (IS_AUTHENTICATED) {
+  //     if (role===RoleRouter) {
+  //       return next();
+  //     } else {
+  //       showErrorNotification("Không thể thực hiện");
+  //       return next(false);
+  //       // return next({ name: PageName.LOGIN_PAGE });
+  //     }
+  //   }
+  // }
+  // if (!IS_PUBLIC && !IS_AUTHENTICATED) {
+  //   return next({
+  //     name: PageName.LOGIN_PAGE,
+  //   });
+  // }
   return next();
 };

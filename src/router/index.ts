@@ -80,12 +80,16 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/Dashboard',
+    path: '/dashboard',
     name: PageName.DASHBOARD_PAGE,
     component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
-    meta: {
-      public: true,
-    },
+   
+  },
+  {
+    path: '/admin_dashboard',
+    name: 'admin_dashboard',
+    component: () => import('../layouts/Dashboard/admin_dashboard.vue'),
+   
   },
   {
     path: '/404',
@@ -105,9 +109,9 @@ const routes: Array<RouteRecordRaw> = [
         //   role:Role.ADMIN,
         //   public:false,
         // },
-        meta: {
-          public: true,
-        },
+        // meta: {
+        //   public: true,
+        // },
       },
       {
         path: 'city',
@@ -117,9 +121,9 @@ const routes: Array<RouteRecordRaw> = [
         //   role:Role.ADMIN,
         //   public:false,
         // },
-        meta: {
-          public: true,
-        },
+        // meta: {
+        //   public: true,
+        // },
       },
       // {
       //   path: 'user',
@@ -141,9 +145,9 @@ const routes: Array<RouteRecordRaw> = [
         //   role:Role.ADMIN,
         //   public:false,
         // },
-        meta: {
-          public: true,
-        },
+        // meta: {
+        //   public: true,
+        // },
       },
       {
         path: 'roomstyle',
@@ -153,9 +157,9 @@ const routes: Array<RouteRecordRaw> = [
         //   role:Role.ADMIN,
         //   public:false,
         // },
-        meta: {
-          public: true,
-        },
+        // meta: {
+        //   public: true,
+        // },
         
       },
       {
@@ -166,9 +170,9 @@ const routes: Array<RouteRecordRaw> = [
         //   role:Role.ADMIN,
         //   public:false,
         // },
-        meta: {
-          public: true,
-        },
+        // meta: {
+        //   public: true,
+        // },
         
       },
       

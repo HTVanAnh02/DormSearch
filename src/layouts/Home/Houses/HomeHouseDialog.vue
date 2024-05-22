@@ -27,8 +27,8 @@
                     </div>
                     <div style="display: block;">
                         <span>Loại Phòng</span><span class="text-blue ml-2">*</span>
-                        <v-select v-model="roomstyleId" :items="itemsListRoomstyles" item-title="roomstyleName" item-value="roomstyleId"
-                            density="compact" variant="outlined"></v-select>
+                        <v-select v-model="roomstyleId" :items="itemsListRoomstyles" item-title="roomstyleName"
+                            item-value="roomstyleId" density="compact" variant="outlined"></v-select>
                     </div>
                     <div style="display: block; ">
                         <span>Giá</span><span class="text-blue ml-2">*</span>
@@ -54,8 +54,8 @@
                     <div style="display: block; ">
                         <span>Địa chỉ</span><span class="text-blue ml-2">*</span>
                         <v-text-field class="mt-1" v-model="addresshouses" placeholder="Nhập địa chỉ nhà trọ"
-                            :error-messages="addresshousesError" required style="background-color: white;" density="compact"
-                            single-line hide-details variant="outlined"></v-text-field>
+                            :error-messages="addresshousesError" required style="background-color: white;"
+                            density="compact" single-line hide-details variant="outlined"></v-text-field>
                         <span style="color:red">{{ addresshousesError }}</span>
                     </div>
                     <div style="display: block; ">
@@ -74,9 +74,9 @@
                     </div>
                     <div style="display: block; ">
                         <span>Mô tả</span><span class="text-blue ml-2">*</span>
-                        <v-textarea class="mt-1" v-model="title" placeholder="Nhập mô tả"
-                            :error-messages="titleError" required style="background-color: white;" density="compact"
-                            single-line hide-details variant="outlined"></v-textarea>
+                        <v-textarea class="mt-1" v-model="title" placeholder="Nhập mô tả" :error-messages="titleError"
+                            required style="background-color: white;" density="compact" single-line hide-details
+                            variant="outlined"></v-textarea>
                         <span style="color:red">{{ titleError }}</span>
                     </div>
                     <div style="display: block; ">
@@ -90,8 +90,9 @@
                         style="font-family: Public Sans, sans-serif; font-size: 14px; margin-right: 16px; border: 1px solid #A1A9B8;border-radius: 6px;"
                         @click="close()" class="text-capitalize" text="Hủy"></v-btn>
                     <v-btn width="105px" height="32px"
-                        style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;" 
-                        color="#0F60FF" class="text-capitalize" variant="elevated" @click="submit">{{ itemEdit ? "Update" :
+                        style="font-family: Public Sans , sans-serif;font-size: 14px; border-radius: 6px;"
+                        color="#0F60FF" class="text-capitalize" variant="elevated" @click="submit">{{ itemEdit ?
+                            "Update" :
                             "Tạo" }}<span class="text-lowercase">{{ itemEdit ? "" : "mới" }}</span></v-btn>
                 </v-card-actions>
             </v-card>
@@ -122,6 +123,7 @@ const itemsListRoomstyles = ref([]);
 const cityId = ref('');
 const areasId = ref('');
 const houseId = ref('');
+const UserId = ref('');
 const roomstyleId = ref('');
 const loadData = async () => {
     const res = await citysItem()
@@ -145,7 +147,6 @@ const loadData = async () => {
 }
 watch(() => props.itemEdit, (newValue,) => {
     resetForm()
-
     if (props.itemEdit !== null) {
         getHouseById(newValue)
     }
@@ -154,13 +155,19 @@ watch(() => props.itemEdit, (newValue,) => {
 const getHouseById = (item) => {
     console.log(item)
     houseId.value = item.housesId;
-    housename.value = item.housename;
+    housename.value = item.housesName;
     title.value = item.title;
     interior.value = item.interior;
     price.value = item.price;
     acreage.value = item.price;
-    addresshouses.value = item.addresshouses;
-    datesubmitted.value = item.datesubmitted;
+    addresshouses.value = item.addressHouses;
+    datesubmitted.value = item.dateSubmitted;
+    cityId.value = item.cityId;
+    areasId.value = item.areasId;
+    roomstyleId.value = item.roomstyleId;
+    contact.value = item.contact;
+    UserId.value = item.userId;
+
 }
 onUpdated(() => {
     if (props.itemEdit === null)
@@ -175,7 +182,7 @@ const { value: housename, errorMessage: housenameError } = useField(
     yup
         .string()
         .required('Không được bỏ trống')
-        // .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên nhà trọ chỉ được chứa ký tự chữ cái, số và khoảng trắng')
+    // .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên nhà trọ chỉ được chứa ký tự chữ cái, số và khoảng trắng')
 );
 
 
@@ -245,7 +252,7 @@ const { value: acreage, errorMessage: acreageError } = useField(
 );
 const submit = async () => {
     try {
-        
+
         if (isAuthenticated) {
             loading.setLoading(true)
             const formData = new FormData();
@@ -258,7 +265,7 @@ const submit = async () => {
             formData.append('DateSubmitted', datesubmitted.value);
             formData.append('AreasId', areasId.value);
             formData.append('CityId', cityId.value);
-            formData.append('RoomstyleId',roomstyleId.value);
+            formData.append('RoomstyleId', roomstyleId.value);
             formData.append('file', imageFile.value);
 
             if (props.itemEdit == null) {
@@ -276,7 +283,7 @@ const submit = async () => {
             }
 
             else {
-                console.log(houseId.value);
+                formData.append('UserId', userId.value);
                 const data = await houseApi.updateData(houseId.value, formData);
                 console.log(data)
                 if (!data.success) {

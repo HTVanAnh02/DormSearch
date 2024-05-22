@@ -1,6 +1,6 @@
 <template>
     <div>
-        <apexchart width="1000" type="bar" :options="chartOptions" :series="series"></apexchart>
+        <apexchart width="500" type="bar" :options="chartOptions" :series="series"></apexchart>
         <v-btn @click="dashboard">Làm mới</v-btn>
     </div>
 </template>
@@ -36,7 +36,7 @@ export default {
                     breakpoint: 480,
                     options: {
                         chart: {
-                            width: 1000,
+                            width: 800,
                         },
                         legend: {
                             position: 'bottom',
