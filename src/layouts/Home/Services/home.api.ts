@@ -6,7 +6,7 @@ class HomeApiService extends ApiService {
         return this._getListByHome<any>(DEFAULT_COMMON_LIST_QUERY_BY_HOME);
     }
     ItemById(id:any):Promise<any> {
-        return this.client.get(`${this.baseUrl}/Houses/${id}`);
+        return this._ItemById(id);
     }
 }
 export const homeApi = new HomeApiService({ baseUrl: '/Home' }, axiosInstance);

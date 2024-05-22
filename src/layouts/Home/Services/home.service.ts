@@ -47,10 +47,13 @@ export const useHome = () => {
   };
   const getById=async(id:any)=>{
     try{
+      
       const res:any=await homeApi.ItemById(id);
       if (res.errors !== undefined) {
         showErrors(res.errors);
     }
+
+    
       return res.data;
     }catch (error) {
       console.error("Error GetDetail:", error);

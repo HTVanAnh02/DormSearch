@@ -251,6 +251,11 @@ export const DEFAULT_COMMON_LIST_QUERY = {
   orderBy: 'createdAt',
   orderDirection: 'desc',
   limit: DEFAULT_LIMIT_FOR_PAGINATION,
+  khuvuc: '',
+  thanhpho: '',
+  gia: '',
+  dientich: ''
+  
 };
 export const DEFAULT_COMMON_LIST_QUERY_BY_HOME = {
   page: DEFAULT_FIRST_PAGE,

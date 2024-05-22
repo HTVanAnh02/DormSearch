@@ -4,14 +4,12 @@
     <v-card class="mt-12">
       <v-card style="border-radius: 10px;" shadow="never" class="mt-12">
         <v-row>
-          <v-col cols="12" md="6" style="display: flex; align-items: center;padding: 10px;">
+          <v-col cols="8" md="4" style="display: flex; align-items: center;padding: 10px;">
             <v-card class="d-flex flex-column" flat outlined tile>
-              <v-img v-if="item.photos !== null" object-fit="cover" max-width="100%" width="400" height="400" :src="item.photos"></v-img>
-              {{ item.photos }}
+              <v-img v-if="item.photos !== null" object-fit="cover" width="800" height="450" :src="item.photos"></v-img>
             </v-card>
           </v-col>
-          <v-col cols="12" md="6">
-            <div>
+          <v-col cols="6" md="6">
               <v-card-title class="pb-0">
                 <v-row>
                   <v-col>
@@ -110,7 +108,6 @@
                   </v-col>
                 </v-row>
               </v-card-title>
-            </div>
             <v-card-actions>
               <v-btn class="text-capitalize" variant="outlined" 
                 style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700;font-size: 20px;">Quay
@@ -181,8 +178,8 @@ onMounted(async () => {
 const searchData = async () => {
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
-  // DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = item.value.cityId;
-  // DEFAULT_COMMON_LIST_QUERY_BY_HOME.areaId = item.value.areaId;
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.cityId = item.value.cityId;
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.areaId = item.value.areaId;
   const data = await fetchHome();
   houses.value = data?.items;
   total.value = houses.value.length;

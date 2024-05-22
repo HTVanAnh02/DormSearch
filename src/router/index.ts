@@ -80,6 +80,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/Dashboard',
+    name: PageName.DASHBOARD_PAGE,
+    component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
+    meta: {
+      public: true,
+    },
+  },
+  {
     path: '/404',
     name: PageName.NOT_FOUND_PAGE,
     component: () => import('../components/errors/NotFound.vue')

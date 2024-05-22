@@ -14,7 +14,25 @@
 
 <script>
 export default {
-
+    name: 'TongSoBaiCanDuyet',
+    data() {
+        return {
+            toatalClient: 0,
+        }
+    },
+    created() {
+        this.gettoatalClient()
+    },
+    methods:
+    {
+        gettoatalClient() {
+            axios.get('http://localhost:5224/api/DashBoard/getToatlAccountClient').then(rs => {
+                this.toatalClient = rs.data
+            }).catch(erro => {
+                console.log(erro)
+            })
+        }
+    }
 }
 </script>
 

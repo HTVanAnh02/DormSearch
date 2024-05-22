@@ -175,7 +175,7 @@ const { value: housename, errorMessage: housenameError } = useField(
     yup
         .string()
         .required('Không được bỏ trống')
-        .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên nhà trọ chỉ được chứa ký tự chữ cái, số và khoảng trắng')
+        // .matches(/^[a-zA-Z0-9\sÀ-ỹ]+$/u, 'Tên nhà trọ chỉ được chứa ký tự chữ cái, số và khoảng trắng')
 );
 
 

@@ -47,16 +47,14 @@
 </template>
 
 <script>
-import DoanhThuTheoTuan from './DoanhThuTheoTuan.vue';
 import TestAmchartjsVue from './TestAmchartjs.vue';
 import ThongKeBaiDang from './ThongKeBaiDang.vue';
 import TongNguoiDung from './TongNguoiDung.vue';
 import TongSoBaiDang from './TongSoBaiDang.vue';
 import TongDanhGia from './TongDanhGia.vue';
 import TongSoBaiDangCanDuyet from './TongSoBaiDangCanDuyet.vue';
-import BaiDangCanDuyet from './BaiDangCanDuyet.vue';
 export default {
-    components: { TongSoBaiDangCanDuyet, DoanhThuTheoTuan, ThongKeBaiDang, TestAmchartjsVue, TongNguoiDung, TongSoBaiDang, TongDanhGia, BaiDangCanDuyet }
+    components: { TongSoBaiDangCanDuyet, ThongKeBaiDang, TestAmchartjsVue, TongNguoiDung, TongSoBaiDang, TongDanhGia, }
 }
 </script>
 

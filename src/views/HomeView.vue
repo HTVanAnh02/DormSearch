@@ -3,25 +3,26 @@
     <NarbarVue />
     <Slidebar />
     <v-row>
-      <v-card cols="8" sm="12" md="12" lg="4" class="custom-card" style="top: 24px; border-radius: 4px;">
+      <v-card cols="8" sm="12" md="12" lg="4" class="custom-card"  style="top: 24px; border-radius: 4px;">
         <v-row class="ml-3 mt-2">
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Khu vực" v-model="AreasId" :items="itemsListAreas" item-title="areasName"
+            <v-select label="Khu vực" v-model="AreasId" @input="serchHomes()" :items="itemsListAreas" item-title="areasName"
               item-value="areasId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Thành Phố" v-model="cityId" :items="itemsListCitys" item-title="cityName"
+            <v-select label="Thành Phố" v-model="cityId" @input="serchHomes()" :items="itemsListCitys" item-title="cityName"
               item-value="cityId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select density="compact" label="Giá" :items="prices" item-title="text" item-value="value"
+            <v-select density="compact" label="Giá" @input="serchHomes()" v-model="gia" :items="prices" item-title="text" item-value="value"
               variant="outlined">
               <v-option>
               </v-option>
             </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select density="compact" label="Diện tích" variant="outlined">
+            <v-select density="compact" label="Diện tích" v-model="dientich" :items="houses" @input="serchHomes()" item-title="acreage"
+              item-value="acreage" variant="outlined">
               <v-option>
               </v-option>
             </v-select>
@@ -45,8 +46,8 @@
                   item.housesName }}</router-link>
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4"
-                style="font-family: Inter, sans-serif;;color:#000000;max-width: 350px;font-size: 24px;font-weight: 700;padding: auto;height: 36px;">
-                {{ item.price }}
+                style="font-family: Inter, sans-serif;;color:#000000;max-width: 350px;font-size: 24px;font-weight: 700;padding: auto;height: 36px; color: red; ">
+                {{ item.price }}đ/tháng
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4 mt-1"
                 style="margin-top: 8px;;height: 60px;font-size: 16px;font-family: Inter, sans-serif;;color: #787885;">{{
@@ -103,12 +104,12 @@
 <script lang="ts" setup>
 import Slidebar from "@/components/Application/Slidebar.vue";
 import Footer from "@/components/Application/Footer.vue";
-import { reactive, ref } from "vue"
+import { reactive, ref, watch } from "vue"
 import { useLoadingStore } from "@/store/loading";
 import HomeHouseDialog from '@/layouts/Home/Houses/HomeHouseDialog.vue';
 import NarbarVue from "@/components/Application/Narbar.vue";
 import { onMounted } from "vue";
-import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
+import { DEFAULT_COMMON_LIST_QUERY, DEFAULT_COMMON_LIST_QUERY_BY_HOME } from "@/common/contant/contants";
 import { useHouse } from "@/layouts/Admin/House/house.service";
 import { useFavorites } from "@/layouts/Home/Favorites/Service/favorite.service";
 import { useArea } from "@/layouts/Admin/Area/Services/area.service";
@@ -142,20 +143,49 @@ let page = ref(1);
 let lengthPage = ref<Number | undefined>(100);
 const AreasId = ref(null);
 const cityId = ref(null);
+const dientich = ref(null)
+const gia = ref(null)
 
+watch(AreasId, (newValue, oldValue) => {
+  AreasId.value = newValue;
+  serchHomes()
+})
+
+watch(cityId, (newValue, oldValue) => {
+  cityId.value = newValue;
+  serchHomes()
+})
+
+watch(dientich, (newValue, oldValue) => {
+  dientich.value = newValue;
+  serchHomes()
+})
+
+watch(gia, (newValue, oldValue) => {
+    gia.value = newValue
+    serchHomes()
+})
 const searchData = async () => {
+  console.log("Data ssss: " + AreasId.value)
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.keyword = search.value;
-  DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
-  const data = await searchHouse();
-  houses.value = data?.items;
-  totalItems.value = data?.totalItems;
-  lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
-  total.value = data?.totalItems;
-  if (isAuthenticated) {
-    loadlike();
+  if(search.value === null || search.value === ""){
+    loadHouse();
+    loadData();
+  }else{
+    DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
+    const data = await searchHouse();
+    houses.value = data?.items;
+    totalItems.value = data?.totalItems;
+    lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
+    total.value = data?.totalItems;
+    if (isAuthenticated) {
+      loadlike();
+    }
+    loading.setLoading(false);
   }
-  loading.setLoading(false);
+  
+  
 
 };
 const showLikeByHouseId = (id: any) => {
@@ -174,7 +204,6 @@ const showLikeByHouseId = (id: any) => {
 }
 const toggleLike = async (item: any, like: any, favorites_House_Id: any) => {
   if (isAuthenticated) {
-    console.log(item, like, favorites_House_Id);
     const formData = new FormData();
     formData.append('houseId', item);
     formData.append('isFavorites_House', like);
@@ -185,7 +214,6 @@ const toggleLike = async (item: any, like: any, favorites_House_Id: any) => {
 
     }
     else {
-      console.log(res.errors);
       if (res.errors !== undefined) {
         showErrors(res.errors);
       }
@@ -203,18 +231,46 @@ onMounted(() => {
   loadData();
 });
 
+const serchHomes = async () => {
+//   const AreasId = ref(null);
+// const cityId = ref(null);
+// const dientich = ref(null)
+// const gia = ref(null)
+    if(AreasId.value !== null || AreasId.value !== ""){
+      DEFAULT_COMMON_LIST_QUERY.khuvuc = AreasId.value
+    }
+    if(cityId.value !== null || cityId.value !== ""){
+      DEFAULT_COMMON_LIST_QUERY.thanhpho = cityId.value
+    }
+    if(dientich.value !== null || dientich.value !== ""){
+      DEFAULT_COMMON_LIST_QUERY.dientich = dientich.value
+    }
+    if(gia.value !== null || gia.value !== ""){
+      DEFAULT_COMMON_LIST_QUERY.gia = gia.value
+    }
+
+    loading.setLoading(true);
+    const data = await fetchHouse();
+    houses.value = data?.data;
+    totalItems.value = data?.totalItems;
+    lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
+    total.value = data?.totalItems;
+
+    if(houses.value.leng < 0 || houses.value == null){
+      loadData();
+    }
+
+
+}
+
 const loadData = async () => {
   const res = await citysItem()
   if (res) {
     itemsListCitys.value = res.items;
-    console.log(res.items);
-    console.log(itemsListCitys.value);
   }
   const res1 = await areasItem()
   if (res1) {
     itemsListAreas.value = res1.items;
-    console.log(res1.items);
-    console.log(itemsListAreas.value);
   }
   loading.setLoading(true);
   loading.setLoading(false);
@@ -227,10 +283,9 @@ const deTail = async (id: string) => {
     alert(id);
 };
 const loadHouse = async () => {
-  loading.setLoading(true);``
+  loading.setLoading(true);
   const data = await fetchHouse();
   houses.value = data?.data;
-  console.log(houses.value)
   totalItems.value = data?.totalItems;
   lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
   total.value = data?.totalItems;
