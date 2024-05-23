@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
     data() {
@@ -22,17 +21,17 @@ export default {
         }
     },
     created() {
-        this.gettoatalpost()
+        // this.gettoatalpost()
     },
     methods:
     {
-        gettoatalpost() {
-            axios.get('http://localhost:5224/api/DashBoard/getTotalProduct').then(rs => {
-                this.toatalpost = rs.data
-            }).catch(erro => {
-                console.log(erro)
-            })
-        }
+        // gettoatalpost() {
+        //     axios.get('http://localhost:5224/api/DashBoard/getTotalProduct').then(rs => {
+        //         this.toatalpost = rs.data
+        //     }).catch(erro => {
+        //         console.log(erro)
+        //     })
+        // }
     }
 }
 </script>

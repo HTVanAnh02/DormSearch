@@ -2,7 +2,7 @@
     <div style="background-color:#F8F8FF">
         <v-container>
             <v-row>
-                <!-- <v-col cols="8">
+                <v-col cols="8">
                     <v-row>
                         <v-col cols="6">
                             <TongNguoiDung />
@@ -20,18 +20,10 @@
                             <don-hang-can-duyet />
                         </v-col>
                     </v-row>
-                </v-col> -->
+                </v-col>
                 <v-col cols="12">
-                    <!-- <v-card>
-                        <v-card-title style="font-size: 14px;"><strong>Doanh Thu Tuần Này</strong>
-                            <div style="width: 100%; height: 2px;background-color: rgb(216, 216, 136);"></div>
-                        </v-card-title>
-                        <v-card-text>
-                            <DoanhThuTheoTuan />
-                        </v-card-text>
-                    </v-card> -->
                     <v-card class="mt-4">
-                        <v-card-title style="font-size: 14px;"><strong>Trạng thái đơn hàng</strong>
+                        <v-card-title style="font-size: 14px;"><strong>Thống kê</strong>
                             <div style="width: 100%; height: 2px;background-color: rgb(216, 216, 136);"></div>
                         </v-card-title>
                         <v-card-text>
@@ -48,16 +40,13 @@
 
 <script>
 import TestAmchartjsVue from './TestAmchartjs.vue';
-// import ThongKeBaiDang from './ThongKeBaiDang.vue';
-// import TongNguoiDung from './TongNguoiDung.vue';
-// import TongSoBaiDang from './TongSoBaiDang.vue';
-// import TongDanhGia from './TongDanhGia.vue';
-// import TongSoBaiDangCanDuyet from './TongSoBaiDangCanDuyet.vue';
-// export default {
-//     components: { TongSoBaiDangCanDuyet, ThongKeBaiDang, TestAmchartjsVue, TongNguoiDung, TongSoBaiDang, TongDanhGia, }
-// }
+import ThongKeBaiDang from './ThongKeBaiDang.vue';
+import TongNguoiDung from './TongNguoiDung.vue';
+import TongSoBaiDang from './TongSoBaiDang.vue';
+import TongDanhGia from './TongDanhGia.vue';
+import TongSoBaiDangCanDuyet from './TongSoBaiDangCanDuyet.vue';
 export default {
-    components: { TestAmchartjsVue }
+    components: { TestAmchartjsVue, TongSoBaiDangCanDuyet, ThongKeBaiDang, TestAmchartjsVue, TongNguoiDung, TongSoBaiDang, TongDanhGia, }
 }
 </script>
 

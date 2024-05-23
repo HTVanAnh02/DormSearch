@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
     name: 'TongKhachHang',
     data() {
@@ -22,17 +21,17 @@ export default {
         }
     },
     created() {
-        this.gettoatalClient()
+        // this.gettoatalClient()
     },
     methods:
     {
-        gettoatalClient() {
-            axios.get('http://localhost:5224/api/DashBoard/getToatlAccountClient').then(rs => {
-                this.toatalClient = rs.data
-            }).catch(erro => {
-                console.log(erro)
-            })
-        }
+        // gettoatalClient() {
+        //     axios.get('http://localhost:5224/api/DashBoard/getToatlAccountClient').then(rs => {
+        //         this.toatalClient = rs.data
+        //     }).catch(erro => {
+        //         console.log(erro)
+        //     })
+        // }
     }
 }
 </script>
