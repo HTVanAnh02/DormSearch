@@ -89,9 +89,10 @@ const { isReady, login } = useOneTap({
 const sendTokenToBackend = async (credential: any) => {
     try {
         loading.showLoading(true);
-        const response = await axios.post('https://localhost:44309/api/Auth/google-login', { credential });
+        const response = await axios.post('https://localhost:7237/api/Auth/google-login', { credential });
         console.log(response.data);
         if (response.data.success) {
+            JSON.parse
             showSuccessNotification(response.data.message);
             localStorageAuthService.setAccessToken(data.accessToken);
             localStorageAuthService.setAccessTokenExpiredAt(data.accessTokenExpiration);

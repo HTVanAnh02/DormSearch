@@ -17,11 +17,7 @@ const app = createApp(App);
 // App.use(GoogleSignInPlugin, {
 //   clientId: '573787933121-2j7qn6cc9ftpb27sph3599d125265gd2.apps.googleusercontent.com',
 // })
-app.use(GoogleSignInPlugin, {
-  clientId: '573787933121-2j7qn6cc9ftpb27sph3599d125265gd2.apps.googleusercontent.com',
-})
-app
-  .use(router)
+  app.use(router)
   .use(store)
   .use(vuetify)
   .use(pinia)
@@ -32,5 +28,8 @@ app
     pauseOnHover: true,
     draggable: true,
     draggablePercent: 0.6,
+  })
+  .use(GoogleSignInPlugin, {
+    clientId: '573787933121-2j7qn6cc9ftpb27sph3599d125265gd2.apps.googleusercontent.com',
   })
   .mount('#app')

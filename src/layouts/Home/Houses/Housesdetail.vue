@@ -10,108 +10,113 @@
             </v-card>
           </v-col>
           <v-col cols="6" md="6">
-              <v-card-title class="pb-0">
-                <v-row>
-                  <v-col>
-                    <v-card-title class="inline-block font-weight-bold" style=" font-size: 20px">
-                      {{ item.housesName }}
-                    </v-card-title>
-                  </v-col>
-                  <v-divider></v-divider>
-                  <v-col cols="6">
-                    <v-icon color="green" style="font-size: 30px;">mdi-home-city</v-icon>
-                    <span class="subtitle"><b>Khu vực:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.areasName }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="blue" style="font-size: 30px;">mdi-clock-outline</v-icon>
-                    <span class="subtitle"><b>Ngày đăng:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{
-                        item.dateSubmitted === undefined ||
-                          item.dateSubmitted === "" ||
-                          item.dateSubmitted === null
-                          ? ""
-                          : formatDatetime(item.dateSubmitted)
-                      }}
-                      </b>
-                    </span>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="6">
-                    <v-icon color="purple" style="font-size: 30px;">mdi-city</v-icon>
-                    <span class="subtitle"><b>Thành phố:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.cityName }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="orange" style="font-size: 30px;">mdi-account</v-icon>
-                    <span class="subtitle"><b>Người đăng:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.usersName }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="teal" style="font-size: 30px;">mdi-home-outline</v-icon>
-                    <span class="subtitle"><b>Loại phòng:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.roomstyleName }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="red" style="font-size: 30px;">mdi-map-marker</v-icon>
-                    <span class="subtitle"><b>Địa chỉ:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.addressHouses }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="brown" style="font-size: 30px;">mdi-ruler-square</v-icon>
-                    <span class="subtitle"><b>Diện tích:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.acreage }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="cyan" style="font-size: 30px;">mdi-sofa</v-icon>
-                    <span class="subtitle"><b>Nội thất:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.interior }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="deep-purple" style="font-size: 30px;">mdi-phone</v-icon>
-                    <span class="subtitle"><b>Số điện thoại:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.contact }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-icon color="lime" style="font-size: 30px;">mdi-file-document-outline</v-icon>
-                    <span class="subtitle"><b>Mô tả:</b></span>
-                    <span class="text-subtitle-1">
-                      <b style=" font-size: 20px">{{ item.title }}</b>
-                    </span>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-icon color="blue" style="font-size: 30px;">mdi-currency-usd</v-icon>
-                    <span class="subtitle"><b>Giá:</b></span>
-                    <br />
-                    <span class="text-subtitle-1">
-                      <span style="font-size: 25px; color: rgb(246, 10, 10)" class="inline-block font-weight-bold">{{
-                        item.price }}đ/tháng</span>
-                    </span>
-                  </v-col>
-                </v-row>
-              </v-card-title>
+            <v-card-title class="pb-0">
+              <v-row>
+                <v-col>
+                  <v-card-title class="inline-block font-weight-bold" style=" font-size: 20px">
+                    {{ item.housesName }}
+                  </v-card-title>
+                </v-col>
+                <v-divider></v-divider>
+                <v-col cols="6">
+                  <v-icon color="green" style="font-size: 30px;">mdi-home-city</v-icon>
+                  <span class="subtitle"><b>Khu vực:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.areasName }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="blue" style="font-size: 30px;">mdi-clock-outline</v-icon>
+                  <span class="subtitle"><b>Ngày đăng:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{
+                      item.dateSubmitted === undefined ||
+                        item.dateSubmitted === "" ||
+                        item.dateSubmitted === null
+                        ? ""
+                        : formatDatetime(item.dateSubmitted)
+                    }}
+                    </b>
+                  </span>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-icon color="purple" style="font-size: 30px;">mdi-city</v-icon>
+                  <span class="subtitle"><b>Thành phố:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.cityName }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="orange" style="font-size: 30px;">mdi-account</v-icon>
+                  <span class="subtitle"><b>Người đăng:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.usersName }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="teal" style="font-size: 30px;">mdi-home-outline</v-icon>
+                  <span class="subtitle"><b>Loại phòng:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.roomstyleName }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="red" style="font-size: 30px;">mdi-map-marker</v-icon>
+                  <span class="subtitle"><b>Địa chỉ:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.addressHouses }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="brown" style="font-size: 30px;">mdi-ruler-square</v-icon>
+                  <span class="subtitle"><b>Diện tích:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.acreage }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="cyan" style="font-size: 30px;">mdi-sofa</v-icon>
+                  <span class="subtitle"><b>Nội thất:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.interior }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="deep-purple" style="font-size: 30px;">mdi-phone</v-icon>
+                  <span class="subtitle"><b>Số điện thoại:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.contact }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="6">
+                  <v-icon color="lime" style="font-size: 30px;">mdi-file-document-outline</v-icon>
+                  <span class="subtitle"><b>Mô tả:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.title }}</b>
+                  </span>
+                </v-col>
+                <v-col cols="12">
+                  <v-icon color="blue" style="font-size: 30px;">mdi-currency-usd</v-icon>
+                  <span class="subtitle"><b>Giá:</b></span>
+                  <br />
+                  <span class="text-subtitle-1">
+                    <span style="font-size: 25px; color: rgb(246, 10, 10)" class="inline-block font-weight-bold">{{
+                      item.price }}đ/tháng</span>
+                  </span>
+                </v-col>
+              </v-row>
+            </v-card-title>
             <v-card-actions>
-              <v-btn class="text-capitalize" variant="outlined" 
+              <v-btn class="text-capitalize" variant="outlined"
                 style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700;font-size: 20px;">Quay
-                <span class="text-lowercase ml-1">lại</span> 
+                <span class="text-lowercase ml-1">lại</span>
+                <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-arrow-left</v-icon>
+              </v-btn>
+              <v-btn class="text-capitalize" variant="outlined"
+                style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700;font-size: 20px;">Liên
+                <span class="text-lowercase ml-1">hệ</span>
                 <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-arrow-left</v-icon>
               </v-btn>
             </v-card-actions>
