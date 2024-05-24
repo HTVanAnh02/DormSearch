@@ -55,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: '/favorite',
+    name: 'favorite',
+    component: () => import('../layouts/Home/Favorites/Favorite.vue'),
+    meta: {
+      public: true,
+    },
+  },
+  {
     path: '/user',
     name: PageName.USER,
     component: () => import('../layouts/Home/User/UserView.vue'),
