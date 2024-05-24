@@ -4,7 +4,7 @@
       <v-col cols="4">
         <v-img height="50px" :src="logo" style="width: 200px;"></v-img>
       </v-col>
-      <router-link href="/" style="margin-left: 12px;font-size: 18px; font-family: Inter, sans-serif; " v-bind="props"
+      <router-link to="/" style="margin-left: 12px;font-size: 18px; font-family: Inter, sans-serif; " v-bind="props"
         class="hoverable-list-item">Trang Chủ </router-link>
       <!-- <v-menu open-on-hover>
         <template v-slot:activator="{ props }">

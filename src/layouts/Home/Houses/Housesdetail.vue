@@ -64,10 +64,14 @@
                 </v-col>
                 <v-col cols="6">
                   <v-icon color="red" style="font-size: 30px;">mdi-map-marker</v-icon>
-                  <span class="subtitle"><b>Địa chỉ:</b></span>
-                  <span class="text-subtitle-1">
-                    <b style=" font-size: 20px">{{ item.addressHouses }}</b>
-                  </span>
+                  <span class="subtitle" ><b>Địa chỉ:</b></span>
+                  <v-tooltip :text="item.addressHouses"  location="top">
+  <template v-slot:activator="{ props }">
+    <span class="text-subtitle-1" v-bind="props">
+      <b style=" font-size: 20px">{{ item.addressHouses }}</b>
+    </span>
+  </template>
+</v-tooltip>
                 </v-col>
                 <v-col cols="6">
                   <v-icon color="brown" style="font-size: 30px;">mdi-ruler-square</v-icon>
@@ -90,13 +94,6 @@
                     <b style=" font-size: 20px">{{ item.contact }}</b>
                   </span>
                 </v-col>
-                <v-col cols="6">
-                  <v-icon color="lime" style="font-size: 30px;">mdi-file-document-outline</v-icon>
-                  <span class="subtitle"><b>Mô tả:</b></span>
-                  <span class="text-subtitle-1">
-                    <b style=" font-size: 20px">{{ item.title }}</b>
-                  </span>
-                </v-col>
                 <v-col cols="12">
                   <v-icon color="blue" style="font-size: 30px;">mdi-currency-usd</v-icon>
                   <span class="subtitle"><b>Giá:</b></span>
@@ -117,13 +114,40 @@
               <v-btn class="text-capitalize" variant="outlined"
                 style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700;font-size: 20px;">Liên
                 <span class="text-lowercase ml-1">hệ</span>
-                <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-arrow-left</v-icon>
+                <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-chat</v-icon>
               </v-btn>
             </v-card-actions>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" class="ml-10">
+                  <v-icon color="lime" style="font-size: 30px;">mdi-file-document-outline</v-icon>
+                  <span class="subtitle"><b>Mô tả:</b></span>
+                  <span class="text-subtitle-1">
+                    <b style=" font-size: 20px">{{ item.title }}</b>
+                  </span>
+                </v-col>
+        </v-row>
       </v-card>
     </v-card>
+    <v-card
+    width="2000"
+  >
+    <v-list
+      :items="items"
+      lines="three"
+      item-props
+    >
+      <template v-slot:subtitle="{ subtitle }">
+        <div v-html="subtitle"></div>
+      </template>
+    </v-list>
+    
+  </v-card>
+  <div style="width: 800px;display: flex;align-items: center;justify-content: space-evenly;" class="ma-10">
+  <v-textarea variant="outlined" label="Nhập nội dung bình luận"></v-textarea>
+      <v-btn>Bình luận</v-btn>
+    </div>
     <v-row class="float-end mt-4">
       <Footer />
     </v-row>
@@ -142,6 +166,7 @@ import { useLoadingStore } from '@/store/loading';
 import { useHome } from '../Services/home.service';
 import { AuthStore } from '@/Auth/authStore';
 import { showErrorNotification } from '@/common/helper/helpers';
+import { reactive } from "vue";
 const { getById, fetchHome } = useHome();
 const loading = useLoadingStore();
 const houses = ref<any | undefined>([]);
@@ -191,7 +216,27 @@ const searchData = async () => {
   loading.setLoading(false);
 
 };
-
+const items=reactive( [
+        { type: 'subheader', title: 'Nội dung bình luận' },
+        {
+          prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+          title: 'Nguyễn Văn A?',
+          subtitle: `<span class="text-primary">Cho hỏi còn phòng không ạ</span>`,
+        },
+        { type: 'divider', inset: true },
+        {
+          prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+          title: 'Nguyễn Văn B',
+          subtitle: `<span class="text-primary">Còn phòng không ạ</span> `,
+        },
+        { type: 'divider', inset: true },
+        {
+          prependAvatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+          title: 'Đỗ Hoàng Linh',
+          subtitle: '<span class="text-primary">Sandra Adams</span> ',
+        },
+        { type: 'divider', inset: true },
+      ],)
 </script>
 
 <style></style>

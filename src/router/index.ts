@@ -79,12 +79,12 @@ const routes: Array<RouteRecordRaw> = [
       public: true,
     },
   },
-  {
-    path: '/dashboard',
-    name: PageName.DASHBOARD_PAGE,
-    component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
+  // {
+  //   path: '/dashboard',
+  //   name: PageName.DASHBOARD_PAGE,
+  //   component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
    
-  },
+  // },
   {
     path: '/chat-mess',
     name: 'chat-mess',
@@ -179,6 +179,12 @@ const routes: Array<RouteRecordRaw> = [
         //   public: true,
         // },
         
+      },
+      {
+        path: 'dashboard',
+        name: PageName.DASHBOARD_PAGE,
+        component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
+       
       },
       
     ]

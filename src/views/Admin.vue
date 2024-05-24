@@ -94,7 +94,7 @@
                 </v-list-item>
                 <v-list-item style="color: #8B909A;font-size: 24px;"
                     :class="{ 'font-weight-bold': titleuser === 'Danh sách thống kê' }"
-                    @click="setTitleCity('Danh sách thống kê')" to='user'>
+                    @click="setTitleCity('Danh sách thống kê')" to='dashboard'>
                     <div style="display: flex; align-items: flex-start;">
                         <img src="https://cdn-icons-png.flaticon.com/128/548/548133.png"
                             style="width: 22px; height: 22px;"><img>
