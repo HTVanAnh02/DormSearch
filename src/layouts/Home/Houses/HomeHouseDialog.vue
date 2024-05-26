@@ -265,6 +265,7 @@ const submit = async () => {
             formData.append('DateSubmitted', datesubmitted.value);
             formData.append('AreasId', areasId.value);
             formData.append('CityId', cityId.value);
+            formData.append('Contact', contact.value);
             formData.append('RoomstyleId', roomstyleId.value);
             formData.append('file', imageFile.value);
 
@@ -283,7 +284,7 @@ const submit = async () => {
             }
 
             else {
-                formData.append('UserId', userId.value);
+
                 const data = await houseApi.updateData(houseId.value, formData);
                 console.log(data)
                 if (!data.success) {
