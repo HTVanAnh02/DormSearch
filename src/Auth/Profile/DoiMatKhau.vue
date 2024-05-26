@@ -26,8 +26,7 @@
         </v-card>
     </v-container>
 </template>
-  
-<script>
+  <script>
 import axios from 'axios';
 export default {
     data() {
@@ -55,7 +54,7 @@ export default {
                 }, 3000);
                 return
             }
-            axios.get('',{
+            axios.get('https://localhost:44309/api/User/DoiMatKhau',{
                 params:{
                     UserId:this.$store.state.UserId,
                     PassCu:this.FormData.PasswordCu,
@@ -71,8 +70,7 @@ export default {
                 setTimeout(() => {
                     this.$store.commit('clearLoginError');
                 }, 3000);
-                this.$router.push({name: 'TrangChu'})
-                this.$store.dispatch('logout')
+                this.$router.push({name: 'login_page'})
             }).catch(erro => {
                 this.$store.commit('setLoginError', {
                     show: true,
