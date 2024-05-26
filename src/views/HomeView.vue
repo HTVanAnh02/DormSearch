@@ -47,7 +47,7 @@
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="font-family: Inter, sans-serif;;color:#000000;max-width: 350px;font-size: 24px;font-weight: 700;padding: auto;height: 36px; color: red; ">
-                {{ item.price }}đ/tháng
+                {{ formatNumberWithCommas(item.price) }}đ/tháng
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4 mt-1"
                 style="margin-top: 8px;;height: 60px;font-size: 16px;font-family: Inter, sans-serif;;color: #787885;">{{
@@ -65,12 +65,6 @@
                     style="font-size: 14px; width: 88px; height: 32px; color: #5E6366; font-family: Roboto, sans-serif; font-weight: bold;">4.05</span>
                 </v-col>
                 <v-col class="text-right" cols="6">
-                  <!-- <v-btn class="text-capitalize"
-                    style="width: 88px; height: 32px; margin-right: 6px;font-family: Inter, sans-serif;font-size: 14px;"
-                    color="#2979FF" size="small" variant="outlined">
-                    <v-icon style="width: 14px; height: 12.85px;">mdi-heart-outline</v-icon>
-                    <div style="margin-left: 7px;">like</div>
-                  </v-btn> -->
                   <v-btn class="text-capitalize" @click="toggleLike"
                     :style="{ width: '88px', height: '32px', marginRight: '6px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: like ? '#FF5252' : '#2979FF' }"
                     size="small" variant="outlined">
@@ -115,7 +109,7 @@ import { useFavorites } from "@/layouts/Home/Favorites/Service/favorite.service"
 import { useArea } from "@/layouts/Admin/Area/Services/area.service";
 import { useCity } from "@/layouts/Admin/City/Services/city.service";
 import { AuthStore } from "@/Auth/authStore";
-import { showErrors } from "@/common/helper/helpers";
+import { formatNumberWithCommas, showErrors } from "@/common/helper/helpers";
 const loading = useLoadingStore();
 const { fetchfavorites, changefavorites } = useFavorites();
 const isShowDialog = ref(false);
@@ -131,6 +125,7 @@ const itemsListAreas = ref([]);
 const { fetchHouse,searchHouse } = useHouse();
 const { isAuthenticated } = AuthStore();
 const favorites_houses = ref<any | undefined>([]);
+
 const prices = reactive([
   {
     value: 'từ thấp đền cao', text: 'từ thấp đền cao'
@@ -232,10 +227,6 @@ onMounted(() => {
 });
 
 const serchHomes = async () => {
-//   const AreasId = ref(null);
-// const cityId = ref(null);
-// const dientich = ref(null)
-// const gia = ref(null)
     if(AreasId.value !== null || AreasId.value !== ""){
       DEFAULT_COMMON_LIST_QUERY.khuvuc = AreasId.value
     }

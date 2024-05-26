@@ -75,22 +75,22 @@ const showErrorMessage = ref(false);
 const errorMessage = ref('');
 const successMessage = ref('');
 
-const submit = () => {
-  axios.post('http://localhost:5224/api/Account/QuenPassword', null, {
-    params: {
-      email: formData.Email 
-    },
-  }).then(rs => {
-    codeApi.value = rs.data.Code;
-    formData.Email = rs.data.Email; 
-  }).catch(er => {
-    errorMessage.value = er.response.data;
-    showErrorMessage.value = true;
-    setTimeout(() => {
-      showErrorMessage.value = false;
-    }, 3000);
-  });
-};
+// const submit = () => {
+//   axios.post('https://localhost:44309/api/User/QuenPassword', null, {
+//     params: {
+//       email: formData.Email 
+//     },
+//   }).then(rs => {
+//     codeApi.value = rs.data.Code;
+//     formData.Email = rs.data.Email; 
+//   }).catch(er => {
+//     errorMessage.value = er.response.data;
+//     showErrorMessage.value = true;
+//     setTimeout(() => {
+//       showErrorMessage.value = false;
+//     }, 3000);
+//   });
+// };
 
 const save = () => {
   if (codeApi.value !== codeClient.value) {
@@ -111,7 +111,7 @@ const save = () => {
     return;
   }
 
-  axios.post('http://localhost:5224/api/Account/DoiMatKhau', formData)
+  axios.post('https://localhost:44309/api/User/DoiMatKhau', formData)
     .then(rs => {
       successMessage.value = rs.data;
       showSuccessMessage.value = true;

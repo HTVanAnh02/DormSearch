@@ -87,25 +87,6 @@
                 Đăng Nhập
               </v-list-item-title>
             </v-list-item>
-            <!-- <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'profile' })"
-              style="cursor: pointer;">
-              <v-list-item-title>
-                <v-list-item-icon>
-                  <v-icon class="mr-2" color="secondary"
-                    @click="this.$router.push({ name: 'profile' })">mdi-account</v-icon>
-                </v-list-item-icon>
-                Thông tin tài khoản
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'homehouse' })"
-              style="cursor: pointer;">
-              <v-list-item-title>
-                <v-list-item-icon>
-                  <v-icon style="width: 14px; height: 12.85px;" color="blue">mdi-cloud-upload</v-icon>
-                </v-list-item-icon>
-                Quản lý bài đăng
-              </v-list-item-title>
-            </v-list-item> -->
             <v-list-item class="hoverable-list-item" @click="handleAccountInfoClick" style="cursor: pointer;">
               <v-list-item-title>
                 <v-list-item-icon>

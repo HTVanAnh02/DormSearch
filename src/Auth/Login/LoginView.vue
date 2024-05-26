@@ -76,7 +76,6 @@ import { useOneTap, type CredentialResponse } from "vue3-google-signin";
 
 const loginform = reactive(userLoginForm());
 const visible = ref(false)
-const terms = ref('')
 
 const { isReady, login } = useOneTap({
     disableAutomaticPrompt: true,
