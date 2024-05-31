@@ -104,7 +104,7 @@
                 Quản lý bài đăng
               </v-list-item-title>
             </v-list-item>
-            <v-list-item class="hoverable-list-item" @click="this.$router.push({ name: 'login_page' })"
+            <v-list-item class="hoverable-list-item" @click="Logout()"
               style="cursor: pointer;">
               <v-list-item-icon>
                 <v-icon class="mr-2">mdi-logout</v-icon>
@@ -139,12 +139,11 @@ onMounted(() => {
 
 const Logout = async () => {
   const res = await logout();
-  if (res) {
-    dialog.value = false;
+  dialog.value = false;
     setTimeout(() => {
       window.location.reload();
     }, 2000)
-  }
+    router.push({ name: 'login_page' })
 }
 const isShowDialog = ref(false);
 const checkRole = ref(false)

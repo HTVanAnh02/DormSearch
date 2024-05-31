@@ -60,14 +60,15 @@ const loginbyEmail =async(body: IBodyLogin)=>{
   }
   const logout=async()=>{
     loading.setLoading(true);
-    const res=await authServiceApi.logout();
-    if(res.success) {
-        showErrorNotification(res.message);
-        localStorageAuthService.resetAll()
-        // localStorageAuthService.setUserRole('');
-    }
+    // const res=await authServiceApi.logout();
+    // if(res.success) {
+    //     showErrorNotification(res.message);
+    //     localStorageAuthService.resetAll()
+    //     // localStorageAuthService.setUserRole('');
+    // }
+    localStorageAuthService.resetAll()
     loading.setLoading(false);
-    return res.success;
+    // return res.success;
 };
   const isAuthenticated = computed(() => {
     

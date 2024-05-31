@@ -3,26 +3,26 @@
     <NarbarVue />
     <Slidebar />
     <v-row>
-      <v-card cols="8" sm="12" md="12" lg="4" class="custom-card"  style="top: 24px; border-radius: 4px;">
+      <v-card cols="8" sm="12" md="12" lg="4" class="custom-card" style="top: 24px; border-radius: 4px;">
         <v-row class="ml-3 mt-2">
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Khu vực" v-model="AreasId" @input="serchHomes()" :items="itemsListAreas" item-title="areasName"
-              item-value="areasId" density="compact" variant="outlined"></v-select>
+            <v-select label="Khu vực" v-model="AreasId" @input="serchHomes()" :items="itemsListAreas"
+              item-title="areasName" item-value="areasId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select label="Thành Phố" v-model="cityId" @input="serchHomes()" :items="itemsListCitys" item-title="cityName"
-              item-value="cityId" density="compact" variant="outlined"></v-select>
+            <v-select label="Thành Phố" v-model="cityId" @input="serchHomes()" :items="itemsListCitys"
+              item-title="cityName" item-value="cityId" density="compact" variant="outlined"></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select density="compact" label="Giá" @input="serchHomes()" v-model="gia" :items="prices" item-title="text" item-value="value"
-              variant="outlined">
+            <v-select density="compact" label="Giá" @input="serchHomes()" v-model="gia" :items="prices"
+              item-title="text" item-value="value" variant="outlined">
               <v-option>
               </v-option>
             </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="6" lg="3">
-            <v-select density="compact" label="Diện tích" v-model="dientich" :items="houses" @input="serchHomes()" item-title="acreage"
-              item-value="acreage" variant="outlined">
+            <v-select density="compact" label="Diện tích" v-model="dientich" :items="houses" @input="serchHomes()"
+              item-title="acreage" item-value="acreage" variant="outlined">
               <v-option>
               </v-option>
             </v-select>
@@ -38,8 +38,8 @@
         <v-row class="mr-3 ml-3 mt-1">
           <v-col class="d-flex flex-column justify-center align-center" v-for="item in houses" :key="item" cols="12"
             sm="6" md="4" lg="3" style="margin-top: 16px;">
-            <v-card hover variant="flat" style="min-height: 480px;width: 350px;" class="mb-3 my-card">
-              <v-img class="mx-auto ml-4 mr-4 mt-1" width="320px" height="224px" :src="item.photos"></v-img>
+            <v-card hover variant="flat" style="min-height: 480px; width: 350px;" class="mb-3 my-card">
+              <v-img class="mx-auto mt-1" height="224px" :src="item.photos" style="width: 550px;"></v-img>
               <v-card-text class="mx-auto ml-4 mr-4"
                 style="max-width: 350px;font-size: 20px;line-height: 24px; height: 90px;font-family: Inter, sans-serif;;color: #19191D;">
                 <router-link :to="`/homedetail/${item.housesId}`" style="text-decoration: none;" class="detail__link">{{
@@ -51,7 +51,7 @@
               </v-card-text>
               <v-card-text class="mx-auto ml-4 mr-4 mt-1"
                 style="margin-top: 8px;;height: 60px;font-size: 16px;font-family: Inter, sans-serif;;color: #787885;">{{
-                  item.title }}</v-card-text>
+                  item.addressHouses }}</v-card-text>
               <v-row style="margin-top: 5px;margin-left: 6px;" class="mb-4">
                 <v-col class="ml-3 mt-2" cols="5" style="display: flex;">
                   <v-icon color="#FB8200" size="x-small">mdi mdi-star</v-icon>
@@ -72,9 +72,9 @@
                     <div style="margin-left: 7px;">{{ like ? 'Unlike' : 'Like' }}</div>
                     <div class="flex justify-center items-center text-sm cursor-pointer">
                       <i v-if="isAuthenticated"
-                        :class="{ 'ri-heart-line': !showLikeByHouseId(item.jobId).isFavorites_House, 'ri-heart-fill text-red-500': showLikeByHouseId(item.jobId).isFavorites_House }"
+                        :class="{ 'ri-heart-line': !showLikeByHouseId(item.houseId).isFavorites_House, 'ri-heart-fill text-red-500': showLikeByHouseId(item.houseId).isFavorites_House }"
                         class="text-3xl cursor-pointer m-2"
-                        @click="toggleLike(item.jobId, !showLikeByHouseId(item.jobId).isFavorites_House, showLikeByHouseId(item.jobId).favorites_House_Id)"></i>
+                        @click="toggleLike(item.houseId, !showLikeByHouseId(item.houseId).isFavorites_House, showLikeByHouseId(item.houseId).favorites_House_Id)"></i>
                       <i v-else class="text-3xl cursor-pointer m-2 ri-heart-line"></i>
                     </div>
                   </v-btn>
@@ -122,7 +122,7 @@ const { citysItem } = useCity()
 const { areasItem } = useArea()
 const itemsListCitys = ref([]);
 const itemsListAreas = ref([]);
-const { fetchHouse,searchHouse } = useHouse();
+const { fetchHouse, searchHouse } = useHouse();
 const { isAuthenticated } = AuthStore();
 const favorites_houses = ref<any | undefined>([]);
 
@@ -157,17 +157,17 @@ watch(dientich, (newValue, oldValue) => {
 })
 
 watch(gia, (newValue, oldValue) => {
-    gia.value = newValue
-    serchHomes()
+  gia.value = newValue
+  serchHomes()
 })
 const searchData = async () => {
   console.log("Data ssss: " + AreasId.value)
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.keyword = search.value;
-  if(search.value === null || search.value === ""){
+  if (search.value === null || search.value === "") {
     loadHouse();
     loadData();
-  }else{
+  } else {
     DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;
     const data = await searchHouse();
     houses.value = data?.items;
@@ -179,12 +179,12 @@ const searchData = async () => {
     }
     loading.setLoading(false);
   }
-  
-  
+
+
 
 };
 const showLikeByHouseId = (id: any) => {
-  const filteredHouse = favorites_houses.value.filter((x: any) => x.jobId === id);
+  const filteredHouse = favorites_houses.value.filter((x: any) => x.houseId === id);
   if (filteredHouse.length > 0) {
     return {
       isFavorites_House: filteredHouse[0].isFavorites_House,
@@ -204,7 +204,8 @@ const toggleLike = async (item: any, like: any, favorites_House_Id: any) => {
     formData.append('isFavorites_House', like);
     formData.append('favorites_House_Id', favorites_House_Id);
     const res = await changefavorites(formData);
-    if (res.success) {;
+    if (res.success) {
+      ;
       loadlike();
 
     }
@@ -227,29 +228,29 @@ onMounted(() => {
 });
 
 const serchHomes = async () => {
-    if(AreasId.value !== null || AreasId.value !== ""){
-      DEFAULT_COMMON_LIST_QUERY.khuvuc = AreasId.value
-    }
-    if(cityId.value !== null || cityId.value !== ""){
-      DEFAULT_COMMON_LIST_QUERY.thanhpho = cityId.value
-    }
-    if(dientich.value !== null || dientich.value !== ""){
-      DEFAULT_COMMON_LIST_QUERY.dientich = dientich.value
-    }
-    if(gia.value !== null || gia.value !== ""){
-      DEFAULT_COMMON_LIST_QUERY.gia = gia.value
-    }
+  if (AreasId.value !== null || AreasId.value !== "") {
+    DEFAULT_COMMON_LIST_QUERY.khuvuc = AreasId.value
+  }
+  if (cityId.value !== null || cityId.value !== "") {
+    DEFAULT_COMMON_LIST_QUERY.thanhpho = cityId.value
+  }
+  if (dientich.value !== null || dientich.value !== "") {
+    DEFAULT_COMMON_LIST_QUERY.dientich = dientich.value
+  }
+  if (gia.value !== null || gia.value !== "") {
+    DEFAULT_COMMON_LIST_QUERY.gia = gia.value
+  }
 
-    loading.setLoading(true);
-    const data = await fetchHouse();
-    houses.value = data?.data;
-    totalItems.value = data?.totalItems;
-    lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
-    total.value = data?.totalItems;
+  loading.setLoading(true);
+  const data = await fetchHouse();
+  houses.value = data?.data;
+  totalItems.value = data?.totalItems;
+  lengthPage.value = Math.ceil(data?.totalItems / 12) * 12;
+  total.value = data?.totalItems;
 
-    if(houses.value.leng < 0 || houses.value == null){
-      loadData();
-    }
+  if (houses.value.leng < 0 || houses.value == null) {
+    loadData();
+  }
 
 
 }
