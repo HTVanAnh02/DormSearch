@@ -97,7 +97,15 @@ const routes: Array<RouteRecordRaw> = [
     path: '/chat-mess',
     name: 'chat-mess',
     component: () => import('../layouts/Home/Chat/Chat-index.vue'),
+    children:[
+      {
+        path: 'chat/:id',
+        name: 'chat',
+        component: () => import('../layouts/Home/Chat/Chat.vue'),
+      },
+    ]
   },
+  
   {
     path: '/admin_dashboard',
     name: 'admin_dashboard',

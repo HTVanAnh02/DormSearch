@@ -117,7 +117,7 @@
                 <span class="text-lowercase ml-1">lại</span>
                 <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-arrow-left</v-icon>
               </v-btn>
-              <v-btn class="text-capitalize" variant="outlined"
+              <v-btn class="text-capitalize" variant="outlined" @click="Ok(item.usersId)"
                 style="border-color: #9DC2FF;height: 40px;color: #2264D1;font-weight: 700;font-size: 20px;">Liên
                 <span class="text-lowercase ml-1">hệ</span>
                 <v-icon class="ml-2" style="height: 40px; font-size: 20px;">mdi-chat</v-icon>
@@ -170,6 +170,7 @@ import { useHome } from '../Services/home.service';
 import { AuthStore } from '@/Auth/authStore';
 import { reactive } from "vue";
 import { formatNumberWithCommas } from "@/common/helper/helpers";
+import { useChatStore } from "@/store/chat/chat";
 const { getById, fetchHome } = useHome();
 const loading = useLoadingStore();
 const houses = ref<any | undefined>([]);
@@ -179,6 +180,7 @@ const id = ref<any | undefined>('');
 const page = ref<number>(10);
 const isShowDialog = ref(false);
 const checkRole = ref(false)
+const userId = useChatStore;
 const formatDatetime = (date) => {
   const dateObject = new Date(date);
   const ngay = dateObject.getDate().toString().padStart(2, "0");
@@ -187,10 +189,13 @@ const formatDatetime = (date) => {
   const ngayThangNam = `${thang}/${ngay}/${nam}`;
   return ngayThangNam;
 };
+const Ok = (item: any) => {
+  alert(item);
+  router.push('/chat-mess/chat/' + item);
 
+}
 const seeMore = async () => {
-  console.log(page.value += 5);
-  DEFAULT_COMMON_LIST_QUERY_BY_HOME.limit = page.value;
+  DEFAULT_COMMON_LIST_QUERY_BY_HOME.limit = page.value += 5;
   await searchData();
 
 }
@@ -203,7 +208,6 @@ onMounted(async () => {
   id.value = router.currentRoute.value.params.id;
   const res = await getById(id.value);
 
-  console.log("ABC   " + res);
   item.value = res;
   searchData();
   loading.setLoading(false);
