@@ -49,10 +49,10 @@
                   </span>
                 </v-col>
                 <v-col cols="6">
-                  <v-icon color="orange" style="font-size: 30px;">mdi-account</v-icon>
-                  <span class="subtitle"><b>Người đăng:</b></span>
+                  <v-icon color="deep-purple" style="font-size: 30px;">mdi-phone</v-icon>
+                  <span class="subtitle"><b>Số điện thoại:</b></span>
                   <span class="text-subtitle-1">
-                    <b style=" font-size: 20px">{{ item.usersName }}</b>
+                    <b style=" font-size: 20px">{{ item.contact }}</b>
                   </span>
                 </v-col>
                 <v-col cols="6">
@@ -91,13 +91,13 @@
                     </template>
                   </v-tooltip>
                 </v-col>
-                <v-col cols="6">
+                <!-- <v-col cols="6">
                   <v-icon color="deep-purple" style="font-size: 30px;">mdi-phone</v-icon>
                   <span class="subtitle"><b>Số điện thoại:</b></span>
                   <span class="text-subtitle-1">
                     <b style=" font-size: 20px">{{ item.contact }}</b>
                   </span>
-                </v-col>
+                </v-col> -->
                 <v-col cols="12">
                   <v-icon color="blue" style="font-size: 30px;">mdi-currency-usd</v-icon>
                   <span class="subtitle"><b>Giá:</b></span>

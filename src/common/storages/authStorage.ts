@@ -123,7 +123,7 @@ class LocalStorageAuthService {
     this.resetAccessTokenExpiredAt();
     this.resetRoleUser();
     localStorage.clear();
-    
+
 
     // this.setLoginUser(null, null);
   }

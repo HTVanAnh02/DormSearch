@@ -1,4 +1,4 @@
-<template>
+\<template>
     <div>
         <v-card class="mt-0" variant="flat" style="width: 426px;
            height: 450px;
@@ -11,7 +11,7 @@
                 style=" font-family: 'Public Sans',sans-serif; font-size: 32px; font-weight: 600; line-height: 48px; letter-spacing: 0em; text-align: center; margin: 0 auto; display: flex; align-items: center; justify-content: center; color:#1B1B33;">
                 Quên Mật khẩu
             </div>
-            <v-form v-if="this.codeApi == ''" :style="{ width: '425px', height: '260px' }">
+            <v-form :style="{ width: '425px', height: '260px' }">
                 <div class="text-subtitle-1 text-medium-emphasis" style="margin-top:20px; width: 425px; height: 60px;">
                     <div
                         style="height: 28px; font-family: 'Public Sans', sans-serif; font-size: 14px; font-weight: bold; color: #464F60;">
@@ -43,7 +43,32 @@
 <script setup>
 import logo from '../../assets/image/logo.png'
 import { ref } from 'vue';
+import axios from 'axios';
+
 const Email = ref('');
+
+const submit = () => {
+    axios.post('http://localhost:5224/api/Account/QuenPassword', null, {
+        params: {
+            Email: Email.value
+        },
+    }).then(rs => {
+        this.codeApi = rs.data.Code
+        this.FormData.Email = rs.data.Email
+    }).catch(er => {
+        //alert(er.response.data)
+        this.$emit('close')
+        this.$store.commit('setLoginError', {
+            show: true,
+            icon: '$error',
+            content: er.response.data,
+            color: 'error'
+        });
+        setTimeout(() => {
+            this.$store.commit('clearLoginError');
+        }, 3000);
+    });
+};
 </script>
 
 <style>
@@ -85,4 +110,3 @@ const Email = ref('');
     border-radius: 4px;
 }
 </style>
-./login.js

@@ -10,7 +10,7 @@ class FavouriteApiService extends ApiService {
     return this.client.get(`${this.baseUrl}/Favourite_Jobs`);
   }
 }
-export const favouriteApi = new FavouriteApiService(
+export const favoriteApi = new FavouriteApiService(
   { baseUrl: "/Favourite" },
   axiosInstance
 );
