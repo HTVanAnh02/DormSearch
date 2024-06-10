@@ -57,7 +57,7 @@ export const userLoginForm=()=>{
           }
           else{
             showSuccessNotification("Đăng nhập thành công")
-            router.push('/admin/city');
+            router.push('/city');
           }
           // else
           //   showWarningsNotification("Lỗi Role ở login")

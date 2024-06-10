@@ -21,7 +21,7 @@
                 </div>
                 <div class="d-flex justify-space-between align-center mt-8" >
                 </div>
-                <v-btn  block class="mb-5 rounded-button" to="/re_password"
+                <v-btn  block class="mb-5 rounded-button" @click="submit"
                     color="#0F60FF"
                     style="font-family: 'Public Sans', sans-serif; width: 425px; height: 48px; font-size: 16px; ">
                     <span class="text-capitalize">Tiếp</span>
@@ -44,17 +44,28 @@
 import logo from '../../assets/image/logo.png'
 import { ref } from 'vue';
 import axios from 'axios';
+import {useOtpStore} from '../../store/GuiOtp/otp'
+import {useRouter} from 'vue-router';
 
 const Email = ref('');
+const store = useOtpStore()
+const router = useRouter()
 
 const submit = () => {
-    axios.post('http://localhost:5224/api/Account/QuenPassword', null, {
+    axios.post('https://localhost:44309/api/User/GuiOTP', null, {
         params: {
             Email: Email.value
         },
     }).then(rs => {
-        this.codeApi = rs.data.Code
-        this.FormData.Email = rs.data.Email
+        // this.codeApi = rs.data.Code
+        // this.FormData.Email = rs.data.Email
+        if(rs.data.statusCode === 200){
+            localStorage.setItem("email", JSON.stringify(Email.value))
+            store.setOtp(Email.value)
+            // const test = store.email // Hiển thị dữ liệu được lưu trong "State"
+            router.push("/re_password")
+        }
+        
     }).catch(er => {
         //alert(er.response.data)
         this.$emit('close')

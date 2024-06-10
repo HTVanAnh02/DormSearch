@@ -58,14 +58,25 @@
 </template>
 <script setup>
 import logo from '../../assets/image/logo.png'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import {useOtpStore} from '../../store/GuiOtp/otp'
+import {useRouter} from 'vue-router'
 
-const formData = {
+const router = useRouter()
+const formData = ref({
   Email: '', 
   NewPass: '',
   CfNewPass: '',
-};
+});
+
+const UpdatePassword = ref({
+  email: '',
+  password: '',
+  token: ''
+})
+
+const store = useOtpStore()
 
 const codeClient = ref('');
 const codeApi = ref('');
@@ -74,7 +85,40 @@ const showSuccessMessage = ref(false);
 const showErrorMessage = ref(false);
 const errorMessage = ref('');
 const successMessage = ref('');
+onMounted(() => {
+  const emails = JSON.parse(localStorage.getItem("email"))
+        // Bắt sự kiện sau khi tải lại trang hoàn tất thì sẽ xóa biến "vuex" được lưu dưới "localStorage" đi
+window.onload = function() {
+  console.log(emails)
+  axios.delete("https://localhost:44309/api/User/DeleteAllOTPs", {
+    params:{
+      email: emails
+    }
+  }).then(response => {
+    if(response.data.statusCode === 200){
+      this.alert("Vui lòng thử lại")
+      router.push("/login")
+      // Xử lý sau khi toàn bộ trang đã được load
+      console.log('Trang đã được load hoàn toàn.');
+      localStorage.removeItem("email")
+    }
+  })
+  
+  return
+  // Thực hiện các thao tác hoặc gọi hàm cần thiết ở đây.
+}
+  store.setOtp(emails)
+  // localStorage.removeItem("email")
+  if(store.email === null || store.email === ""){
+    alert("Vui lòng thử lại")
+    router.push("/login")
 
+
+    return
+  }
+
+
+})
 // const submit = () => {
 //   axios.post('https://localhost:44309/api/User/QuenPassword', null, {
 //     params: {
@@ -92,40 +136,73 @@ const successMessage = ref('');
 //   });
 // };
 
-const save = () => {
-  if (codeApi.value !== codeClient.value) {
-    errorMessage.value = 'Mã xác minh không đúng';
-    showErrorMessage.value = true;
-    setTimeout(() => {
-      showErrorMessage.value = false;
-    }, 3000);
+// const save = () => {
+//   if (codeApi.value !== codeClient.value) {
+//     errorMessage.value = 'Mã xác minh không đúng';
+//     showErrorMessage.value = true;
+//     setTimeout(() => {
+//       showErrorMessage.value = false;
+//     }, 3000);
+//     return;
+//   }
+
+//   if (formData.CfNewPass !== formData.NewPass) {
+//     errorMessage.value = '2 mật khẩu không giống nhau';
+//     showErrorMessage.value = true;
+//     setTimeout(() => {
+//       showErrorMessage.value = false;
+//     }, 3000);
+//     return;
+//   }
+
+//   axios.post('https://localhost:44309/api/User/DoiMatKhau', formData)
+//     .then(rs => {
+//       successMessage.value = rs.data;
+//       showSuccessMessage.value = true;
+//       setTimeout(() => {
+//         showSuccessMessage.value = false;
+//       }, 3000);
+//     }).catch(er => {
+//       errorMessage.value = er.message;
+//       showErrorMessage.value = true;
+//       setTimeout(() => {
+//         showErrorMessage.value = false;
+//       }, 3000);
+//     });
+// };
+
+const save = () =>{
+  if (formData.value.CfNewPass !== formData.value.NewPass) {
+    alert("Mật khẩu phải chùng khớp")
     return;
   }
 
-  if (formData.CfNewPass !== formData.NewPass) {
-    errorMessage.value = '2 mật khẩu không giống nhau';
-    showErrorMessage.value = true;
-    setTimeout(() => {
-      showErrorMessage.value = false;
-    }, 3000);
-    return;
-  }
-
-  axios.post('https://localhost:44309/api/User/DoiMatKhau', formData)
-    .then(rs => {
-      successMessage.value = rs.data;
-      showSuccessMessage.value = true;
-      setTimeout(() => {
-        showSuccessMessage.value = false;
-      }, 3000);
-    }).catch(er => {
-      errorMessage.value = er.message;
-      showErrorMessage.value = true;
-      setTimeout(() => {
-        showErrorMessage.value = false;
-      }, 3000);
-    });
-};
+  UpdatePassword.value.password = formData.value.NewPass
+  UpdatePassword.value.token = codeClient.value 
+  UpdatePassword.value.email = store.email
+  console.log(store.email)
+  if(store.email === "" || store.email === null){
+      console.log("Null")
+      return
+    }
+  axios.put("https://localhost:44309/api/User/UpdatePassword", UpdatePassword.value)
+  .then(response => {
+    if(response.data.statusCode === 200){
+      alert("Cập nhật thành công")
+      localStorage.removeItem("email")
+      router.push("/login")
+      return
+    }
+    else{
+      alert("Thông tin sai vui lòng thử lại")
+      return
+    }
+  }).catch(error => {
+    console.log(error)
+  })
+  
+  
+}
 </script>
 <style scoped>
 .error-message {

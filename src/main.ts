@@ -31,5 +31,9 @@ const app = createApp(App);
   })
   .use(GoogleSignInPlugin, {
     clientId: '573787933121-2j7qn6cc9ftpb27sph3599d125265gd2.apps.googleusercontent.com',
+    // clientId: '695236050667-iip20mtd60g6nb6f1ki2gatue1e3kqjb.apps.googleusercontent.com',
+      scope: 'profile email',
+      prompt: 'consent',
+      fetch_basic_profile: true
   })
   .mount('#app')

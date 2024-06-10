@@ -41,7 +41,6 @@ const formattedDate = computed(() => {
     const year = d.getFullYear();
     const hours = String(d.getHours()).padStart(2, '0');
     const minutes = String(d.getMinutes()).padStart(2, '0');
-
     return `${day}/${month}/${year} ${hours}:${minutes}`;
 });
 const setupSignalRConnection = async () => {
@@ -50,12 +49,10 @@ const setupSignalRConnection = async () => {
             .withUrl("https://localhost:7237/chatHub")
             .configureLogging(signalR.LogLevel.Information)
             .build();
-
         connection.value.on("ReceiveMessage", async () => {
             console.log('Ok')
             await loadMessages();
         });
-
         await connection.value.start();
     } catch (error) {
         console.error('Error setting up SignalR connection:', error);
@@ -95,7 +92,6 @@ const loadMessages = async () => {
         console.error('load messages:', error);
     }
 }
-
 onMounted(async () => {
     userId.value = router.currentRoute.value.params.id;
     await setupSignalRConnection();

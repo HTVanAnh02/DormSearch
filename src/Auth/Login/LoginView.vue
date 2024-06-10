@@ -80,6 +80,7 @@ const visible = ref(false)
 const { isReady, login } = useOneTap({
     disableAutomaticPrompt: true,
     onSuccess: (response: CredentialResponse) => {
+
         console.log("Success:", response);
         sendTokenToBackend(response.credential);
     },
@@ -87,8 +88,9 @@ const { isReady, login } = useOneTap({
 });
 const sendTokenToBackend = async (credential: any) => {
     try {
+
         loading.showLoading(true);
-        const response = await axios.post('https://localhost:7237/api/Auth/google-login', { credential });
+        const response = await axios.post('https://localhost:44309/api/Auth/google-login', { credential });
         console.log(response.data);
         if (response.data.success) {
             JSON.parse

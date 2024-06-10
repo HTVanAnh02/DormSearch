@@ -104,26 +104,23 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../layouts/Home/Chat/Chat.vue'),
       },
     ]
+    
   },
   
   {
     path: '/admin_dashboard',
     name: 'admin_dashboard',
-    component: () => import('../layouts/Dashboard/admin_dashboard.vue'),
+    component: () => import('../layouts/Dashboard Chat/admin_dashboard.vue'),
    
   },
-  {
-    path: '/404',
-    name: PageName.NOT_FOUND_PAGE,
-    component: () => import('../components/errors/NotFound.vue')
-  },
+ 
   {
     path: '/admin',
     name: PageName.ADMIN,
     component: () => import('../views/Admin.vue'),
     children: [
       {
-        path: 'areas',
+        path: '/areas',
         name:PageName.ADMIN_AREA,
         component: () => import('../layouts/Admin/Area/Area.vue'),
         // meta: {
@@ -135,7 +132,7 @@ const routes: Array<RouteRecordRaw> = [
         // },
       },
       {
-        path: 'city',
+        path: '/city',
         name:PageName.ADMIN_CITY,
         component: () => import('../layouts/Admin/City/City.vue'),
         // meta: {
@@ -159,7 +156,7 @@ const routes: Array<RouteRecordRaw> = [
       //   },
       // },
       {
-        path: 'role',
+        path: '/role',
         name:PageName.ROLE_PAGE,
         component: () => import('../layouts/Admin/Roles/RolesIndex.vue'),
         // meta: {
@@ -171,7 +168,7 @@ const routes: Array<RouteRecordRaw> = [
         // },
       },
       {
-        path: 'roomstyle',
+        path: '/roomstyle',
         name:PageName.ROOMSTYLE,
         component: () => import('../layouts/Admin/Roomstyle/Roomstyle.vue'),
         // meta: {
@@ -184,7 +181,7 @@ const routes: Array<RouteRecordRaw> = [
         
       },
       {
-        path: 'adminhouse',
+        path: '/adminhouse',
         name:PageName.ADMIN_HOUSE,
         component: () => import('../layouts/Admin/House/House.vue'),
         // meta: {
@@ -197,7 +194,7 @@ const routes: Array<RouteRecordRaw> = [
         
       },
       {
-        path: 'dashboard',
+        path: '/dashboard',
         name: PageName.DASHBOARD_PAGE,
         component: () => import('../layouts/Admin/Dashboard/IndexView.vue'),
        
@@ -206,8 +203,9 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/:catchAll(.*)*',
-    redirect: '/404',
+    path: '/404',
+    name: PageName.NOT_FOUND_PAGE,
+    component: () => import('../components/errors/NotFound.vue')
   },
 ]
 

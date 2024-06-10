@@ -280,6 +280,7 @@ export type ILoginResponse = {
   refreshTokenExpiration:number;
   role:string;
   profile: IUser;
+  id: string;
 }
 export type IBodyLogin = {
   email?: string;

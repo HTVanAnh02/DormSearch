@@ -137,15 +137,83 @@
       </v-card>
     </v-card>
     <v-card width="2000">
-      <v-list :items="items" lines="three" item-props>
-        <template v-slot:subtitle="{ subtitle }">
-          <div v-html="subtitle"></div>
-        </template>
-      </v-list>
+      <div>
+        <div v-for="(item, index) in dataComment" :key="index">
+          <div style="display: flex; margin: 30px 0">
+            <div style="margin-right: 10px;">
+              <img :src="item.image" width="50" style="border-radius: 50%" />
+            </div>
+            <div>
+              <div style="display: flex;">
+                <h1 style="margin-right: 10px;">{{ item.user }}</h1>
+                <p style="font-size: 12px; color: gray; opacity: 0.8;">{{ item.createAt }}</p>
+              </div>
+              <div>
+                <p>{{ item.message1 }}</p>
+                <button type="button" style="background: yellow; font-size: 12px; padding: 2px 20px;" @click="show('block_' + item.id1)">rep</button>
+              </div>
+
+              <div style="display: none" :id="'block_' + item.id1">
+                    <input type="text" :id="'id_' + item.id1" />
+                    <button v-on:click="Gui1('id_' + item.id1, item.id1)">Gui</button>
+                  </div>
+            </div>
+          </div>
+          <div style="margin: 0 60px;">
+            <div v-for="(itemRep2, indexRep2) in item.commentDescriptions" :key="indexRep2">
+              
+              
+              <div style="display: flex; margin: 30px 0">
+                <div style="margin-right: 10px;">
+                  <img :src="itemRep2.image" width="50" style="border-radius: 50%" />
+                </div>
+                <div>
+                  <div style="display: flex;">
+                    <h1 style="margin-right: 10px;">{{ itemRep2.user2 }}</h1>
+                    <p style="font-size: 12px; color: gray; opacity: 0.8;">{{ itemRep2.createAt }}</p>
+                  </div>
+                  <div>
+                    <p>{{ itemRep2.message2 }}</p>
+                    <button type="button" style="background: yellow; font-size: 12px; padding: 2px 20px;" @click="show('block_' + itemRep2.id2)">rep</button>
+                  </div>
+                  <div style="display: none" :id="'block_' + itemRep2.id2">
+                    <input type="text" :id="'id_' + itemRep2.id2" />
+                    <button v-on:click="Gui('id_' + itemRep2.id2, itemRep2.id2)">Gui</button>
+                  </div>
+                </div>
+              </div>
+              <div v-for="(item3, index3) in itemRep2.commentDescriptionRep" :key="index3">
+                <div style="display: flex; margin: 0 60px">
+                <div style="margin-right: 10px;">
+                  <img :src="item3.image" width="50" style="border-radius: 50%" />
+                </div>
+                <div>
+                  <div style="display: flex;">
+                    <h1 style="margin-right: 10px;">{{ item3.user3 }}</h1>
+                    <p style="font-size: 12px; color: gray; opacity: 0.8;">{{ item3.createAt }}</p>
+                  </div>
+                  <div>
+                    <p>{{ item3.message3 }}</p>
+                    <button type="button" style="background: yellow; font-size: 12px; padding: 2px 20px;" @click="show('block_' + item3.id3)">rep</button>
+                  </div>
+                  <div style="display: none" :id="'block_' + item3.id3">
+                    <input type="text" :id="'id_' + item3.id3" />
+                    <button v-on:click="GuiN('id_' + item3.id3, itemRep2.id2, item3.id3)">Gui</button>
+                  </div>
+                </div>
+              </div>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
       <div style="max-width: 800px; margin: 10px auto; display: flex;text-align: left; ">
-        <input placeholder="Nhập nội dung bình luận"
+        <input placeholder="Nhập nội dung bình luận" v-model="comment1.message"
           style="flex-grow: 1; border: 1px solid #ccc; padding: 10px; resize: none;">
         <button
+        @click="Comment(item.usersId)"
           style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer; margin-left: 10px;">Bình
           luận</button>
       </div>
@@ -162,7 +230,7 @@ import NarbarVue from "@/components/Application/Narbar.vue";
 import Footer from "@/components/Application/Footer.vue";
 import HomeHouseDialog from '@/layouts/Home/Houses/HomeHouseDialog.vue';
 import router from '@/router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 const { isAuthenticated } = AuthStore();
 import { DEFAULT_COMMON_LIST_QUERY_BY_HOME } from '@/common/contant/contants';
 import { useLoadingStore } from '@/store/loading';
@@ -171,6 +239,7 @@ import { AuthStore } from '@/Auth/authStore';
 import { reactive } from "vue";
 import { formatNumberWithCommas } from "@/common/helper/helpers";
 import { useChatStore } from "@/store/chat/chat";
+import axios from "@/plugins/axios/axios";
 const { getById, fetchHome } = useHome();
 const loading = useLoadingStore();
 const houses = ref<any | undefined>([]);
@@ -180,7 +249,31 @@ const id = ref<any | undefined>('');
 const page = ref<number>(10);
 const isShowDialog = ref(false);
 const checkRole = ref(false)
+const noidung = ref('')
 const userId = useChatStore;
+const dataComment = ref([])
+const dem = ref(1)
+const comment1 = ref({
+  message: "",
+  houseproduct_id: "",
+  account_id: ""
+})
+
+watch(() => dem.value, (newValue, OldValue) =>{
+  dem.value += newValue
+})
+const comment2N = ref({
+  message: "",
+  commentDescription_ID: "",
+  commentDescriptionReps_ID: "",
+  comment_ID: "",
+  account_ID: ""
+})
+
+const buffData = (data) => {
+   dem.value++
+  return dem.value
+}
 const formatDatetime = (date) => {
   const dateObject = new Date(date);
   const ngay = dateObject.getDate().toString().padStart(2, "0");
@@ -199,6 +292,60 @@ const seeMore = async () => {
   await searchData();
 
 }
+const show = async (id) => {
+  const ids = document.getElementById(id)
+  ids.style.display = "block"
+  console.log(id)
+}
+
+const Gui1 = async (id, id1) => {
+  const values = document.getElementById(id).value
+  
+  comment2N.value.message = values
+  comment2N.value.comment_ID = id1
+  comment2N.value.account_ID = item.value.usersId
+  comment2N.value.commentDescription_ID = ""
+  comment2N.value.commentDescriptionReps_ID = ""
+
+  if(comment2N.value.message === "" || comment2N.value.message == null)
+      return
+  
+  await axios.post("https://localhost:44309/api/Comment/CreateCommentDescription", comment2N.value)
+  .then(() => {
+    findAllComment()
+  })
+}
+const Gui = async (id, idcommnet2) => {
+  const values = document.getElementById(id).value
+  comment2N.value.message = values
+  comment2N.value.account_ID = item.value.usersId
+  comment2N.value.commentDescription_ID = idcommnet2
+  comment2N.value.comment_ID = ""
+  comment2N.value.commentDescriptionReps_ID = ""
+
+
+  await axios.post("https://localhost:44309/api/Comment/CreateCommentDescription", comment2N.value)
+  .then(() => {
+    findAllComment()
+  })
+  console.log(idcommnet2)
+}
+
+const GuiN = async (text, id2, id3) => {
+  const ids = document.getElementById(text).value
+  comment2N.value.account_ID = item.value.usersId
+  comment2N.value.message = ids
+  comment2N.value.commentDescriptionReps_ID = id3
+  comment2N.value.commentDescription_ID = id2
+  comment2N.value.comment_ID = ""
+
+  if(comment2N.value.message === null || comment2N.value.message === "")
+    return
+  await axios.post("https://localhost:44309/api/Comment/CreateCommentDescription", comment2N.value)
+  .then(() => {
+    findAllComment()
+  })
+}
 const close = () => {
   isShowDialog.value = false
 }
@@ -211,7 +358,35 @@ onMounted(async () => {
   item.value = res;
   searchData();
   loading.setLoading(false);
+
+  findAllComment()
 })
+
+const findAllComment = async () => {
+  await axios.get("https://localhost:44309/api/Comment/FindAll", {
+    params: {
+      id: item.value.housesId
+    }
+  })
+  .then(response => {
+    dataComment.value = response.data.data
+    console.log(response)
+  })
+}
+const Comment = async (id) => {
+  if(comment1.value.message === null || comment1.value.message === ""){
+    alert("Vui lòng nhập nội dung")
+    return
+  }
+  // alert(id)
+  comment1.value.account_id = id
+  comment1.value.houseproduct_id = item.value.housesId
+  await axios.post("https://localhost:44309/api/Comment/CreateComment", comment1.value)
+  .then(() => {
+    findAllComment()
+  })
+  console.log(item.value.housesId)
+}
 const searchData = async () => {
   loading.setLoading(true);
   DEFAULT_COMMON_LIST_QUERY_BY_HOME.page = 1;

@@ -52,7 +52,7 @@ export class ApiService {
 
     _ItemById(id:any):Promise<any> {
         console.log("Id là" + id)
-        return this.client.get(`https://localhost:7237/api/Houses/${id}`);
+        return this.client.get(`https://localhost:44309/api/Houses/${id}`);
     }
     _getListByHome<T>(
         queryString: ICommonListQueryByHome,

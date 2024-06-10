@@ -14,7 +14,7 @@ class AuthApiService extends ApiService {
   }
   _getOwnProfile<R>(): Promise<IBodyResponse<R>> {
     return this.client.get('/user/my-profile');
-  }
+  } 
   
 }
 

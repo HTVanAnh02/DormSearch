@@ -11,6 +11,7 @@ export const enum AUTH_SERVICE_KEY {
   ACCESS_TOKEN_EXPIRED_AT = "ACCESS_TOKEN_EXPIRED_AT",
   REFRESH_TOKEN_EXPIRED_AT = "REFRESH_TOKEN_EXPIRED_AT",
   AVATAR = "AVATAR",
+  ID = "ID"
 }
 class LocalStorageAuthService {
   setAccessToken(token: string): void {
@@ -57,6 +58,9 @@ class LocalStorageAuthService {
 
   setUserRole(role: string): void {
     storage.setLocalStorage(AUTH_SERVICE_KEY.ROLE, role);
+  }
+  setUserId(id: string): void {
+    storage.setLocalStorage(AUTH_SERVICE_KEY.ID, id);
   }
   getUserRole(): string {
     return storage.getLocalStorage(AUTH_SERVICE_KEY.ROLE);
